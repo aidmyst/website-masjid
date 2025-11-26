@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+[x-cloak] {
+    display: none !important;
+}
+
+/* HALAMAN BERANDA */
+/* Animasi Ken Burns untuk gambar Hero */
+@keyframes ken-burns {
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+    100% {
+        transform: scale(1.1) translate(-2%, 2%);
+    }
+}
+.animate-ken-burns {
+    animation: ken-burns 20s ease-out infinite alternate;
+}
+
+/* Animasi Fade In Up untuk Section */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.animate-fade-in-up {
+    animation: fade-in-up 1s ease-out forwards;
+}
+
+@layer utilities {
+    .animate-ken-burns-optimized {
+        will-change: transform;
+        animation: ken-burns 20s ease-in-out infinite alternate;
+        transform-origin: center center;
+    }
+
+    @keyframes ken-burns {
+        0% {
+            transform: scale(1) translate(0, 0);
+        }
+        100% {
+            transform: scale(1.1) translate(-2%, 2%);
+        }
+    }
+}
+
+/* styling khusus icon kalender */
+.custom-date-icon::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* bikin warnanya putih */
+    cursor: pointer; /* biar kursor jadi pointer */
+}
+
+/* CSS untuk ikon kalender putih di input date */
+.custom-date-icon::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+/* HALAMAN TENTANG */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.animate-fade-in-up {
+    animation: fade-in-up 1s ease-out forwards;
+}
+
+@layer utilities {
+    @keyframes slide-down {
+        0% {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-slide-down {
+        animation: slide-down 0.5s ease-out forwards;
+    }
+}
