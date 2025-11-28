@@ -18,7 +18,6 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    use Illuminate\Support\Facades\File;
 
     public function boot()
     {
