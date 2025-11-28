@@ -18,9 +18,15 @@ class PageController extends Controller
     public function tentang()
     {
         $organisasi = Organisasi::latest()->first();
-        $galeri = Galeri::latest()->get();
+    
+        // Ubah path relatif menjadi URL absolut untuk Alpine JS
+        $galeri = Galeri::latest()->get()->map(function ($g) {
+            $g->url = asset($g->gambar);
+            return $g;
+        });
+    
         $sejarah = Sejarah::orderBy('tahun', 'asc')->get();
-
+    
         return view('tentang', compact('organisasi', 'galeri', 'sejarah'));
     }
 

@@ -30,7 +30,7 @@ class DonasiController extends Controller
         $request->validate([
             'kategori' => 'required',
             'nominal' => 'required|numeric',
-            'bukti_tf' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'bukti_tf' => 'required|image|mimes:jpeg,png,jpg|max:10240',
         ]);
 
         $buktiPath = $request->file('bukti_tf')->store('bukti_transfer', 'public');

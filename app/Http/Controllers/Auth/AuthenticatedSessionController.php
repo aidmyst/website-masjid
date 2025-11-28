@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Models\User; // tetap perlu untuk objek user, tapi tidak pakai database
 
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Tampilkan form login
      */
     public function create(): View
     {
@@ -20,26 +20,56 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Login tanpa database (HANYA 1 email + password)
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        $request->authenticate();
+        // validasi form
+        $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
+        // Hardcoded akun admin
+        $adminEmail = 'jamiaisyah125@gmail.com';
+        $adminPassword = 'jamiaisyah125@';  // ganti sesukamu
+
+        // Cek email
+        if ($request->email !== $adminEmail) {
+            return back()->withErrors([
+                'email' => 'Akun tidak diizinkan.'
+            ]);
+        }
+
+        // Cek password
+        if ($request->password !== $adminPassword) {
+            return back()->withErrors([
+                'password' => 'Password salah.'
+            ]);
+        }
+
+        // Buat user dummy (tanpa database)
+        $fakeUser = new User();
+        $fakeUser->id = 1;
+        $fakeUser->name = "Admin Masjid";
+        $fakeUser->email = $adminEmail;
+
+        // Manual login
+        Auth::login($fakeUser);
+
+        // Regenerasi session
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended('/dashboard');
     }
 
     /**
-     * Destroy an authenticated session.
+     * Logout
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
-
+        Auth::logout();
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect()->route('login');

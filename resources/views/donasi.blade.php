@@ -284,7 +284,7 @@
                             <h3 class="font-bold text-lg text-indigo-700 flex items-center">
                                 📊 Laporan Pemasukan Donasi
                             </h3>
-                            <p class="text-sm text-gray-500">📅 {{ $namaBulanIni }}</p>
+                            <p class="text-sm text-gray-500">{{ $namaBulanIni }}</p>
                         </div>
                         <div class="space-y-4">
                             <div class="flex justify-between items-center bg-indigo-50 px-4 py-3 rounded-lg">

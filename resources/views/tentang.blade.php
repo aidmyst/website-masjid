@@ -190,17 +190,20 @@
                 <section x-data="{ open: false, selectedImage: '' }">
                     <h2 class="text-3xl font-bold text-center text-gray-900">Struktur Organisasi</h2>
                     <div class="mt-8 flex justify-center">
-
                         @if ($organisasi)
-                            {{-- Tambahkan @click untuk membuka modal --}}
-                            <img src="{{ asset($organisasi->gambar) }}" alt="Struktur Organisasi"
+                            <img
+                                src="{{ asset($organisasi->gambar) }}"
+                                alt="Struktur Organisasi"
                                 @click="open = true; selectedImage = '{{ asset($organisasi->gambar) }}'"
-                                class="rounded-lg shadow-lg max-w-4xl w-full cursor-pointer transition hover:opacity-90">
+                                class="rounded-lg shadow-lg max-w-4xl w-full cursor-pointer transition hover:opacity-90"
+                            >
                         @else
-                            <img src="https://placehold.co/800x400/e2e8f0/334155?text=Struktur+Organisasi"
-                                alt="Struktur Organisasi" class="rounded-lg shadow-lg max-w-4xl w-full">
+                            <img
+                                src="https://placehold.co/800x400/e2e8f0/334155?text=Struktur+Organisasi"
+                                alt="Struktur Organisasi"
+                                class="rounded-lg shadow-lg max-w-4xl w-full"
+                            >
                         @endif
-
                     </div>
 
                     <div x-show="open" @click.away="open = false" @keydown.escape.window="open = false"
@@ -250,13 +253,14 @@
                                                         'scroll-snap-align-start': !showButtons
                                                     }"
                                                     :style="`width: ${itemWidth}px; height: ${itemWidth * 0.7}px; transition-delay: ${index * 150}ms`"
-                                                    @click="openModal(item.url)">
-
-                                                    <img :src="item.url" alt="Galeri"
-                                                        class="w-full h-full object-cover rounded-lg transition-transform duration-500 ease-in-out group-hover:scale-110">
-                                                    <div
-                                                        class="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity duration-500 ease-in-out">
-                                                    </div>
+                                                    @click="openModal(item.url)"
+                                                >
+                                                    <img :src="item.url"
+                                                        alt="Galeri"
+                                                        class="w-full h-full object-cover rounded-lg transition-transform duration-500 ease-in-out group-hover:scale-110"
+                                                    >
+                                            
+                                                    <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity duration-500 ease-in-out"></div>
                                                 </div>
                                             </template>
                                         </div>

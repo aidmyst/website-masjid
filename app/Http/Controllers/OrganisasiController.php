@@ -13,18 +13,29 @@ class OrganisasiController extends Controller
         $request->validate([
             'gambar' => 'required|image|mimes:jpg,png,jpeg,gif,webp|max:2048'
         ]);
-
+    
         $file = $request->file('gambar');
         $namaFile = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('uploads/organisasi'), $namaFile); // Ganti path
-
+    
+        // Path ke public_html/uploads/organisasi
+        $uploadPath = base_path('../public_html/uploads/organisasi');
+    
+        // Pastikan folder ada
+        if (!File::exists($uploadPath)) {
+            File::makeDirectory($uploadPath, 0755, true);
+        }
+    
+        // Pindah file
+        $file->move($uploadPath, $namaFile);
+    
+        // Simpan path yang bisa diakses browser
         Organisasi::create([
-            'gambar' => 'uploads/organisasi/' . $namaFile // Ganti path
+            'gambar' => 'uploads/organisasi/' . $namaFile
         ]);
-
+    
         return redirect()->route('dashboard')
-        ->with('active_tab', 'sejarah')
-        ->with('success', 'Gambar struktur organisasi berhasil di-upload ✅');
+            ->with('active_tab', 'sejarah')
+            ->with('success', 'Gambar struktur organisasi berhasil di-upload ✅');
     }
 
     public function destroy(Organisasi $organisasi)
