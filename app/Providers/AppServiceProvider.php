@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\File;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,8 +18,15 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+
+    public function boot()
     {
-        //
+        $source = storage_path('app/public');
+        $destination = base_path('../public_html/storage');
+    
+        if (File::exists($source) && File::exists(dirname($destination))) {
+            File::copyDirectory($source, $destination);
+        }
     }
+
 }
