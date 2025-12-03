@@ -40,8 +40,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => base_path('../public_html/bukti_transfer'),
-            'url' => env('APP_URL') . '/bukti_transfer',
+            'root' => storage_path('app/public'), // Pastikan ini mengarah ke storage_path
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
