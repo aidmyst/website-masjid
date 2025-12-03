@@ -26,10 +26,12 @@
                     {{-- Tombol Back --}}
                     <div class="flex justify-center sm:justify-start w-full sm:w-auto mb-2 sm:mb-0">
                         <a href="{{ route('donasi') }}"
-                            class="inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-gray-700 bg-white rounded-xl shadow-sm border border-gray-200">
-
-                            {{-- Ikon Panah --}}
-                            <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {{-- Tambahkan dir="ltr" untuk memaksa layout Kiri-ke-Kanan --}}
+                            dir="ltr"
+                            class="inline-flex flex-row items-center justify-center px-5 py-2 text-sm font-medium text-gray-700 bg-white rounded-xl shadow-sm border border-gray-200">
+                    
+                            {{-- Ganti me-2 menjadi mr-2 (Margin Right) agar pasti ada jarak di sebelah kanan ikon --}}
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                             </svg>
