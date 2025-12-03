@@ -20,16 +20,16 @@
             <div class="max-w-2xl mx-auto">
 
                 {{-- 1. Header Kustom (Tombol Back & Nama) --}}
-                <div class="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
+                {{-- 1. Header Kustom (Tombol Back & Nama) --}}
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-6 mb-8">
 
-                    {{-- KIRI (Desktop) / BAWAH (Mobile): Tombol Back --}}
-                    <div class="flex justify-center sm:justify-start w-full sm:w-auto">
+                    {{-- Tombol Back --}}
+                    <div class="flex justify-center sm:justify-start w-full sm:w-auto mb-2 sm:mb-0">
                         <a href="{{ route('donasi') }}"
-                            class="group inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 ease-in-out shadow-sm border border-transparent hover:border-indigo-200">
+                            class="inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-gray-700 bg-white rounded-xl shadow-sm border border-gray-200">
 
-                            {{-- Ikon Panah dengan animasi geser saat di-hover --}}
-                            <svg class="w-4 h-4 me-2 transition-transform duration-200 group-hover:-translate-x-1"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {{-- Ikon Panah --}}
+                            <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                             </svg>
@@ -37,7 +37,7 @@
                         </a>
                     </div>
 
-                    {{-- KANAN (Desktop) / ATAS (Mobile): Nama Donatur --}}
+                    {{-- Nama Donatur --}}
                     @if (isset($namaDonatur))
                         <div class="flex justify-center sm:justify-end w-full sm:w-auto text-center sm:text-right">
                             <div class="bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
