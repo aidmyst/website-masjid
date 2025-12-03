@@ -109,7 +109,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
                                     <input type="text" name="nama" required
                                         placeholder="Masukkan Nama Lengkap / Hamba Allah"
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400">
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400 placeholder:text-sm">
                                 </div>
 
                                 {{-- Input No WA --}}
@@ -117,13 +117,13 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
                                     <input type="text" name="no_wa" required
                                         placeholder="Contoh: 0812xxxx (Isi '-' jika tidak ingin)"
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400">
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400 placeholder:text-sm">
                                 </div>
 
                                 {{-- Tombol Submit --}}
                                 <button type="submit" id="btnSubmitDataDiri"
                                     class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition flex justify-center items-center">
-                                    Lanjut ke Konfirmasi Donasi
+                                    Masuk
                                 </button>
                             </form>
                         </div>
@@ -190,8 +190,7 @@
                             <h3 class="font-bold text-lg text-indigo-700 flex items-center">
                                 <span class="mr-2">📊</span> Laporan Pemasukan
                             </h3>
-                            <span
-                                class="inline-block text-xs sm:text-sm font-semibold px-2.5 py-1">
+                            <span class="inline-block text-xs sm:text-sm font-semibold px-2.5 py-1">
                                 {{ $namaBulanIni }}
                             </span>
                         </div>
@@ -354,10 +353,6 @@
 
                     // 1. Ubah tulisan tombol
                     btn.innerHTML = `
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
                     Memproses...
                 `;
 

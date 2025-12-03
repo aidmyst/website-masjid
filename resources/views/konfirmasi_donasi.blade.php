@@ -24,19 +24,20 @@
                 {{-- Container Utama: Menggunakan flex-row (sebaris) & flex-wrap (agar aman jika nama panjang) --}}
                 {{-- Container Utama: Flex Row & Wrap --}}
                 <div class="flex flex-row flex-wrap items-center justify-between gap-4 mb-6 sm:mb-8">
-                
+
                     {{-- 1. TOMBOL BACK (Kiri) --}}
                     <div class="mb-0">
                         <a href="{{ route('donasi') }}" dir="ltr"
                             class="inline-flex flex-row items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-xl shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors">
-                            
+
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                             </svg>
                             Kembali
                         </a>
                     </div>
-                
+
                     {{-- 2. NAMA DONATUR --}}
                     {{-- Mobile: Pindah ke baris baru (w-full) & Rata Kiri (text-left) --}}
                     {{-- Desktop: Lebar otomatis (sm:w-auto) & Rata Kanan (sm:text-right) --}}
@@ -52,7 +53,7 @@
                             </div>
                         </div>
                     @endif
-                
+
                 </div>
 
                 {{-- 2. Bagian 1: Info Rekening --}}
@@ -65,15 +66,29 @@
                         </p>
 
                         @if ($rekening)
-                            {{-- Box Info Rekening --}}
-                            <div
-                                class="mt-6 bg-gradient-to-r from-indigo-50 to-indigo-100 p-5 rounded-xl shadow-inner transition">
+                            <div onclick="copyRekening('{{ $rekening->nomor_rekening }}')"
+                                class="relative group mt-6 bg-gradient-to-r from-indigo-50 to-indigo-100 p-5 rounded-xl shadow-inner transition-all duration-200 cursor-pointer hover:shadow-md active:scale-95 border border-indigo-100">
+
+                                {{-- Tooltip / Feedback saat diklik --}}
+                                <div id="copy-feedback"
+                                    class="absolute top-2 right-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity duration-300">
+                                    Tersalin!
+                                </div>
+
                                 <p class="text-sm text-gray-500 uppercase tracking-wide font-sans">
-                                    {{ $rekening->nama_bank }}</p>
-                                <p class="text-3xl font-mono tracking-widest text-indigo-700 my-3 select-all">
-                                    {{ $rekening->nomor_rekening }}
+                                    {{ $rekening->nama_bank }}
                                 </p>
+
+                                {{-- Nomor Rekening --}}
+                                <div class="flex items-center justify-center gap-2 my-3">
+                                    <p class="text-3xl font-mono tracking-widest text-indigo-700 select-all font-bold">
+                                        {{ $rekening->nomor_rekening }}
+                                    </p>
+                                </div>
+
                                 <p class="font-semibold text-gray-800 font-sans">a.n. {{ $rekening->atas_nama }}</p>
+
+                                <p class="text-xs text-indigo-400 mt-2 italic sm:hidden">(Ketuk untuk menyalin)</p>
                             </div>
 
                             {{-- QRIS jika ada --}}
@@ -116,7 +131,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('konfirmasi.donasi.store') }}" method="POST"
+                        <form id="formKonfirmasi" action="{{ route('konfirmasi.donasi.store') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="space-y-4">
@@ -181,5 +196,61 @@
 
     </div> {{-- Penutup 'max-w-7xl' --}}
     </div> {{-- Penutup 'pt-12' --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const formKonfirmasi = document.getElementById('formKonfirmasi');
+            if (formKonfirmasi) {
+                formKonfirmasi.addEventListener('submit', function(e) {
+                    // Jangan pakai e.preventDefault() agar form tetap terkirim
+
+                    const btn = formKonfirmasi.querySelector('button[type="submit"]');
+
+                    // Simpan teks asli jaga-jaga (opsional)
+                    // const originalText = btn.innerText;
+
+                    // Ubah teks tombol dan tambahkan ikon loading
+                    btn.innerHTML = `
+                    Memproses...
+                `;
+
+                    // Matikan tombol agar tidak double submit
+                    btn.disabled = true;
+                    btn.classList.add('opacity-75', 'cursor-not-allowed');
+                });
+            }
+
+        });
+
+        function copyRekening(text) {
+            // 1. Salin ke clipboard menggunakan API modern
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text);
+            } else {
+                // Fallback untuk browser lama/mobile tertentu
+                let textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed"; // Hindari scroll ke bawah
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Gagal menyalin', err);
+                }
+                document.body.removeChild(textArea);
+            }
+
+            // 2. Tampilkan efek visual "Tersalin!"
+            const feedback = document.getElementById('copy-feedback');
+            if (feedback) {
+                feedback.classList.remove('opacity-0'); // Munculkan
+                setTimeout(() => {
+                    feedback.classList.add('opacity-0'); // Hilangkan setelah 2 detik
+                }, 2000);
+            }
+        }
+    </script>
 
 </x-app-layout>
