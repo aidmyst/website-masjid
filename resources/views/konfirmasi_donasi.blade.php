@@ -44,7 +44,7 @@
                                 <span class="text-gray-500 text-sm block sm:inline mb-1 sm:mb-0">
                                     Selamat Datang,
                                 </span>
-                                <span class="block sm:inline font-bold text-lg sm:ms-1">
+                                <span class="block sm:inline font-semibold text-lg sm:ms-1">
                                     {{ $namaDonatur }}
                                 </span>
                             </div>
