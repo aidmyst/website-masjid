@@ -10,33 +10,54 @@ class AuthDonasiController extends Controller
 {
     public function dataDiri(Request $request)
     {
+        // 1. Validasi dasar input
         $request->validate([
             'nama' => 'required|string|max:255',
             'no_wa' => 'required|string|max:20',
             'alamat' => 'nullable|string|max:255',
         ]);
 
-        // 1. Simpan data donatur BARU ke database
+        $nama = trim($request->nama); // Hapus spasi depan/belakang
+        $noWa = trim($request->no_wa);
+
+        // 2. LOGIKA PENGECEKAN DUPLIKASI
+        
+        // Cek Nama (Case Insensitive)
+        // Kita abaikan jika namanya "-" atau "Hamba Allah" (opsional)
+        if ($nama !== '-' && strtolower($nama) !== 'hamba allah') {
+            $cekNama = Donatur::where('nama', $nama)->first();
+            if ($cekNama) {
+                return back()->with('error', 'Nama tersebut sudah terdaftar. Silakan gunakan nama lain atau tambahkan gelar/bin/binti.');
+            }
+        }
+
+        // Cek Nomor WA
+        // HANYA cek jika nomor WA BUKAN tanda strip "-"
+        if ($noWa !== '-') {
+            $cekWa = Donatur::where('no_wa', $noWa)->first();
+            if ($cekWa) {
+                return back()->with('error', 'Nomor WhatsApp tersebut sudah terdaftar. Silakan gunakan nomor lain.');
+            }
+        }
+
+        // 3. Jika lolos, simpan data donatur baru
         $donatur = Donatur::create([
-            'nama' => $request->nama,
-            'no_wa' => $request->no_wa,
+            'nama' => $nama,
+            'no_wa' => $noWa,
             'alamat' => $request->alamat,
         ]);
 
-        // 2. PAKSA HAPUS cookie lama (jika ada) agar bersih
+        // 4. Paksa hapus cookie lama & set cookie baru (seperti sebelumnya)
         Cookie::expire('donatur_id');
         Cookie::expire('donatur_nama');
         Cookie::expire('donatur_wa');
 
-        // 3. GUNAKAN QUEUE untuk menyimpan cookie baru (Lebih Stabil)
-        // 43200 menit = 30 hari
         Cookie::queue('donatur_id', $donatur->id, 43200);
         Cookie::queue('donatur_nama', $donatur->nama, 43200);
         Cookie::queue('donatur_wa', $donatur->no_wa, 43200);
 
         session()->flash('donasi_success', 'Data diri berhasil disimpan!');
 
-        // 4. Redirect biasa (Cookie sudah di-queue di atas)
         return redirect()->route('konfirmasi.donasi');
     }
 

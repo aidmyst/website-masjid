@@ -33,7 +33,7 @@
                 </div>
             @endif
 
-            <div x-data="{ showLogin: false, showRegister: false }" class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-16">
+            <div x-data="{ showLogin: {{ session('error') ? 'true' : 'false' }}, showRegister: false }" class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-16">
                 {{-- Hero Section dengan Animasi Lengkap --}}
                 <section x-data="{ startAnimation: false }" x-intersect.once:enter="startAnimation = true"
                     class="relative text-white text-center overflow-hidden">
@@ -98,7 +98,12 @@
                                 Silakan isi data diri Anda untuk melanjutkan donasi.
                             </p>
 
-                            {{-- File: donasi.blade.php (Bagian Modal) --}}
+                            @if (session('error'))
+                                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                                    role="alert">
+                                    <span class="block sm:inline">{{ session('error') }}</span>
+                                </div>
+                            @endif
 
                             <form id="formDataDiri" method="POST" action="{{ route('donasi.datadiri') }}"
                                 class="text-left">
@@ -362,6 +367,16 @@
                     // 3. Ubah style agar terlihat non-aktif (opsional)
                     btn.classList.add('opacity-75', 'cursor-not-allowed');
                 });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Memaksa AlpineJS membuka modal karena ada error
+            // Asumsi root elemen Alpine Anda memiliki x-data="{ showLogin: false, ... }"
+            // Kita cari elemen root tersebut dan ubah datanya
+            const modalData = document.querySelector('[x-data*="showLogin"]');
+            if (modalData) {
+                modalData.__x.$data.showLogin = true;
             }
         });
     </script>
