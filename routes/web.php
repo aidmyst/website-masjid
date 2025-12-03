@@ -23,19 +23,27 @@ Route::get('/', [PageController::class, 'beranda'])->name('home');
 // =========================================================
 Route::middleware('web')->group(function () {
 
+    // Halaman Utama
     Route::get('/beranda', [PageController::class, 'beranda'])->name('beranda');
     Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
     Route::get('/donasi', [PageController::class, 'donasi'])->name('donasi');
     Route::get('/kajian', [KajianController::class, 'index'])->name('kajian');
 
-    // Autentikasi Donatur
-    Route::post('/login-donasi', [AuthDonasiController::class, 'loginDonasi'])->name('login.donasi');
-    Route::post('/register-donasi', [AuthDonasiController::class, 'register'])->name('register.donasi');
-    Route::get('/logout-donasi', [AuthDonasiController::class, 'logout'])->name('logout.donasi');
+    // ============================
+    // Data Diri Donatur (NEW)
+    // ============================
+    Route::post('/donasi/data-diri', [AuthDonasiController::class, 'dataDiri'])
+        ->name('donasi.datadiri');
+
+    // Logout Donatur
+    Route::get('/logout-donasi', [AuthDonasiController::class, 'logout'])
+        ->name('logout.donasi');
 
     // Konfirmasi Donasi
-    Route::get('/konfirmasi-donasi', [DonasiController::class, 'index'])->name('konfirmasi.donasi');
-    Route::post('/konfirmasi-donasi', [DonasiController::class, 'store'])->name('konfirmasi.donasi.store');
+    Route::get('/konfirmasi-donasi', [DonasiController::class, 'index'])
+        ->name('konfirmasi.donasi');
+    Route::post('/konfirmasi-donasi', [DonasiController::class, 'store'])
+        ->name('konfirmasi.donasi.store');
 });
 
 
@@ -73,13 +81,19 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::delete('/galeri/{galeri}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
 
     // Donasi Admin
-    Route::post('/donasi/rekening', [DonasiController::class, 'updateRekening'])->name('donasi.rekening.update');
-    Route::delete('/donasi/konfirmasi/{konfirmasi}', [DonasiController::class, 'destroyKonfirmasi'])->name('donasi.konfirmasi.destroy');
-    Route::delete('/donatur/{donatur}', [AuthDonasiController::class, 'destroy'])->name('donatur.destroy');
+    Route::post('/donasi/rekening', [DonasiController::class, 'updateRekening'])
+        ->name('donasi.rekening.update');
+    Route::delete('/donasi/konfirmasi/{konfirmasi}', [DonasiController::class, 'destroyKonfirmasi'])
+        ->name('donasi.konfirmasi.destroy');
 
+    // Hapus akun donatur
+    Route::delete('/donatur/{donatur}', [AuthDonasiController::class, 'destroy'])
+        ->name('donatur.destroy');
+
+    // Filter Donasi
     Route::get('/donasi/filter', [DashboardController::class, 'filterDonasi'])
         ->name('dashboard.donasi.filter');
 });
 
-// Otentikasi admin
+// Otentikasi admin (Laravel default)
 require __DIR__ . '/auth.php';

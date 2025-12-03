@@ -20,31 +20,37 @@
             <div class="max-w-2xl mx-auto">
 
                 {{-- 1. Header Kustom (Tombol Back & Nama) --}}
-                <div class="flex justify-between items-center mb-8">
-                    {{-- Kiri: Tombol Back --}}
-                    <div>
-                        <a href="{{ route('donasi') }}" {{-- DIUBAH: text-sm menjadi text-base --}}
-                            class="inline-flex items-center text-base font-medium text-indigo-500 hover:text-indigo-800 transition duration-150 ease-in-out">
-                            <svg class="w-5 h-5 me-1.5" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                                    clip-rule="evenodd"></path>
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
+
+                    {{-- KIRI (Desktop) / BAWAH (Mobile): Tombol Back --}}
+                    <div class="flex justify-center sm:justify-start w-full sm:w-auto">
+                        <a href="{{ route('donasi') }}"
+                            class="group inline-flex items-center justify-center px-5 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-200 ease-in-out shadow-sm border border-transparent hover:border-indigo-200">
+
+                            {{-- Ikon Panah dengan animasi geser saat di-hover --}}
+                            <svg class="w-4 h-4 me-2 transition-transform duration-200 group-hover:-translate-x-1"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                             </svg>
-                            Kembali ke Halaman Donasi
+                            Kembali
                         </a>
                     </div>
 
-                    {{-- Kanan: Nama Donatur --}}
-                    @if (session('donatur_nama'))
-                        <div class="flex items-center">
-                            {{-- DIUBAH: text-sm menjadi text-base --}}
-                            <span
-                                class="inline-flex items-center text-base font-medium text-gray-700 dark:text-gray-900">
-                                Selamat Datang, <strong class="ms-1">{{ session('donatur_nama') }}</strong>
-                            </span>
+                    {{-- KANAN (Desktop) / ATAS (Mobile): Nama Donatur --}}
+                    @if (isset($namaDonatur))
+                        <div class="flex justify-center sm:justify-end w-full sm:w-auto text-center sm:text-right">
+                            <div class="bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
+                                <span class="text-gray-500 text-sm block sm:inline mb-1 sm:mb-0">
+                                    Selamat Datang,
+                                </span>
+                                <span class="block sm:inline font-bold text-lg sm:ms-1">
+                                    {{ $namaDonatur }}
+                                </span>
+                            </div>
                         </div>
                     @endif
+
                 </div>
 
                 {{-- 2. Bagian 1: Info Rekening --}}

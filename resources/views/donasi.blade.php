@@ -68,162 +68,64 @@
                                 </p>
 
                                 {{-- Tombol Donasi --}}
-                                <button @click="showLogin = true" {{-- 1. CLASS TAMPILAN & HOVER/KLIK YANG LEBIH SIMPEL --}}
+                                <button {{-- LOGIKA DI SINI: --}} {{-- Cek apakah Cookie 'donatur_nama' ada. Jika ada, langsung ke halaman konfirmasi. Jika tidak, buka modal login. --}}
+                                    @click="{{ \Illuminate\Support\Facades\Cookie::get('donatur_nama') ? 'window.location.href=\'' . route('konfirmasi.donasi') . '\'' : 'showLogin = true' }}"
                                     class="mt-8 sm:mt-10 inline-block bg-white text-black font-bold py-3 px-8 sm:py-4 sm:px-10 rounded-full text-base sm:text-lg
-                                    transition-all duration-200 ease-out 
-                                    hover:scale-105 hover:bg-gray-100
-                                    active:scale-95 active:bg-gray-200"
-                                    {{-- 2. ANIMASI LOAD (MUNCUL) YANG JAUH LEBIH CEPAT --}} x-show="startAnimation"
-                                    x-transition:enter="transition ease-out duration-500 delay-300"
-                                    {{-- Durasi & delay dipercepat --}} x-transition:enter-start="opacity-0 translate-y-3"
-                                    {{-- Efek muncul dari bawah (lebih ringan dari scale) --}} x-transition:enter-end="opacity-100 translate-y-0">
+                                    transition-all duration-200 ease-out hover:scale-105 hover:bg-gray-100 active:scale-95 active:bg-gray-200"
+                                    x-show="startAnimation">
                                     Donasi Sekarang
                                 </button>
+
                             </div>
                         </div>
                     </div>
 
                     {{-- ========================= --}}
-                    {{-- MODAL LOGIN DONASI --}}
+                    {{-- MODAL DATA DIRI DONATUR --}}
                     {{-- ========================= --}}
                     <div x-show="showLogin" x-cloak
                         class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
 
-                        {{-- Konten modal login --}}
-                        <div x-data="{ showPassword: false }" x-transition.opacity
-                            class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+                        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative" x-transition.opacity>
+
                             <button @click="showLogin = false"
-                                class="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-2xl font-semibold transition-colors duration-200">
+                                class="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-2xl font-semibold transition">
                                 ✕
                             </button>
 
-                            <h2 class="text-2xl font-semibold text-center text-indigo-700 mb-2">Masuk untuk Donasi</h2>
+                            <h2 class="text-2xl font-semibold text-center text-indigo-700 mb-2">Data Diri Donatur</h2>
                             <p class="text-sm text-gray-600 text-center mb-6">
-                                Untuk melanjutkan donasi, silakan login terlebih dahulu.
+                                Silakan isi data diri Anda untuk melanjutkan donasi.
                             </p>
 
-                            <form id="formLoginDonasi" method="POST" action="{{ route('login.donasi') }}"
+                            {{-- File: donasi.blade.php (Bagian Modal) --}}
+
+                            <form id="formDataDiri" method="POST" action="{{ route('donasi.datadiri') }}"
                                 class="text-left">
                                 @csrf
+
+                                {{-- Input Nama --}}
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
                                     <input type="text" name="nama" required
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800">
+                                        placeholder="Masukkan Nama Lengkap / Hamba Allah"
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400">
                                 </div>
 
-                                {{-- Input Password dengan Ikon Mata --}}
-                                <div class="mb-6 relative">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                    <input :type="showPassword ? 'text' : 'password'" name="password" required
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 pr-10">
-
-                                    <button type="button" @click="showPassword = !showPassword"
-                                        class="absolute inset-y-0 right-0 top-6 flex items-center pr-3 text-gray-400 hover:text-gray-600">
-                                        <svg x-show="!showPassword" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        <svg x-show="showPassword" x-cloak class="h-5 w-5"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.89 7.89l3.65 3.65m-7.89-7.89l-3.65-3.65m7.89 7.89a3 3 0 11-4.242-4.242l4.242 4.242z" />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <button type="submit"
-                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition
-                    disabled:bg-indigo-500 disabled:cursor-not-allowed">
-                                    Login
-                                </button>
-                            </form>
-
-                            <p class="text-center text-sm text-gray-500 mt-4">
-                                Belum punya akun?
-                                <button @click="showLogin = false; showRegister = true"
-                                    class="text-indigo-600 hover:underline">
-                                    Daftar di sini
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-
-                    {{-- ========================= --}}
-                    {{-- MODAL REGISTER DONASI --}}
-                    {{-- ========================= --}}
-                    <div x-show="showRegister" x-cloak
-                        class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
-
-                        {{-- Konten modal register --}}
-                        <div x-data="{ showPassword: false }" x-transition.opacity
-                            class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
-                            <button @click="showRegister = false"
-                                class="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-2xl font-semibold transition-colors duration-200">✕</button>
-
-                            <h2 class="text-2xl font-semibold text-center text-indigo-700 mb-2">Daftar Donatur Baru
-                            </h2>
-                            <p class="text-sm text-gray-600 text-center mb-6">
-                                Buat akun untuk mulai berdonasi.
-                            </p>
-
-                            <form id="formRegisterDonasi" method="POST" action="{{ route('register.donasi') }}"
-                                class="text-left">
-                                @csrf
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                                    <input type="text" name="nama" required
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800">
-                                </div>
-
+                                {{-- Input No WA --}}
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
                                     <input type="text" name="no_wa" required
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800">
+                                        placeholder="Contoh: 0812xxxx (Isi '-' jika tidak ingin)"
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400">
                                 </div>
 
-                                {{-- Input Password dengan Ikon Mata --}}
-                                <div class="mb-6 relative">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                    <input :type="showPassword ? 'text' : 'password'" name="password" required
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 pr-10">
-
-                                    <button type="button" @click="showPassword = !showPassword"
-                                        class="absolute inset-y-0 right-0 top-6 flex items-center pr-3 text-gray-400 hover:text-gray-600">
-                                        <svg x-show="!showPassword" class="h-5 w-5"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        <svg x-show="showPassword" x-cloak class="h-5 w-5"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.89 7.89l3.65 3.65m-7.89-7.89l-3.65-3.65m7.89 7.89a3 3 0 11-4.242-4.242l4.242 4.242z" />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <button type="submit"
-                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition
-                                    disabled:bg-indigo-500 disabled:cursor-not-allowed">
-                                    Daftar
+                                {{-- Tombol Submit --}}
+                                <button type="submit" id="btnSubmitDataDiri"
+                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition flex justify-center items-center">
+                                    Lanjut ke Konfirmasi Donasi
                                 </button>
                             </form>
-
-                            <p class="text-center text-sm text-gray-500 mt-4">
-                                Sudah punya akun?
-                                <button @click="showRegister = false; showLogin = true"
-                                    class="text-indigo-600 hover:underline">
-                                    Login di sini
-                                </button>
-                            </p>
                         </div>
                     </div>
                 </section>
@@ -231,8 +133,8 @@
                 {{-- Tujuan Program --}}
                 {{-- PERBAIKAN 2: Tambahkan animasi fade-in pada section ini --}}
                 <section x-data="{ show: false }" x-intersect.once="show = true" x-show="show"
-                    x-transition:enter="transition ease-out duration-700 delay-200"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+                    x-transition:enter="transition ease-out duration-700 delay-200" x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100">
 
                     <h2 class="text-3xl font-bold text-center text-gray-900">Tujuan Program Donasi</h2>
                     <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -279,26 +181,45 @@
                     </div>
 
                     {{-- Ringkasan Laporan Bulanan (Dinamis) --}}
-                    <div class="mt-8 max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-                        <div class="border-b border-dashed pb-4 mb-4 flex items-center justify-between">
+                    <div
+                        class="mt-6 sm:mt-8 max-w-2xl mx-auto bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-4 sm:p-6 border border-gray-100">
+
+                        {{-- Header Card --}}
+                        <div
+                            class="border-b border-dashed pb-4 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <h3 class="font-bold text-lg text-indigo-700 flex items-center">
-                                📊 Laporan Pemasukan Donasi
+                                <span class="mr-2">📊</span> Laporan Pemasukan
                             </h3>
-                            <p class="text-sm text-gray-500">{{ $namaBulanIni }}</p>
+                            <span
+                                class="inline-block text-xs sm:text-sm font-semibold px-2.5 py-1">
+                                {{ $namaBulanIni }}
+                            </span>
                         </div>
+
+                        {{-- Body Card --}}
                         <div class="space-y-4">
-                            <div class="flex justify-between items-center bg-indigo-50 px-4 py-3 rounded-lg">
-                                <span class="text-gray-700 font-medium">Total Pemasukan</span>
-                                <span class="font-bold text-xl text-green-600">
+
+                            {{-- Item 1: Total Pemasukan --}}
+                            {{-- Di HP: Label di atas, Angka di bawah (besar). Di PC: Kiri Kanan --}}
+                            <div
+                                class="flex flex-col sm:flex-row justify-between sm:items-center bg-indigo-50 px-4 py-3 rounded-xl border border-indigo-100">
+                                <span class="text-gray-600 text-sm sm:text-base font-medium mb-1 sm:mb-0">Total
+                                    Pemasukan</span>
+                                <span class="font-bold text-2xl sm:text-xl text-green-600">
                                     Rp <x-total-income :final="$totalDonasiBulanIni" />
                                 </span>
                             </div>
-                            <div class="flex justify-between items-center bg-gray-50 px-4 py-3 rounded-lg">
-                                <span class="text-gray-700 font-medium">Jumlah Transaksi</span>
-                                <span class="font-bold text-lg text-indigo-700">
+
+                            {{-- Item 2: Jumlah Transaksi --}}
+                            <div
+                                class="flex flex-col sm:flex-row justify-between sm:items-center bg-gray-50 px-4 py-3 rounded-xl border border-gray-200">
+                                <span class="text-gray-600 text-sm sm:text-base font-medium mb-1 sm:mb-0">Jumlah
+                                    Transaksi</span>
+                                <span class="font-bold text-lg sm:text-lg text-indigo-700">
                                     {{ $jumlahTransaksiBulanIni }} Transaksi
                                 </span>
                             </div>
+
                         </div>
                     </div>
 
@@ -419,99 +340,35 @@
     </footer>
 
     <script>
-        // Pastikan DOM sudah siap
         document.addEventListener('DOMContentLoaded', function() {
 
-            // 1. Handle Form Registrasi
-            const formRegister = document.getElementById('formRegisterDonasi');
-            if (formRegister) {
-                // A. Dapatkan tombol submit-nya dan simpan teks aslinya
-                const registerButton = formRegister.querySelector('button[type="submit"]');
-                const originalRegisterText = registerButton.innerHTML;
+            // Ambil elemen form berdasarkan ID yang baru kita buat
+            const formDataDiri = document.getElementById('formDataDiri');
 
-                formRegister.addEventListener('submit', function(e) {
-                    e.preventDefault(); // Mencegah submit form bawaan
+            if (formDataDiri) {
+                formDataDiri.addEventListener('submit', function(e) {
+                    // KITA TIDAK PAKAI e.preventDefault(); 
+                    // Biarkan form submit secara normal ke server.
 
-                    // B. Ubah teks tombol dan nonaktifkan (mencegah klik ganda)
-                    registerButton.innerHTML = 'Memproses...';
-                    registerButton.disabled = true;
+                    const btn = formDataDiri.querySelector('button[type="submit"]');
 
-                    fetch('{{ route('register.donasi') }}', {
-                            method: 'POST',
-                            body: new FormData(formRegister),
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json',
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Jika sukses, redirect
-                                window.location.href = '{{ route('donasi') }}';
-                            } else {
-                                // Jika gagal (validasi, dll), tampilkan pesan
-                                alert(data.message || 'Terjadi kesalahan. Periksa data Anda.');
-                                // C. Kembalikan tombol jika gagal
-                                registerButton.innerHTML = originalRegisterText;
-                                registerButton.disabled = false;
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Tidak dapat terhubung ke server.');
-                            // C. Kembalikan tombol jika ada error koneksi
-                            registerButton.innerHTML = originalRegisterText;
-                            registerButton.disabled = false;
-                        });
+                    // 1. Ubah tulisan tombol
+                    btn.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Memproses...
+                `;
+
+                    // 2. Disable tombol agar tidak bisa diklik lagi
+                    btn.disabled = true;
+
+                    // 3. Ubah style agar terlihat non-aktif (opsional)
+                    btn.classList.add('opacity-75', 'cursor-not-allowed');
                 });
             }
-
-            // 2. Handle Form Login
-            const formLogin = document.getElementById('formLoginDonasi');
-            if (formLogin) {
-                // A. Dapatkan tombol submit-nya dan simpan teks aslinya
-                const loginButton = formLogin.querySelector('button[type="submit"]');
-                const originalLoginText = loginButton.innerHTML;
-
-                formLogin.addEventListener('submit', function(e) {
-                    e.preventDefault(); // Mencegah submit form bawaan
-
-                    // B. Ubah teks tombol dan nonaktifkan (mencegah klik ganda)
-                    loginButton.innerHTML = 'Memproses...';
-                    loginButton.disabled = true;
-
-                    fetch('{{ route('login.donasi') }}', {
-                            method: 'POST',
-                            body: new FormData(formLogin),
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json',
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Jika sukses, redirect
-                                window.location.href = '{{ route('konfirmasi.donasi') }}';
-                            } else {
-                                // Jika gagal (password salah, dll), tampilkan pesan
-                                alert(data.message || 'Nama atau password salah.');
-                                // C. Kembalikan tombol jika login gagal
-                                loginButton.innerHTML = originalLoginText;
-                                loginButton.disabled = false;
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Tidak dapat terhubung ke server.');
-                            // C. Kembalikan tombol jika ada error koneksi
-                            loginButton.innerHTML = originalLoginText;
-                            loginButton.disabled = false;
-                        });
-                });
-            }
-
         });
     </script>
+
 </x-app-layout>

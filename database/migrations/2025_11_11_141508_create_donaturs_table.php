@@ -13,7 +13,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('no_wa');
-            $table->string('password');
             $table->timestamps();
         });
     }

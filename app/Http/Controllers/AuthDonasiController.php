@@ -3,68 +3,73 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Donatur;
+use Illuminate\Support\Facades\Cookie; // Tambahkan ini
 
 class AuthDonasiController extends Controller
 {
-    public function loginDonasi(Request $request)
+    public function dataDiri(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
-            'password' => 'required',
+            'nama' => 'required|string|max:255',
+            'no_wa' => 'required|string|max:20',
+            'alamat' => 'nullable|string|max:255',
         ]);
 
-        $donatur = Donatur::where('nama', $request->nama)->first();
-
-        if ($donatur && Hash::check($request->password, $donatur->password)) {
-            session(['donatur_id' => $donatur->id]);
-            session(['donatur_nama' => $donatur->nama]);
-            
-            // TAMBAHKAN BARIS INI
-            session()->flash('donasi_success', 'Login berhasil! Selamat datang, ' . $donatur->nama . '.');
-            
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Nama atau password anda salah. Silahkan coba lagi']);
-    }
-
-    public function register(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required|unique:donaturs',
-            'no_wa' => 'required',
-            'password' => 'required|min:5',
-        ]);
-
+        // 1. Simpan data donatur BARU ke database
         $donatur = Donatur::create([
             'nama' => $request->nama,
             'no_wa' => $request->no_wa,
-            'password' => Hash::make($request->password),
+            'alamat' => $request->alamat,
         ]);
 
-        session(['donatur_id' => $donatur->id]);
-        session(['donatur_nama' => $donatur->nama]);
+        // 2. PAKSA HAPUS cookie lama (jika ada) agar bersih
+        Cookie::expire('donatur_id');
+        Cookie::expire('donatur_nama');
+        Cookie::expire('donatur_wa');
 
-        // TAMBAHKAN BARIS INI
-        session()->flash('donasi_success', 'Registrasi berhasil! Anda sekarang sudah login.');
+        // 3. GUNAKAN QUEUE untuk menyimpan cookie baru (Lebih Stabil)
+        // 43200 menit = 30 hari
+        Cookie::queue('donatur_id', $donatur->id, 43200);
+        Cookie::queue('donatur_nama', $donatur->nama, 43200);
+        Cookie::queue('donatur_wa', $donatur->no_wa, 43200);
 
-        return response()->json(['success' => true]);
+        session()->flash('donasi_success', 'Data diri berhasil disimpan!');
+
+        // 4. Redirect biasa (Cookie sudah di-queue di atas)
+        return redirect()->route('konfirmasi.donasi');
     }
 
     public function logout()
     {
-        session()->forget(['donatur_id', 'donatur_nama']);
-        return redirect()->route('donasi');
+        // Hapus cookie saat logout
+        $cookieNama = Cookie::forget('donatur_nama');
+        $cookieWa   = Cookie::forget('donatur_wa');
+        $cookieId   = Cookie::forget('donatur_id');
+
+        return redirect()->route('donasi')
+            ->withCookie($cookieNama)
+            ->withCookie($cookieWa)
+            ->withCookie($cookieId);
     }
 
     public function destroy(Donatur $donatur)
     {
+        // 1. Hapus data dari database
         $donatur->delete();
 
+        // 2. Siapkan perintah untuk menghapus cookie
+        // Gunakan nama cookie yang sama persis dengan saat Anda membuatnya
+        $cookieId   = Cookie::forget('donatur_id');
+        $cookieNama = Cookie::forget('donatur_nama');
+        $cookieWa   = Cookie::forget('donatur_wa');
+
+        // 3. Redirect ke dashboard dengan membawa perintah hapus cookie
         return redirect()->route('dashboard')
             ->with('active_tab', 'donatur')
-            ->with('success', 'Akun donatur telah berhasil dihapus.');
+            ->with('success', 'Akun donatur telah berhasil dihapus.')
+            ->withCookie($cookieId)
+            ->withCookie($cookieNama)
+            ->withCookie($cookieWa);
     }
 }
