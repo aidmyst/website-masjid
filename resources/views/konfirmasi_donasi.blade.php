@@ -21,38 +21,38 @@
 
                 {{-- 1. Header Kustom (Tombol Back & Nama) --}}
                 {{-- 1. Header Kustom (Tombol Back & Nama) --}}
-                <div class="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-6 mb-8">
-
-                    {{-- Tombol Back --}}
-                    <div class="flex justify-center sm:justify-start w-full sm:w-auto mb-2 sm:mb-0">
-                        <a href="{{ route('donasi') }}"
-                            {{-- Tambahkan dir="ltr" untuk memaksa layout Kiri-ke-Kanan --}}
-                            dir="ltr"
-                            class="inline-flex flex-row items-center justify-center px-5 py-2 text-sm font-medium text-gray-700 bg-white rounded-xl shadow-sm border border-gray-200">
-                    
-                            {{-- Ganti me-2 menjadi mr-2 (Margin Right) agar pasti ada jarak di sebelah kanan ikon --}}
+                {{-- Container Utama: Menggunakan flex-row (sebaris) & flex-wrap (agar aman jika nama panjang) --}}
+                {{-- Container Utama: Flex Row & Wrap --}}
+                <div class="flex flex-row flex-wrap items-center justify-between gap-4 mb-6 sm:mb-8">
+                
+                    {{-- 1. TOMBOL BACK (Kiri) --}}
+                    <div class="mb-0">
+                        <a href="{{ route('donasi') }}" dir="ltr"
+                            class="inline-flex flex-row items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-xl shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors">
+                            
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                             </svg>
                             Kembali
                         </a>
                     </div>
-
-                    {{-- Nama Donatur --}}
+                
+                    {{-- 2. NAMA DONATUR --}}
+                    {{-- Mobile: Pindah ke baris baru (w-full) & Rata Kiri (text-left) --}}
+                    {{-- Desktop: Lebar otomatis (sm:w-auto) & Rata Kanan (sm:text-right) --}}
                     @if (isset($namaDonatur))
-                        <div class="flex justify-center sm:justify-end w-full sm:w-auto text-center sm:text-right">
-                            <div class="bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
-                                <span class="text-gray-500 text-sm block sm:inline mb-1 sm:mb-0">
+                        <div class="w-full sm:w-auto text-left sm:text-right">
+                            <div class="bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm inline-block">
+                                <span class="text-gray-500 text-xs sm:text-sm block sm:inline mb-0">
                                     Selamat Datang,
                                 </span>
-                                <span class="block sm:inline font-semibold text-lg sm:ms-1">
+                                <span class="block sm:inline font-semibold text-base sm:text-lg sm:ms-1 text-gray-900">
                                     {{ $namaDonatur }}
                                 </span>
                             </div>
                         </div>
                     @endif
-
+                
                 </div>
 
                 {{-- 2. Bagian 1: Info Rekening --}}
