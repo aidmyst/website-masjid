@@ -69,12 +69,6 @@
                             <div onclick="copyRekening('{{ $rekening->nomor_rekening }}')"
                                 class="relative group mt-6 bg-gradient-to-r from-indigo-50 to-indigo-100 p-5 rounded-xl shadow-inner transition-all duration-200 cursor-pointer hover:shadow-md active:scale-95 border border-indigo-100">
 
-                                {{-- Tooltip / Feedback saat diklik --}}
-                                <div id="copy-feedback"
-                                    class="absolute top-2 right-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity duration-300">
-                                    Tersalin!
-                                </div>
-
                                 <p class="text-sm text-gray-500 uppercase tracking-wide font-sans">
                                     {{ $rekening->nama_bank }}
                                 </p>
@@ -88,7 +82,7 @@
 
                                 <p class="font-semibold text-gray-800 font-sans">a.n. {{ $rekening->atas_nama }}</p>
 
-                                <p class="text-xs text-indigo-400 mt-2 italic sm:hidden">(Ketuk untuk menyalin)</p>
+                                <p class="text-xs text-indigo-400 mt-2 italic">(Ketuk untuk menyalin)</p>
                             </div>
 
                             {{-- QRIS jika ada --}}
