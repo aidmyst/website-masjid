@@ -114,7 +114,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
                                     <input type="text" name="nama" required
                                         placeholder="Masukkan Nama Lengkap / Hamba Allah"
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400 placeholder:text-sm">
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400 text-sm placeholder:text-sm">
                                 </div>
 
                                 {{-- Input No WA --}}
@@ -122,7 +122,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
                                     <input type="text" name="no_wa" required
                                         placeholder="Contoh: 0812xxxx (Isi '-' jika tidak ingin)"
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400 placeholder:text-sm">
+                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400 text-sm placeholder:text-sm">
                                 </div>
 
                                 {{-- Tombol Submit --}}
