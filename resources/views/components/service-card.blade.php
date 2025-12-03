@@ -3,18 +3,17 @@
 @props([
     'delay' => '0ms',
     'startAnimation' => false,
-    'icon' => '',  
-    'title' => '' 
+    'icon' => '',
+    'title' => '',
 ])
 
-{{-- DIV LUAR: Bertugas HANYA untuk animasi masuk (fade in & delay) --}}
+{{-- DIV LUAR: animasi masuk --}}
 <div x-show="startAnimation" x-transition:enter="transition ease-out duration-500 transform"
     x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0"
     x-bind:style="{ 'transition-delay': '{{ $delay }}' }">
 
-    {{-- DIV DALAM: Bertugas untuk styling, konten, dan animasi hover (tanpa delay) --}}
-    <div
-        class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full">
+    {{-- DIV DALAM: TIDAK ADA HOVER --}}
+    <div class="bg-white p-8 rounded-xl shadow-lg transition-all duration-300 h-full">
 
         {{-- Ikon --}}
         <div class="bg-indigo-500 text-white rounded-full h-12 w-12 flex items-center justify-center">

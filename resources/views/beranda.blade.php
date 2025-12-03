@@ -145,74 +145,125 @@
                     <div class="border-b border-gray-300"></div>
 
                     {{-- Section Kegiatan Rutin --}}
-                    <section class="bg-gray-50">
-                        <div class="mx-auto max-w-7xl">
-                            <div x-data="{ startAnimation: false }" x-intersect.once.margin.-100px="startAnimation = true"
-                                class="mx-auto max-w-3xl">
+                    <section class="bg-gray-50 py-16">
+                        <div class="mx-auto max-w-6xl">
 
-                                <div class="text-center transition-all duration-1000 ease-out"
-                                    :class="startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'">
-                                    <h2 class="text-3xl font-bold text-center text-gray-900">Kegiatan Rutin Masjid</h2>
-                                    <p class="mt-4 text-lg text-gray-600">Program dan aktivitas yang kami selenggarakan
-                                        secara rutin untuk memakmurkan masjid dan membina umat.</p>
+                            <div class="text-center mb-12">
+                                <h2 class="text-3xl font-bold text-gray-900">Kegiatan Rutin Masjid</h2>
+                                <p class="mt-4 text-lg text-gray-600">
+                                    Program dan aktivitas rutin yang diselenggarakan untuk memakmurkan masjid dan
+                                    membina umat.
+                                </p>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-8">
+
+                                {{-- Card 1 --}}
+                                <div class="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+                                    <div class="flex items-start gap-4">
+                                        <div class="text-indigo-600 text-3xl">
+                                            <x-dynamic-component :component="'heroicon-o-book-open'" class="h-8 w-8" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-900">Kajian Ba’da Maghrib</h3>
+                                            <p class="mt-2 text-gray-700 leading-relaxed">
+                                                Kajian tematik untuk memperdalam pemahaman Al-Qur’an dan hadits bersama
+                                                asatidz kompeten.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div x-data="{ open: null }" class="mt-10 space-y-4">
+                                {{-- Card 2 --}}
+                                <div class="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+                                    <div class="flex items-start gap-4">
+                                        <div class="text-indigo-600 text-3xl">
+                                            <x-dynamic-component :component="'heroicon-o-user-group'" class="h-8 w-8" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-900">
+                                                Pengajian Ibu-Ibu (Setiap Tanggal 12)
+                                            </h3>
+                                            <p class="mt-2 text-gray-700 leading-relaxed">
+                                                Majelis ilmu bagi kaum ibu dengan materi seputar fiqih wanita dan
+                                                pembinaan keluarga.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    {{-- Item 1 --}}
-                                    <x-accordion-item :id="0" icon="heroicon-o-book-open"
-                                        title="Kajian Ba’da Maghrib" delay="150ms">
-                                        Memperdalam pemahaman Al-Qur’an dan hadits melalui kajian tematik yang dibawakan
-                                        secara rutin oleh para asatidz kompeten. Cocok untuk semua kalangan yang ingin
-                                        menambah ilmu agama.
-                                    </x-accordion-item>
+                                {{-- Card 3 --}}
+                                <div class="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+                                    <div class="flex items-start gap-4">
+                                        <div class="text-indigo-600 text-3xl">
+                                            <x-dynamic-component :component="'heroicon-o-academic-cap'" class="h-8 w-8" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-900">TPA (Ibu-Ibu & Lansia)</h3>
+                                            <p class="mt-2 text-gray-700 leading-relaxed">
+                                                Program tahsin untuk memperbaiki bacaan Al-Qur’an sesuai tajwid.
+                                                Ibu-ibu: Sabtu sore.
+                                                Lansia: Selasa & Kamis.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    {{-- Item 2 --}}
-                                    <x-accordion-item :id="1" icon="heroicon-o-user-group"
-                                        title="Pengajian Ibu-Ibu (Setiap Tanggal 12)" delay="250ms">
-                                        Wadah silaturahmi sekaligus majelis ilmu khusus bagi kaum ibu. Kegiatan yang
-                                        dilakukan tiap tanggal 12, materi yang dibawakan relevan dengan peran wanita
-                                        dalam keluarga dan masyarakat, dari fiqihwanita hingga pendidikan anak.
-                                    </x-accordion-item>
+                                {{-- Card 4 --}}
+                                <div class="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+                                    <div class="flex items-start gap-4">
+                                        <div class="text-indigo-600 text-3xl">
+                                            <x-dynamic-component :component="'heroicon-o-gift'" class="h-8 w-8" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-900">Jum’at Berkah</h3>
+                                            <p class="mt-2 text-gray-700 leading-relaxed">
+                                                Berbagi makanan dan sedekah kepada yang membutuhkan setiap hari Jum’at.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    {{-- Item 3 --}}
-                                    <x-accordion-item :id="2" icon="heroicon-o-academic-cap"
-                                        title="TPA (Ibu-Ibu & Lansia)" delay="350ms">
-                                        Program intensif untuk memperbaiki dan melancarkan bacaan Al-Qur’an (tahsin)
-                                        sesuai kaidah tajwid. Kelas terpisah ini dirancang agar proses belajar lebih
-                                        nyaman dan fokus, TPA Ibu-ibu dilaksanakan tiap sabtu sore dan TPA Lansia
-                                        dilaksanakan tiap selasa dan kamis.
-                                    </x-accordion-item>
+                                {{-- Card 5 --}}
+                                <div class="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+                                    <div class="flex items-start gap-4">
+                                        <div class="text-indigo-600 text-3xl">
+                                            <x-dynamic-component :component="'heroicon-o-sun'" class="h-8 w-8" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-900">
+                                                Subuh Barokah (Ahad Pertama)
+                                            </h3>
+                                            <p class="mt-2 text-gray-700 leading-relaxed">
+                                                Shalat Subuh berjamaah, dilanjutkan tausiyah dan sarapan bersama untuk
+                                                mempererat ukhuwah.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    {{-- Item 4 --}}
-                                    <x-accordion-item :id="3" icon="heroicon-o-gift" title="Jum’at Berkah"
-                                        delay="450ms">
-                                        Program berbagi keberkahan setiap hari Jum’at melalui penyaluran sedekah dan
-                                        makanan kepada yang membutuhkan. Mari ikut berkontribusi dalam menebar manfaat
-                                        untuk sesama.
-                                    </x-accordion-item>
-
-                                    {{-- Item 5 (BARU) --}}
-                                    <x-accordion-item :id="4" icon="heroicon-o-sun"
-                                        title="Subuh Barokah (Ahad Pertama)" delay="550ms">
-                                        Awali bulan dengan semangat iman! Shalat Subuh berjamaah di Ahad pertama setiap
-                                        bulan, dilanjutkan dengan tausiyah ringan dan sarapan bersama untuk mempererat
-                                        ukhuwah jamaah.
-                                    </x-accordion-item>
-
-                                    {{-- Item 6 (BARU) --}}
-                                    <x-accordion-item :id="5" icon="heroicon-o-sparkles"
-                                        title="Tadabbur Alam (Tahunan)" delay="650ms">
-                                        Program rekreasi dan spiritual tahunan untuk keluar dari rutinitas. Menikmati
-                                        keindahan alam ciptaan Allah sembari merenungi kebesaran-Nya untuk menyegarkan
-                                        kembali rohani dan jasmani.
-                                    </x-accordion-item>
-
+                                {{-- Card 6 --}}
+                                <div class="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition">
+                                    <div class="flex items-start gap-4">
+                                        <div class="text-indigo-600 text-2xl">
+                                            <x-dynamic-component :component="'heroicon-o-sparkles'" class="h-8 w-8" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-900">Tadabbur Alam (Tahunan)
+                                            </h3>
+                                            <p class="mt-2 text-gray-700 leading-relaxed">
+                                                Kegiatan rekreasi dan spiritual tahunan untuk menyegarkan rohani dan
+                                                memperkuat silaturahmi.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
+
                         </div>
                     </section>
+
                 </div>
             </div>
 
