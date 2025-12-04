@@ -4,13 +4,15 @@
         <main>
             <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-16">
 
-                <section x-data="{ visible: false }" x-init="setTimeout(() => visible = true, 50)"
+                <section x-data="{ visible: false }" x-init="setTimeout(() => visible = true, 50)" {{-- UBAH DI SINI: --}} {{-- 1. py-16: Memberi jarak atas/bawah yang lega di Mobile --}}
+                    {{-- 2. md:py-0: Menghapus jarak tersebut di Desktop (kembali ke layout asli) --}}
                     class="min-h-[80vh] bg-gradient-to-br from-gray-50 to-white flex items-center justify-center overflow-hidden 
-                    rounded-xl">
+                    rounded-xl py-8 md:py-0">
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-5xl px-6 md:px-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-5xl px-6 md:px-10">
 
                         {{-- TEKS --}}
+                        {{-- order-2: Di mobile teks ada di bawah --}}
                         <div x-show="visible" x-transition:enter="transition duration-700 ease-out transform"
                             x-transition:enter-start="opacity-0 -translate-x-8"
                             x-transition:enter-end="opacity-100 translate-x-0"
@@ -34,16 +36,24 @@
                         </div>
 
                         {{-- GAMBAR --}}
+                        {{-- order-1: Di mobile gambar ada di atas --}}
                         <div x-show="visible" x-transition:enter="transition duration-700 ease-out transform delay-200"
                             x-transition:enter-start="opacity-0 translate-x-8 scale-95"
                             x-transition:enter-end="opacity-100 translate-x-0 scale-100"
                             class="order-1 md:order-2 relative flex justify-center">
-                            <div class="relative rounded-2xl overflow-hidden shadow-2xl group w-[85%] md:w-[90%]">
+
+                            {{-- Wrapper Gambar --}}
+                            {{-- w-full di mobile agar lebar proporsional, md:w-[90%] di desktop --}}
+                            <div class="relative rounded-2xl overflow-hidden shadow-2xl group w-full md:w-[90%]">
                                 <img src="{{ asset('images/masjid-jami.webp') }}" alt="Foto Masjid Jami Aisyah"
                                     class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-700 ease-out">
+
+                                {{-- Overlay Gradient --}}
                                 <div
                                     class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-700">
                                 </div>
+
+                                {{-- Label Lokasi --}}
                                 <div
                                     class="absolute bottom-3 left-3 text-white opacity-0 group-hover:opacity-100 transition duration-700">
                                     <p class="text-xs uppercase tracking-wider">Masjid Jami Aisyah</p>
@@ -55,16 +65,17 @@
                     </div>
                 </section>
 
-                <section class="relative py-20 overflow-hidden" x-data="{ show: false }" x-init="const observer = new IntersectionObserver(([entry]) => {
-                    if (entry.isIntersecting) {
-                        show = true;
-                        observer.disconnect();
-                    }
-                }, { threshold: 0.3 });
-                observer.observe($el);">
+                <section class="relative py-10 pb-12 md:pb-16 px-4 md:px-0" x-data="{ show: false }"
+                    x-init="const observer = new IntersectionObserver(([entry]) => {
+                        if (entry.isIntersecting) {
+                            show = true;
+                            observer.disconnect();
+                        }
+                        }, { threshold: 0.3 });
+                        observer.observe($el);">
 
                     {{-- Judul --}}
-                    <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12
+                    <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 md:mb-12
                         transition-all duration-700 ease-out"
                         :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'">
                         Visi & Misi
@@ -75,27 +86,38 @@
                         :class="show ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-90 translate-y-6'">
 
                         <blockquote
-                            class="relative bg-gradient-to-r from-indigo-600 to-indigo-500 text-white p-10 rounded-3xl shadow-2xl text-center transform hover:-translate-y-1 hover:shadow-indigo-300/50 transition duration-500 ease-out">
+                            class="relative bg-gradient-to-r from-indigo-600 to-indigo-500 text-white 
+                            p-6 md:p-10 rounded-2xl md:rounded-3xl 
+                            shadow-xl md:shadow-2xl 
+                            text-center transform hover:-translate-y-1 hover:shadow-indigo-500/40 
+                            transition duration-500 ease-out border border-indigo-400/30">
 
-                            {{-- Efek Glow Gradasi --}}
-                            <div class="absolute inset-0 bg-indigo-500 opacity-70 rounded-3xl blur-xl -z-10">
+                            {{-- Glow Background --}}
+                            <div
+                                class="absolute inset-0 rounded-2xl md:rounded-3xl 
+                                blur-xl opacity-40 -z-10 
+                                bg-indigo-600 
+                                translate-y-3 md:translate-y-4 scale-[0.97]">
                             </div>
 
-                            <p class="text-2xl italic leading-relaxed relative z-10">
+                            <p class="text-xl md:text-2xl italic leading-relaxed relative z-10">
                                 “Menjadi masjid yang
                                 <span class="font-semibold text-yellow-300">mandiri</span>,
                                 <span class="font-semibold text-yellow-200">profesional</span>,
                                 dan menjadi pusat pembinaan umat menuju masyarakat madani yang diridhoi Allah SWT.”
                             </p>
 
-                            <cite class="mt-6 block font-semibold not-italic text-white/90 text-lg">
+                            <cite
+                                class="mt-4 md:mt-6 block font-semibold not-italic text-indigo-100 text-base md:text-lg">
                                 ~ Masjid Jami Aisyah binti Abdul Aziz Al-Musa
                             </cite>
+
                         </blockquote>
                     </div>
                 </section>
 
-                <section class="bg-gradient-to-br from-gray-50 to-white py-24 overflow-hidden" x-data="timeline()"
+
+                <section class="bg-gradient-to-br from-gray-50 to-white pt-12 md:pt-16 pb-24 overflow-hidden" x-data="timeline()"
                     x-init="updateLineHeight()" @scroll.window.throttle.50ms="updateLineHeight()">
 
                     <div class="mx-auto max-w-5xl px-6" x-ref="timelineWrapper">
@@ -191,18 +213,12 @@
                     <h2 class="text-3xl font-bold text-center text-gray-900">Struktur Organisasi</h2>
                     <div class="mt-8 flex justify-center">
                         @if ($organisasi)
-                            <img
-                                src="{{ asset($organisasi->gambar) }}"
-                                alt="Struktur Organisasi"
+                            <img src="{{ asset($organisasi->gambar) }}" alt="Struktur Organisasi"
                                 @click="open = true; selectedImage = '{{ asset($organisasi->gambar) }}'"
-                                class="rounded-lg shadow-lg max-w-4xl w-full cursor-pointer transition hover:opacity-90"
-                            >
+                                class="rounded-lg shadow-lg max-w-4xl w-full cursor-pointer transition hover:opacity-90">
                         @else
-                            <img
-                                src="https://placehold.co/800x400/e2e8f0/334155?text=Struktur+Organisasi"
-                                alt="Struktur Organisasi"
-                                class="rounded-lg shadow-lg max-w-4xl w-full"
-                            >
+                            <img src="https://placehold.co/800x400/e2e8f0/334155?text=Struktur+Organisasi"
+                                alt="Struktur Organisasi" class="rounded-lg shadow-lg max-w-4xl w-full">
                         @endif
                     </div>
 
@@ -230,8 +246,7 @@
                         @if ($galeri->isNotEmpty())
                             {{-- JIKA ADA DATA: Tampilkan slider galeri seperti biasa --}}
                             <div x-data="responsiveGaleriSlider({{ $galeri->count() }})" x-init="init()">
-                                <div class="relative max-w-5xl mx-auto"
-                                    x-intersect:enter.once="isIntersecting = true">
+                                <div class="relative max-w-5xl mx-auto" x-intersect:enter.once="isIntersecting = true">
                                     <div x-ref="slider" class="overflow-hidden"
                                         :class="!showButtons ? 'flex overflow-x-auto scroll-snap-x scroll-smooth' : ''"
                                         @scroll.throttle.50ms="updateIndexOnScroll()">
@@ -253,14 +268,13 @@
                                                         'scroll-snap-align-start': !showButtons
                                                     }"
                                                     :style="`width: ${itemWidth}px; height: ${itemWidth * 0.7}px; transition-delay: ${index * 150}ms`"
-                                                    @click="openModal(item.url)"
-                                                >
-                                                    <img :src="item.url"
-                                                        alt="Galeri"
-                                                        class="w-full h-full object-cover rounded-lg transition-transform duration-500 ease-in-out group-hover:scale-110"
-                                                    >
-                                            
-                                                    <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity duration-500 ease-in-out"></div>
+                                                    @click="openModal(item.url)">
+                                                    <img :src="item.url" alt="Galeri"
+                                                        class="w-full h-full object-cover rounded-lg transition-transform duration-500 ease-in-out group-hover:scale-110">
+
+                                                    <div
+                                                        class="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity duration-500 ease-in-out">
+                                                    </div>
                                                 </div>
                                             </template>
                                         </div>
