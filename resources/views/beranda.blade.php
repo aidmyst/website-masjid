@@ -66,7 +66,7 @@
 
                             <x-service-card delay="450ms"> {{-- MODIFIKASI: Kirim status animasi --}}
                                 <x-slot name="icon">
-                                    <x-heroicon-o-gift class="w-6 h-6" />
+                                    <x-heroicon-o-banknotes class="w-6 h-6" />
                                     {{-- Mengganti 'banknotes' dengan 'gift' yang lebih relevan --}}
                                 </x-slot>
                                 <x-slot name="title">Program Donasi</x-slot>
@@ -87,60 +87,134 @@
                         </div>
                     </section>
 
-                    {{-- Jadwal Imam Harian (KODE BARU DIMULAI DI SINI) --}}
-                    <section class="text-center">
-                        <div>
-                            <h2 class="text-3xl font-bold text-gray-900">Jadwal Imam Harian</h2>
-                            <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">Para imam yang bertugas memimpin
-                                sholat berjamaah setiap harinya.</p>
+                    <div x-data="{ tab: 'imam' }" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                        {{-- Menu Bar --}}
+                        <div class="flex justify-center space-x-4 mb-8">
+                            <button @click="tab = 'imam'"
+                                :class="tab === 'imam' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'"
+                                class="px-4 py-2 rounded-lg font-semibold transition">
+                                Jadwal Imam Harian
+                            </button>
+                            <button @click="tab = 'khatib'"
+                                :class="tab === 'khatib' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'"
+                                class="px-4 py-2 rounded-lg font-semibold transition">
+                                Jadwal Khatib Jum'at
+                            </button>
                         </div>
 
-                        <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                            <div class="bg-white rounded-xl shadow-lg p-6">
-                                <div class="flex flex-col items-center text-center">
-                                    <div class="bg-indigo-100 text-indigo-600 rounded-full p-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                        </svg>
-                                    </div>
-                                    <h3 class="mt-4 text-xl font-bold text-gray-800">Subuh</h3>
-                                    <p class="mt-2 text-gray-600 text-lg">Bp. Alan Pratama</p>
+                        {{-- Section Imam --}}
+                        <div x-show="tab === 'imam'" x-transition class="space-y-8">
+                            <section class="py-12 bg-white rounded-xl shadow-md">
+                                <div class="text-center px-4 sm:px-6 lg:px-8">
+                                    <h2 class="text-3xl font-bold text-gray-900">Jadwal Imam Harian</h2>
+                                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
+                                        Para imam yang bertugas memimpin sholat berjamaah setiap harinya.
+                                    </p>
                                 </div>
-                            </div>
 
-                            <div class="bg-white rounded-xl shadow-lg p-6">
-                                <div class="flex flex-col items-center text-center">
-                                    <div class="bg-indigo-100 text-indigo-600 rounded-full p-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                                        </svg>
+                                {{-- PERUBAHAN DI SINI: --}}
+                                {{-- 1. Menggunakan 'flex' dan 'flex-wrap' menggantikan 'grid'. --}}
+                                {{-- 2. 'justify-center' membuat kartu berkumpul di tengah. --}}
+                                {{-- 3. 'gap-4' (sebelumnya gap-8) membuat jarak antar kartu lebih rapat (sekitar 16px). --}}
+                                <div
+                                    class="mt-12 flex flex-col md:flex-row flex-wrap justify-center items-center gap-4">
+
+                                    {{-- Subuh --}}
+                                    {{-- Tambahkan w-full md:w-auto agar responsif --}}
+                                    <div
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full md:w-[20rem] max-w-xs mx-auto md:mx-0">
+                                        <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"/>
+                                            </svg>
+                                        </div>
+                                        <h3 class="mt-1 text-lg font-bold text-gray-800">Subuh</h3>
+                                        <p class="mt-1 text-gray-600 text-md">Bp. Alan Pratama</p>
                                     </div>
-                                    <h3 class="mt-4 text-xl font-bold text-gray-800">Dhuhur & Ashar</h3>
-                                    <p class="mt-2 text-gray-600 text-lg">Bp. H. Budhi Santoso</p>
-                                </div>
-                            </div>
 
-                            <div class="bg-white rounded-xl shadow-lg p-6">
-                                <div class="flex flex-col items-center text-center">
-                                    <div class="bg-indigo-100 text-indigo-600 rounded-full p-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-                                        </svg>
+                                    {{-- Dhuhur & Ashar --}}
+                                    <div
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full md:w-[20rem] max-w-xs mx-auto md:mx-0">
+                                        <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 5V3m0 18v-2M7.05 7.05 5.636 5.636m12.728 12.728L16.95 16.95M5 12H3m18 0h-2M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="mt-1 text-lg font-bold text-gray-800">Dhuhur & Ashar</h3>
+                                        <p class="mt-1 text-gray-600 text-md">Bp. H. Budhi Santoso</p>
                                     </div>
-                                    <h3 class="mt-4 text-xl font-bold text-gray-800">Maghrib & Isya</h3>
-                                    <p class="mt-2 text-gray-600 text-lg">Bp. Hartono</p>
-                                </div>
-                            </div>
 
+                                    {{-- Maghrib & Isya --}}
+                                    <div
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full md:w-[20rem] max-w-xs mx-auto md:mx-0">
+                                        <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="mt-1 text-lg font-bold text-gray-800">Maghrib & Isya</h3>
+                                        <p class="mt-1 text-gray-600 text-md">Bp. Hartono</p>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
-                    </section>
+
+                        {{-- Section Khatib Jum'at --}}
+                        <div x-show="tab === 'khatib'" x-transition class="space-y-8">
+                            <section class="py-12 bg-white rounded-xl shadow-md">
+                                <div class="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                                    <h2 class="text-3xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+                                        Jadwal Khatib Jum’at —
+                                        <span
+                                            class="text-indigo-600">{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}</span>
+                                    </h2>
+                                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+                                        Berikut adalah daftar khatib dan imam Sholat Jum’at bulan ini di Masjid Jami
+                                        Aisyah.
+                                    </p>
+
+                                    <div
+                                        class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+                                        @php
+                                            $petugasJumat = [
+                                                ['pekan' => 'Jum\'at 1', 'khatib' => 'Bp. H. Muh Solihin, S.Psi'],
+                                                ['pekan' => 'Jum\'at 2', 'khatib' => 'Bp. Drs. Edi Purwanto'],
+                                                ['pekan' => 'Jum\'at 3', 'khatib' => 'Bp. Ghazi Abdurrahman'],
+                                                [
+                                                    'pekan' => 'Jum\'at 4',
+                                                    'khatib' => 'Bp. Sokheh Al Hasan, M.Pd.I & Bp. Sulaiman',
+                                                ],
+                                                ['pekan' => 'Jum\'at 5', 'khatib' => 'Bp. Surya Fauzi Rahman, A.Md'],
+                                            ];
+                                        @endphp
+
+                                        @foreach ($petugasJumat as $petugas)
+                                            <div
+                                                class="bg-white rounded-xl border border-gray-100 shadow-md p-6 text-left h-full flex flex-col justify-between">
+                                                <div class="flex items-center justify-between mb-4">
+                                                    <span
+                                                        class="bg-gray-100 text-indigo-700 font-semibold px-3 py-1 rounded-lg text-sm">
+                                                        {{ $petugas['pekan'] }}
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <h3 class="text-lg font-bold text-gray-800 leading-tight mb-1">
+                                                        {{ $petugas['khatib'] }}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
 
                     <div class="border-b border-gray-300"></div>
 
@@ -341,7 +415,7 @@
                         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                             <div class="p-6 bg-indigo-500 text-white">
                                 <h2 class="text-2xl font-bold">Lokasi Kami</h2>
-                                <p class="opacity-80">Jalan Raya, Janidan, Pabelan, Kec. Kartasura, Kab. Sukoharjo</p>
+                                <p class="opacity-80">Klinggen RT. 01 RW. 02 Ngadirejo Kartasura, 57163</p>
                             </div>
                             <div>
                                 <iframe width="100%" height="450" style="border:0;" loading="lazy"

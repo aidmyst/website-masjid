@@ -81,7 +81,7 @@
 
                 <div class="border-b border-gray-300"></div>
 
-                <section x-data="{ startAnimation: false }" x-intersect.once.margin.-100px="startAnimation = true">
+                <section>
                     <div class="text-center">
                         <h2 class="text-3xl font-bold text-center text-gray-900">Manfaat Mengikuti Kajian</h2>
                         <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
@@ -93,102 +93,33 @@
                     <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
                         {{-- Manfaat 1 --}}
-                        <div class="transform transition-all duration-700 ease-out"
-                            :class="startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'"
-                            style="transition-delay: 150ms;">
+                        <div>
                             <x-benefit-card icon="heroicon-o-light-bulb" title="Meningkatkan Pemahaman">
                                 Memperdalam ilmu tentang agama Islam dari sumber yang shahih.
                             </x-benefit-card>
                         </div>
 
                         {{-- Manfaat 2 --}}
-                        <div class="transform transition-all duration-700 ease-out"
-                            :class="startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'"
-                            style="transition-delay: 300ms;">
+                        <div>
                             <x-benefit-card icon="heroicon-o-user-circle" title="Memperbaiki Ibadah">
                                 Menyempurnakan kualitas sholat, puasa, dan ibadah lainnya.
                             </x-benefit-card>
                         </div>
 
                         {{-- Manfaat 3 --}}
-                        <div class="transform transition-all duration-700 ease-out"
-                            :class="startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'"
-                            style="transition-delay: 450ms;">
+                        <div>
                             <x-benefit-card icon="heroicon-o-book-open" title="Menambah Wawasan">
                                 Membuka cakrawala pengetahuan tentang Al-Qur’an dan Sunnah.
                             </x-benefit-card>
                         </div>
 
                         {{-- Manfaat 4 --}}
-                        <div class="transform transition-all duration-700 ease-out"
-                            :class="startAnimation ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'"
-                            style="transition-delay: 600ms;">
+                        <div>
                             <x-benefit-card icon="heroicon-o-users" title="Lingkungan Positif">
                                 Berkumpul dengan orang-orang shalih yang saling mengingatkan.
                             </x-benefit-card>
                         </div>
 
-                    </div>
-                </section>
-
-                <div class="border-b border-gray-300"></div>
-
-
-                {{-- ====================================================================== --}}
-                {{-- ========= KODE BAGIAN BARU: JADWAL PETUGAS JUM'AT (VERSI MODERN) ===== --}}
-                {{-- ====================================================================== --}}
-                <section x-data="{ visible: false }" x-intersect.once.margin.-100px="visible = true"
-                    class="py-16 bg-gradient-to-b from-gray-50 to-white rounded-xl">
-                    <div class="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-                        <div class="transition-all duration-700 ease-out transform"
-                            :class="visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
-                            {{-- Judul --}}
-                            <h2 class="text-3xl sm:text-3xl font-bold text-gray-900 tracking-tight">
-                                Jadwal Khatib Jum’at —
-                                <span class="text-indigo-600">
-                                    {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}
-                                </span>
-                            </h2>
-                            <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-                                Berikut adalah daftar khatib dan imam Sholat Jum’at bulan ini di Masjid Jami Aisyah.
-                            </p>
-                        </div>
-
-                        {{-- Daftar Petugas Jum'at --}}
-                        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
-                            @php
-                                $petugasJumat = [
-                                    ['pekan' => 'Jum\'at 1', 'khatib' => 'Bp. H. Muh Solihin, S.Psi'],
-                                    ['pekan' => 'Jum\'at 2', 'khatib' => 'Bp. Drs. Edi Purwanto'],
-                                    ['pekan' => 'Jum\'at 3', 'khatib' => 'Bp. Ghazi Abdurrahman'],
-                                    ['pekan' => 'Jum\'at 4', 'khatib' => 'Bp. Sokheh Al Hasan, M.Pd.I & Bp. Sulaiman'],
-                                    ['pekan' => 'Jum\'at 5', 'khatib' => 'Bp. Surya Fauzi Rahman, A.Md'],
-                                ];
-                            @endphp
-
-                            @foreach ($petugasJumat as $index => $petugas)
-                                <div x-data="{ show: false }"
-                                    x-intersect.once="setTimeout(() => show = true, {{ $index * 150 + 200 }})" x-cloak
-                                    class="transition-all duration-700 ease-out transform"
-                                    :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'">
-                                    <div
-                                        class="bg-white rounded-xl border border-gray-100 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-6 text-left h-full flex flex-col justify-between">
-                                        <div class="flex items-center justify-between mb-4">
-                                            <span
-                                                class="bg-indigo-100 text-indigo-700 font-semibold px-3 py-1 rounded-lg text-sm">
-                                                {{ $petugas['pekan'] }}
-                                            </span>
-                                        </div>
-
-                                        <div>
-                                            <h3 class="text-lg font-bold text-gray-800 leading-tight mb-1">
-                                                {{ $petugas['khatib'] }}
-                                            </h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
                     </div>
                 </section>
 

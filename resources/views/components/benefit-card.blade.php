@@ -3,7 +3,8 @@
     'title' => '',
 ])
 
-<div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-center h-full">
+{{-- PERUBAHAN: Class hover:... dan transition dihapus --}}
+<div class="bg-white p-6 rounded-2xl shadow-lg text-center h-full">
     {{-- Lingkaran Ikon --}}
     <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-500 text-white mx-auto mb-5">
         <x-dynamic-component :component="$icon" class="h-8 w-8" />
