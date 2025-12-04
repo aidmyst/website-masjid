@@ -112,31 +112,27 @@
                                     </p>
                                 </div>
 
-                                {{-- PERUBAHAN DI SINI: --}}
-                                {{-- 1. Menggunakan 'flex' dan 'flex-wrap' menggantikan 'grid'. --}}
-                                {{-- 2. 'justify-center' membuat kartu berkumpul di tengah. --}}
-                                {{-- 3. 'gap-4' (sebelumnya gap-8) membuat jarak antar kartu lebih rapat (sekitar 16px). --}}
-                                <div
-                                    class="mt-12 flex flex-col md:flex-row flex-wrap justify-center items-center gap-4">
+                                <div class="mt-12 flex flex-wrap justify-center gap-6 px-4">
 
-                                    {{-- Subuh --}}
-                                    {{-- Tambahkan w-full md:w-auto agar responsif --}}
+                                    <!-- Subuh -->
                                     <div
-                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full md:w-[20rem] max-w-xs mx-auto md:mx-0">
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 
+                        w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
                                         <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z"/>
+                                                    d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.502 4.502 0 0 0 2.25 15Z" />
                                             </svg>
                                         </div>
                                         <h3 class="mt-1 text-lg font-bold text-gray-800">Subuh</h3>
                                         <p class="mt-1 text-gray-600 text-md">Bp. Alan Pratama</p>
                                     </div>
 
-                                    {{-- Dhuhur & Ashar --}}
+                                    <!-- Dhuhur & Ashar -->
                                     <div
-                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full md:w-[20rem] max-w-xs mx-auto md:mx-0">
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 
+                        w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
                                         <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -148,9 +144,10 @@
                                         <p class="mt-1 text-gray-600 text-md">Bp. H. Budhi Santoso</p>
                                     </div>
 
-                                    {{-- Maghrib & Isya --}}
+                                    <!-- Maghrib & Isya -->
                                     <div
-                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full md:w-[20rem] max-w-xs mx-auto md:mx-0">
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 
+                        w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
                                         <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -161,6 +158,7 @@
                                         <h3 class="mt-1 text-lg font-bold text-gray-800">Maghrib & Isya</h3>
                                         <p class="mt-1 text-gray-600 text-md">Bp. Hartono</p>
                                     </div>
+
                                 </div>
                             </section>
                         </div>
