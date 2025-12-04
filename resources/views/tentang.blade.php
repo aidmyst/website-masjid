@@ -143,7 +143,7 @@
                                 </div>
                             @endif
 
-                            <div class="space-y-8 md:space-y-4 relative z-10" x-ref="timelineContent">
+                            <div class="space-y-8 md:space-y-4 relative z-10 mb-20" x-ref="timelineContent">
                                 @forelse ($sejarah as $item)
                                     <div x-data="{ visible: false }" x-intersect.once.margin.-100px="visible = true"
                                         {{-- PERUBAHAN 2: Tata letak item diubah. Padding kiri ditambahkan untuk mobile. --}}
@@ -161,7 +161,7 @@
 
                                         {{-- PERUBAHAN 4: Posisi titik (dot) diubah menjadi absolut untuk mobile dan kembali relatif untuk desktop. --}}
                                         <div
-                                            class="absolute top-5 left-4 -translate-x-1/2 md:relative md:top-auto md:left-auto md:translate-x-0 md:w-2/12 flex justify-center">
+                                            class="absolute top-5 left-4 -translate-x-1/2 md:relative md:top-auto md:left-auto md:translate-x-0 md:w-2/12 flex justify-center x-ref='dot'">
                                             <div class="relative flex items-center justify-center h-5 w-5">
                                                 <span
                                                     class="absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-0"
@@ -193,20 +193,37 @@
                         return {
                             lineHeight: 0,
                             updateLineHeight() {
-                                if (!this.$refs.timelineWrapper || !this.$refs.timelineContent) return;
-                                const wrapperTop = this.$refs.timelineWrapper.getBoundingClientRect().top;
+                                const wrapper = this.$refs.timelineWrapper;
+                                const dots = wrapper.querySelectorAll('[x-ref="dot"]');
+                    
+                                if (!wrapper || dots.length === 0) return;
+                    
                                 const scrollY = window.scrollY;
                                 const windowHeight = window.innerHeight;
-
-                                // Hitung seberapa jauh bagian timeline telah di-scroll
-                                const visibleHeight = Math.max(0, windowHeight - wrapperTop);
-
-                                // Batasi tinggi garis agar tidak melebihi tinggi konten timeline
-                                const contentHeight = this.$refs.timelineContent.offsetHeight;
-                                this.lineHeight = Math.min(visibleHeight, contentHeight);
+                    
+                                // Titik tengah layar
+                                const centerScreen = scrollY + windowHeight / 2;
+                    
+                                let newHeight = 0;
+                    
+                                // Loop semua dot
+                                dots.forEach(dot => {
+                                    const rect = dot.getBoundingClientRect();
+                                    const dotY = scrollY + rect.top + rect.height/2; // posisi tengah dot
+                    
+                                    // Jika dot sudah lewat tengah layar, garis harus mencapai dot itu
+                                    if (dotY <= centerScreen) {
+                                        newHeight = dotY - (wrapper.offsetTop + wrapper.getBoundingClientRect().top - scrollY);
+                                    }
+                                });
+                    
+                                // Batasi agar tidak melebihi area timeline
+                                const maxHeight = this.$refs.timelineContent.offsetHeight;
+                                this.lineHeight = Math.min(newHeight, maxHeight);
                             }
-                        }
                     }
+                }
+
                 </script>
 
                 <section x-data="{ open: false, selectedImage: '' }">
