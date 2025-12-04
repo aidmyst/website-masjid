@@ -155,10 +155,14 @@
                                 <div>
                                     <label for="nominal"
                                         class="block text-sm font-medium text-gray-700 font-sans">Nominal (Rp)</label>
-                                    <input type="number" id="nominal" name="nominal" value="{{ old('nominal') }}"
-                                        required
+
+                                    <input type="text" id="nominal_display"
                                         class="font-sans mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                        placeholder="Contoh: 50000">
+                                        placeholder="Contoh: 50.000">
+
+                                    <!-- VALUE ASLI UNTUK DIKIRIM KE BACKEND -->
+                                    <input type="hidden" id="nominal" name="nominal">
+
                                     @error('nominal')
                                         <p class="text-red-500 text-xs mt-1 font-sans">{{ $message }}</p>
                                     @enderror
@@ -245,6 +249,17 @@
                 }, 2000);
             }
         }
+
+        const inputDisplay = document.getElementById("nominal_display");
+        const inputHidden = document.getElementById("nominal");
+
+        inputDisplay.addEventListener("input", function() {
+            let angka = this.value.replace(/\D/g, ""); // hilangkan semua non-digit
+            inputHidden.value = angka; // simpan angka murni untuk backend
+
+            // Format titik per ribuan
+            this.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        });
     </script>
 
 </x-app-layout>

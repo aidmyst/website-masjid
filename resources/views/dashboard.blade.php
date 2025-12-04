@@ -676,6 +676,14 @@
                                                 {{-- KOLOM AKSI --}}
                                                 <td class="sm:table-cell block px-6 py-2 text-center">
                                                     <div class="flex flex-col sm:flex-row gap-2 mt-2 justify-center">
+
+                                                        {{-- Tombol Edit --}}
+                                                        <button onclick="openModal('editModal-{{ $konfirmasi->id }}')"
+                                                            class="w-full sm:w-auto bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow text-center">
+                                                            Edit
+                                                        </button>
+
+                                                        {{-- Tombol Hapus --}}
                                                         <form
                                                             action="{{ route('donasi.konfirmasi.destroy', $konfirmasi->id) }}"
                                                             method="POST"
@@ -689,7 +697,81 @@
                                                             </button>
                                                         </form>
                                                     </div>
+
+                                                    {{-- Modal Edit --}}
+                                                    <div id="editModal-{{ $konfirmasi->id }}"
+                                                        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                                                        <div
+                                                            class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg text-left">
+                                                            {{-- ← tambahkan text-left --}}
+
+                                                            <h3
+                                                                class="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+                                                                Edit Konfirmasi Donasi
+                                                            </h3>
+
+                                                            <form
+                                                                action="{{ route('donasi.konfirmasi.update', $konfirmasi->id) }}"
+                                                                method="POST" class="space-y-5">
+                                                                @csrf
+                                                                @method('PUT')
+
+                                                                {{-- Nama Donatur --}}
+                                                                <div>
+                                                                    <label
+                                                                        class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                                                        Nama Donatur
+                                                                    </label>
+                                                                    <input type="text" name="nama"
+                                                                        class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
+                                                                        value="{{ $konfirmasi->donatur->nama ?? '' }}">
+                                                                </div>
+
+                                                                {{-- Nomor WA --}}
+                                                                <div>
+                                                                    <label
+                                                                        class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                                                        Nomor WA
+                                                                    </label>
+                                                                    <input type="text" name="no_wa"
+                                                                        class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
+                                                                        value="{{ $konfirmasi->donatur->no_wa ?? '' }}">
+                                                                </div>
+
+                                                                {{-- Nominal --}}
+                                                                <div>
+                                                                    <label
+                                                                        class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                                                        Nominal Donasi
+                                                                    </label>
+
+                                                                    <input type="text" name="nominal"
+                                                                        id="nominal-{{ $konfirmasi->id }}"
+                                                                        class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
+                                                                        value="{{ number_format($konfirmasi->nominal, 0, ',', '.') }}"
+                                                                        oninput="formatRupiah(this)">
+                                                                </div>
+
+                                                                {{-- Tombol --}}
+                                                                <div class="flex justify-end gap-3 pt-4">
+                                                                    <button type="button"
+                                                                        onclick="closeModal('editModal-{{ $konfirmasi->id }}')"
+                                                                        class="px-4 py-2 rounded-md bg-gray-500 hover:bg-gray-600 text-white shadow">
+                                                                        Batal
+                                                                    </button>
+                                                                    <button type="submit"
+                                                                        class="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white shadow">
+                                                                        Simpan
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- End Modal --}}
                                                 </td>
+
                                             </tr>
                                         @empty
                                             <tr>
@@ -787,15 +869,18 @@
 
     <script>
         function openModal(id) {
-            const modal = document.getElementById(id);
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('flex');
         }
 
         function closeModal(id) {
-            const modal = document.getElementById(id);
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+
+        function formatRupiah(input) {
+            let angka = input.value.replace(/\D/g, ""); // hapus semua selain angka
+            input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // tambahkan titik tiap 3 digit
         }
     </script>
 

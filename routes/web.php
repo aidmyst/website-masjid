@@ -85,6 +85,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
         ->name('donasi.rekening.update');
     Route::delete('/donasi/konfirmasi/{konfirmasi}', [DonasiController::class, 'destroyKonfirmasi'])
         ->name('donasi.konfirmasi.destroy');
+    Route::put('/donasi/konfirmasi/{id}', [DonasiController::class, 'updateKonfirmasi'])
+        ->name('donasi.konfirmasi.update');
 
     // Hapus akun donatur
     Route::delete('/donatur/{donatur}', [AuthDonasiController::class, 'destroy'])

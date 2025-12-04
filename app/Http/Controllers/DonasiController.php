@@ -122,4 +122,36 @@ class DonasiController extends Controller
             ->with('active_tab', 'donasi')
             ->with('success', 'Konfirmasi donasi telah dihapus.');
     }
+
+    // ==============================
+    // UPDATE KONFIRMASI DONASI
+    // ==============================
+    public function updateKonfirmasi(Request $request, $id)
+    {
+        $request->validate([
+            'nama'    => 'required|string|max:255',
+            'no_wa'   => 'required|string|max:20',
+            'nominal' => 'required',  // JANGAN numeric karena input sudah 900.000
+        ]);
+
+        $donasi = Donasi::findOrFail($id);
+
+        // Format nominal: hilangkan titik (900.000 → 900000)
+        $nominalBersih = str_replace('.', '', $request->nominal);
+
+        // Update tabel donatur jika relasi ada
+        if ($donasi->donatur) {
+            $donasi->donatur->nama = $request->nama;
+            $donasi->donatur->no_wa = $request->no_wa;
+            $donasi->donatur->save();
+        }
+
+        // Update nominal donasi
+        $donasi->nominal = $nominalBersih;
+        $donasi->save();
+
+        return redirect()->route('dashboard')
+            ->with('active_tab', 'donasi')
+            ->with('success', 'Data konfirmasi donasi berhasil diperbarui.');
+    }
 }

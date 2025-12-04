@@ -95,7 +95,8 @@
 
                             <h2 class="text-2xl font-semibold text-center text-indigo-700 mb-2">Data Diri Donatur</h2>
                             <p class="text-sm text-gray-600 text-center mb-6">
-                                Silakan isi data diri Anda untuk melanjutkan donasi.
+                                Lengkapi data diri Anda untuk melanjutkan donasi. <br>Privasi Anda adalah prioritas
+                                kami.
                             </p>
 
                             @if (session('error'))
@@ -120,7 +121,8 @@
                                 {{-- Input No WA --}}
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
-                                    <input type="text" name="no_wa" required
+                                    <input type="text" name="no_wa" required maxlength="12"
+                                        oninput="this.value = this.value.replace(/[^0-9\-]/g, '').replace(/(.*-).*-/g, '$1');"
                                         placeholder="Contoh: 0812xxxx (Isi '-' jika tidak ingin)"
                                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-800 placeholder-gray-400 text-sm placeholder:text-sm">
                                 </div>
