@@ -87,7 +87,9 @@
                         </div>
                     </section>
 
-                    <div x-data="{ tab: 'imam' }" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="border-b border-gray-300"></div>
+
+                    <div x-data="{ tab: 'imam' }" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
                         {{-- Menu Bar --}}
                         <div class="flex justify-center space-x-4 mb-8">
                             <button @click="tab = 'imam'"
@@ -116,8 +118,7 @@
 
                                     <!-- Subuh -->
                                     <div
-                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 
-                        w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
                                         <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -131,8 +132,7 @@
 
                                     <!-- Dhuhur & Ashar -->
                                     <div
-                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 
-                        w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
                                         <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -146,8 +146,7 @@
 
                                     <!-- Maghrib & Isya -->
                                     <div
-                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 
-                        w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
+                                        class="bg-white rounded-xl shadow-lg p-4 text-center border border-gray-100 w-full max-w-[16rem] sm:max-w-[18rem] md:w-[20rem] mx-auto">
                                         <div class="bg-gray-100 text-indigo-600 rounded-full p-2 inline-block mb-3">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -217,7 +216,7 @@
                     <div class="border-b border-gray-300"></div>
 
                     {{-- Section Kegiatan Rutin --}}
-                    <section class="bg-gray-50 py-4">
+                    <section class="bg-gray-50 py-2">
                         <div class="mx-auto max-w-6xl">
 
                             <div class="text-center mb-12">

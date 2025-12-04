@@ -117,13 +117,13 @@
                 </section>
 
 
-                <section class="bg-gradient-to-br from-gray-50 to-white pt-12 md:pt-16 pb-24 overflow-hidden" x-data="timeline()"
+                <section class="bg-gradient-to-br from-gray-50 to-white pt-12 md:pt-16 pb-4 overflow-hidden rounded-xl" x-data="timeline()"
                     x-init="updateLineHeight()" @scroll.window.throttle.50ms="updateLineHeight()">
 
                     <div class="mx-auto max-w-5xl px-6" x-ref="timelineWrapper">
                         {{-- JUDUL --}}
                         <div class="text-center mb-20">
-                            <h2 class="text-4xl font-bold text-gray-900 tracking-tight">Sejarah Masjid Jami Aisyah</h2>
+                            <h2 class="text-4xl font-bold text-gray-900 tracking-tight">Timeline Masjid Jami Aisyah</h2>
                             <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
                                 Menelusuri jejak lebih dari empat dekade: sebuah perjalanan dari mushola sederhana
                                 menjadi mercusuar dakwah yang penuh berkah dan perjuangan umat.
