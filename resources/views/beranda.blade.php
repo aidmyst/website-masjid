@@ -145,7 +145,7 @@
                     <div class="border-b border-gray-300"></div>
 
                     {{-- Section Kegiatan Rutin --}}
-                    <section class="bg-gray-50 py-16">
+                    <section class="bg-gray-50 py-4">
                         <div class="mx-auto max-w-6xl">
 
                             <div class="text-center mb-12">
