@@ -71,8 +71,8 @@
                             show = true;
                             observer.disconnect();
                         }
-                        }, { threshold: 0.3 });
-                        observer.observe($el);">
+                    }, { threshold: 0.3 });
+                    observer.observe($el);">
 
                     {{-- Judul --}}
                     <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 md:mb-12
@@ -117,8 +117,8 @@
                 </section>
 
 
-                <section class="bg-gradient-to-br from-gray-50 to-white pt-12 md:pt-16 pb-4 overflow-hidden rounded-xl" x-data="timeline()"
-                    x-init="updateLineHeight()" @scroll.window.throttle.50ms="updateLineHeight()">
+                <section class="bg-gradient-to-br from-gray-50 to-white pt-12 md:pt-16 pb-4 overflow-hidden rounded-xl"
+                    x-data="timeline()" x-init="updateLineHeight()" @scroll.window.throttle.50ms="updateLineHeight()">
 
                     <div class="mx-auto max-w-5xl px-6" x-ref="timelineWrapper">
                         {{-- JUDUL --}}
@@ -187,43 +187,6 @@
                     </div>
                 </section>
 
-                {{-- Pastikan Anda memiliki fungsi AlpineJS ini di tag <script> Anda --}}
-                <script>
-                    function timeline() {
-                        return {
-                            lineHeight: 0,
-                            updateLineHeight() {
-                                const wrapper = this.$refs.timelineWrapper;
-                                const dots = wrapper.querySelectorAll('[x-ref="dot"]');
-                    
-                                if (!wrapper || dots.length === 0) return;
-                    
-                                const scrollY = window.scrollY;
-                                const windowHeight = window.innerHeight;
-                    
-                                // Titik tengah layar
-                                const centerScreen = scrollY + windowHeight / 2;
-                    
-                                let newHeight = 0;
-                    
-                                // Loop semua dot
-                                dots.forEach(dot => {
-                                    const rect = dot.getBoundingClientRect();
-                                    const dotY = scrollY + rect.top + rect.height/2; // posisi tengah dot
-                    
-                                    // Jika dot sudah lewat tengah layar, garis harus mencapai dot itu
-                                    if (dotY <= centerScreen) {
-                                        newHeight = dotY - (wrapper.offsetTop + wrapper.getBoundingClientRect().top - scrollY);
-                                    }
-                                });
-                    
-                                // Batasi agar tidak melebihi area timeline
-                                const maxHeight = this.$refs.timelineContent.offsetHeight;
-                                this.lineHeight = Math.min(newHeight, maxHeight);
-                            }
-                    }
-                }
-
                 </script>
 
                 <section x-data="{ open: false, selectedImage: '' }">
@@ -255,8 +218,7 @@
                 </section>
 
                 <section class="mb-12">
-                    <div
-                        class="bg-gradient-to-br from-gray-50 via-white to-gray-100 rounded-2xl p-8 md:p-12 shadow-inner">
+                    <div class="bg-white rounded-2xl p-8 md:p-12 shadow-inner">
                         <h2 class="text-3xl font-bold text-center text-gray-900 mb-10">Galeri Kegiatan</h2>
 
                         {{-- Cek apakah galeri memiliki data --}}
@@ -363,118 +325,6 @@
                     </div>
                 </section>
 
-                <style>
-                    .scroll-snap-x {
-                        display: flex;
-                        overflow-x: auto;
-                        scroll-snap-type: x mandatory;
-                        -webkit-overflow-scrolling: touch;
-                        scrollbar-width: none;
-                    }
-
-                    .scroll-snap-x::-webkit-scrollbar {
-                        display: none;
-                    }
-
-                    .scroll-snap-align-start {
-                        scroll-snap-align: start;
-                        flex-shrink: 0;
-                    }
-                </style>
-
-                <script>
-                    function timeline() {
-                        return {
-                            lineHeight: 0,
-                            updateLineHeight() {
-                                if (!this.$refs.timelineWrapper || !this.$refs.timelineContent) return;
-                                const wrapperTop = this.$refs.timelineWrapper.offsetTop;
-                                const contentHeight = this.$refs.timelineContent.offsetHeight;
-                                const scrollFromTop = window.pageYOffset;
-                                const scrollProgress = scrollFromTop - wrapperTop + (window.innerHeight / 2.5);
-                                const newHeight = Math.max(0, Math.min(scrollProgress, contentHeight));
-                                this.lineHeight = newHeight;
-                            }
-                        }
-                    }
-
-                    function responsiveGaleriSlider(totalCount) {
-                        return {
-                            open: false,
-                            selectedImage: '',
-                            startIndex: 0,
-                            visibleCount: 3,
-                            totalCount: totalCount,
-                            gap: 16,
-                            itemWidth: 280,
-                            showButtons: true,
-                            galeri: @json($galeri->map(fn($item) => ['url' => asset($item->gambar)])),
-                            isIntersecting: false,
-
-                            init() {
-                                this.updateVisibleCount();
-                                window.addEventListener('resize', () => this.updateVisibleCount());
-                            },
-
-                            updateVisibleCount() {
-                                const width = window.innerWidth;
-
-                                if (width < 640) { // mobile
-                                    this.visibleCount = 1;
-                                    this.showButtons = false;
-                                    const sliderWrapper = this.$refs.slider.parentElement;
-                                    this.itemWidth = sliderWrapper.clientWidth;
-                                } else if (width < 1024) { // tablet
-                                    this.visibleCount = 2;
-                                    this.showButtons = true;
-                                    const container = this.$refs.slider.closest('.max-w-5xl');
-                                    const containerWidth = container ? container.clientWidth : (1024 - 64);
-                                    this.itemWidth = (containerWidth - (this.gap * (this.visibleCount - 1))) / this.visibleCount;
-                                } else { // desktop
-                                    this.visibleCount = 3;
-                                    this.showButtons = true;
-                                    const container = this.$refs.slider.closest('.max-w-5xl');
-                                    const containerWidth = container ? container.clientWidth : 1024;
-                                    this.itemWidth = (containerWidth - (this.gap * (this.visibleCount - 1))) / this.visibleCount;
-                                }
-                            },
-
-                            // BARU: Fungsi untuk mengupdate index saat di-scroll/swipe di mobile
-                            updateIndexOnScroll() {
-                                if (!this.showButtons) { // Hanya berjalan di mode mobile
-                                    const slider = this.$refs.slider;
-                                    const currentIndex = Math.round(slider.scrollLeft / this.itemWidth);
-                                    if (this.startIndex !== currentIndex) {
-                                        this.startIndex = currentIndex;
-                                    }
-                                }
-                            },
-
-                            openModal(img) {
-                                this.selectedImage = img;
-                                this.open = true;
-                            },
-
-                            closeModal() {
-                                this.open = false;
-                                this.selectedImage = '';
-                            },
-
-                            prev() {
-                                if (this.startIndex > 0) {
-                                    this.startIndex--;
-                                }
-                            },
-
-                            next() {
-                                if (this.startIndex + this.visibleCount < this.totalCount) {
-                                    this.startIndex++;
-                                }
-                            },
-                        }
-                    }
-                </script>
-
             </div>
         </main>
     </div>
@@ -525,4 +375,151 @@
             </div>
         </div>
     </footer>
+
+    <style>
+        .scroll-snap-x {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .scroll-snap-x::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scroll-snap-align-start {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+    </style>
+
+    <script>
+        function timeline() {
+            return {
+                lineHeight: 0,
+                updateLineHeight() {
+                    const wrapper = this.$refs.timelineWrapper;
+                    const dots = wrapper.querySelectorAll('[x-ref="dot"]');
+
+                    if (!wrapper || dots.length === 0) return;
+
+                    const scrollY = window.scrollY;
+                    const windowHeight = window.innerHeight;
+
+                    // Titik tengah layar
+                    const centerScreen = scrollY + windowHeight / 2;
+
+                    let newHeight = 0;
+
+                    // Loop semua dot
+                    dots.forEach(dot => {
+                        const rect = dot.getBoundingClientRect();
+                        const dotY = scrollY + rect.top + rect.height / 2; // posisi tengah dot
+
+                        // Jika dot sudah lewat tengah layar, garis harus mencapai dot itu
+                        if (dotY <= centerScreen) {
+                            newHeight = dotY - (wrapper.offsetTop + wrapper.getBoundingClientRect().top - scrollY);
+                        }
+                    });
+
+                    // Batasi agar tidak melebihi area timeline
+                    const maxHeight = this.$refs.timelineContent.offsetHeight;
+                    this.lineHeight = Math.min(newHeight, maxHeight);
+                }
+            }
+        }
+
+        function timeline() {
+            return {
+                lineHeight: 0,
+                updateLineHeight() {
+                    if (!this.$refs.timelineWrapper || !this.$refs.timelineContent) return;
+                    const wrapperTop = this.$refs.timelineWrapper.offsetTop;
+                    const contentHeight = this.$refs.timelineContent.offsetHeight;
+                    const scrollFromTop = window.pageYOffset;
+                    const scrollProgress = scrollFromTop - wrapperTop + (window.innerHeight / 2.5);
+                    const newHeight = Math.max(0, Math.min(scrollProgress, contentHeight));
+                    this.lineHeight = newHeight;
+                }
+            }
+        }
+
+        function responsiveGaleriSlider(totalCount) {
+            return {
+                open: false,
+                selectedImage: '',
+                startIndex: 0,
+                visibleCount: 3,
+                totalCount: totalCount,
+                gap: 16,
+                itemWidth: 280,
+                showButtons: true,
+                galeri: @json($galeri->map(fn($item) => ['url' => asset($item->gambar)])),
+                isIntersecting: false,
+
+                init() {
+                    this.updateVisibleCount();
+                    window.addEventListener('resize', () => this.updateVisibleCount());
+                },
+
+                updateVisibleCount() {
+                    const width = window.innerWidth;
+
+                    if (width < 640) { // mobile
+                        this.visibleCount = 1;
+                        this.showButtons = false;
+                        const sliderWrapper = this.$refs.slider.parentElement;
+                        this.itemWidth = sliderWrapper.clientWidth;
+                    } else if (width < 1024) { // tablet
+                        this.visibleCount = 2;
+                        this.showButtons = true;
+                        const container = this.$refs.slider.closest('.max-w-5xl');
+                        const containerWidth = container ? container.clientWidth : (1024 - 64);
+                        this.itemWidth = (containerWidth - (this.gap * (this.visibleCount - 1))) / this.visibleCount;
+                    } else { // desktop
+                        this.visibleCount = 3;
+                        this.showButtons = true;
+                        const container = this.$refs.slider.closest('.max-w-5xl');
+                        const containerWidth = container ? container.clientWidth : 1024;
+                        this.itemWidth = (containerWidth - (this.gap * (this.visibleCount - 1))) / this.visibleCount;
+                    }
+                },
+
+                // BARU: Fungsi untuk mengupdate index saat di-scroll/swipe di mobile
+                updateIndexOnScroll() {
+                    if (!this.showButtons) { // Hanya berjalan di mode mobile
+                        const slider = this.$refs.slider;
+                        const currentIndex = Math.round(slider.scrollLeft / this.itemWidth);
+                        if (this.startIndex !== currentIndex) {
+                            this.startIndex = currentIndex;
+                        }
+                    }
+                },
+
+                openModal(img) {
+                    this.selectedImage = img;
+                    this.open = true;
+                },
+
+                closeModal() {
+                    this.open = false;
+                    this.selectedImage = '';
+                },
+
+                prev() {
+                    if (this.startIndex > 0) {
+                        this.startIndex--;
+                    }
+                },
+
+                next() {
+                    if (this.startIndex + this.visibleCount < this.totalCount) {
+                        this.startIndex++;
+                    }
+                },
+            }
+        }
+    </script>
 </x-app-layout>
