@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Statistik;
+use App\Models\JadwalImam;
+use App\Models\JadwalKhatib;
 use App\Models\Sejarah;
 use App\Models\Organisasi;
 use App\Models\Galeri;
@@ -33,6 +35,8 @@ class PageController extends Controller
     public function beranda(PrayerTimeService $prayerTime, HijriDateService $hijriDate)
     {
         $statistik = Statistik::first();
+        $imam = JadwalImam::first();
+        $khatib = JadwalKhatib::first();
 
         return view('beranda', [
             'prayerTimes'    => $prayerTime->getTodaysPrayerTimes(),
@@ -40,6 +44,8 @@ class PageController extends Controller
             'currentDate'    => $prayerTime->getFormattedDate(),
             'hijriDate'      => $hijriDate->getCurrentHijriDate(),
             'statistik'      => $statistik,
+            'imam'           => $imam,
+            'khatib'         => $khatib,
         ]);
     }
 

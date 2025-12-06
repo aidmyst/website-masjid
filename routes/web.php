@@ -5,6 +5,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KajianController;
 use App\Http\Controllers\StatistikController;
+use App\Http\Controllers\JadwalImamController;
+use App\Http\Controllers\JadwalKhatibController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\SejarahController;
 use App\Http\Controllers\OrganisasiController;
@@ -66,6 +68,12 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
     // Statistik
     Route::post('/statistik', [StatistikController::class, 'store'])->name('statistik.store');
+
+    // Jadwal Imam
+    Route::post('/jadwal-imam', [JadwalImamController::class, 'update'])->name('imam.update');
+
+    // Jadwal Khatib
+    Route::post('/jadwal-khatib', [JadwalKhatibController::class, 'update'])->name('khatib.update');
 
     // Sejarah
     Route::post('/sejarah', [SejarahController::class, 'store'])->name('sejarah.store');

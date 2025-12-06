@@ -127,7 +127,8 @@
                                             </svg>
                                         </div>
                                         <h3 class="mt-1 text-lg font-bold text-gray-800">Subuh</h3>
-                                        <p class="mt-1 text-gray-600 text-md">Bp. Alan Pratama</p>
+                                        <p class="mt-1 text-gray-600 text-md">{{ $imam->subuh ?? 'Belum ditentukan' }}
+                                        </p>
                                     </div>
 
                                     <!-- Dhuhur & Ashar -->
@@ -141,7 +142,8 @@
                                             </svg>
                                         </div>
                                         <h3 class="mt-1 text-lg font-bold text-gray-800">Dhuhur & Ashar</h3>
-                                        <p class="mt-1 text-gray-600 text-md">Bp. H. Budhi Santoso</p>
+                                        <p class="mt-1 text-gray-600 text-md">
+                                            {{ $imam->dhuhur_ashar ?? 'Belum ditentukan' }}</p>
                                     </div>
 
                                     <!-- Maghrib & Isya -->
@@ -155,7 +157,8 @@
                                             </svg>
                                         </div>
                                         <h3 class="mt-1 text-lg font-bold text-gray-800">Maghrib & Isya</h3>
-                                        <p class="mt-1 text-gray-600 text-md">Bp. Hartono</p>
+                                        <p class="mt-1 text-gray-600 text-md">
+                                            {{ $imam->maghrib_isya ?? 'Belum ditentukan' }}</p>
                                     </div>
 
                                 </div>
@@ -177,33 +180,42 @@
                                     </p>
 
                                     <div
-                                        class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+                                        class="mt-12 flex flex-col md:flex-row flex-wrap justify-center items-stretch gap-4">
                                         @php
+                                            // Kita buat array dinamis dari data database
                                             $petugasJumat = [
-                                                ['pekan' => 'Jum\'at 1', 'khatib' => 'Bp. H. Muh Solihin, S.Psi'],
-                                                ['pekan' => 'Jum\'at 2', 'khatib' => 'Bp. Drs. Edi Purwanto'],
-                                                ['pekan' => 'Jum\'at 3', 'khatib' => 'Bp. Ghazi Abdurrahman'],
-                                                [
-                                                    'pekan' => 'Jum\'at 4',
-                                                    'khatib' => 'Bp. Sokheh Al Hasan, M.Pd.I & Bp. Sulaiman',
-                                                ],
-                                                ['pekan' => 'Jum\'at 5', 'khatib' => 'Bp. Surya Fauzi Rahman, A.Md'],
+                                                ['pekan' => 'Jum\'at 1', 'khatib' => $khatib->jumat_1 ?? 'Belum ditentukan'],
+                                                ['pekan' => 'Jum\'at 2', 'khatib' => $khatib->jumat_2 ?? 'Belum ditentukan'],
+                                                ['pekan' => 'Jum\'at 3', 'khatib' => $khatib->jumat_3 ?? 'Belum ditentukan'],
+                                                ['pekan' => 'Jum\'at 4', 'khatib' => $khatib->jumat_4 ?? 'Belum ditentukan'],
                                             ];
+
+                                            // Hanya tambahkan pekan ke-5 jika datanya diisi oleh admin
+                                            if (!empty($khatib->jumat_5)) {
+                                                $petugasJumat[] = [
+                                                    'pekan' => 'Jum\'at 5',
+                                                    'khatib' => $khatib->jumat_5,
+                                                ];
+                                            }
                                         @endphp
 
                                         @foreach ($petugasJumat as $petugas)
-                                            <div
-                                                class="bg-white rounded-xl border border-gray-100 shadow-md p-6 text-left h-full flex flex-col justify-between">
-                                                <div class="flex items-center justify-between mb-4">
-                                                    <span
-                                                        class="bg-gray-100 text-indigo-700 font-semibold px-3 py-1 rounded-lg text-sm">
-                                                        {{ $petugas['pekan'] }}
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <h3 class="text-lg font-bold text-gray-800 leading-tight mb-1">
-                                                        {{ $petugas['khatib'] }}
-                                                    </h3>
+                                            {{-- Wrapper Statis (Tanpa AlpineJS dan Transition) --}}
+                                            <div class="w-full md:w-[20rem] max-w-xs mx-auto md:mx-0">
+
+                                                <div
+                                                    class="bg-white rounded-xl border border-gray-100 shadow-md p-6 text-left h-full flex flex-col justify-between">
+                                                    <div class="flex items-center justify-between mb-4">
+                                                        <span
+                                                            class="bg-gray-100 text-indigo-700 font-semibold px-3 py-1 rounded-lg text-sm">
+                                                            {{ $petugas['pekan'] }}
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <h3 class="text-lg font-bold text-gray-800 leading-tight mb-1">
+                                                            {{ $petugas['khatib'] }}
+                                                        </h3>
+                                                    </div>
                                                 </div>
                                             </div>
                                         @endforeach

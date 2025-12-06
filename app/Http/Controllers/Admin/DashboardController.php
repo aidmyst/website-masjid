@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Kajian;
 use App\Models\Statistik;
+use App\Models\JadwalImam;
+use App\Models\JadwalKhatib;
 use App\Models\Sejarah;
 use App\Models\Organisasi;
 use App\Models\Galeri;
@@ -24,6 +26,8 @@ class DashboardController extends Controller
         $totalKajian = Kajian::count();
         $kajian = Kajian::orderBy('hari', 'desc')->get();
         $statistik = Statistik::firstOrCreate(['id' => 1]);
+        $imam = JadwalImam::first();
+        $khatib = JadwalKhatib::first();
         $sejarah = Sejarah::orderBy('tahun', 'desc')->get();
         $organisasi = Organisasi::latest()->get();
         $galeri = Galeri::latest()->get();
@@ -43,6 +47,8 @@ class DashboardController extends Controller
             'totalKajian',
             'kajian',
             'statistik',
+            'imam',
+            'khatib',
             'sejarah',
             'organisasi',
             'galeri',
