@@ -19,18 +19,16 @@
                             </div>
                         </div>
 
-                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {{-- KODE BARU YANG SUDAH DIPERBAIKI ✨ --}}
-                            @foreach ($kajian as $item)
-                                {{-- 1. Kita gabungkan x-data dan x-intersect ke elemen kartu langsung --}}
-                                <div x-data="{ show: false }"
-                                    x-intersect.once="setTimeout(() => { show = true }, {{ $loop->index * 120 + 300 }})"
-                                    {{-- 2. Hapus x-show dan ganti dengan class binding (:class) --}} :class="{ 'opacity-100 translate-y-0': show }"
-                                    {{-- 3. Tambahkan class untuk kondisi awal (invisible) dan transisi --}}
-                                    class="bg-gray-700/50 rounded-lg p-5 flex space-x-4 hover:bg-gray-700 hover:shadow-indigo-500/10 shadow-lg transform hover:-translate-y-1 transition-all duration-700 h-full
-                                    opacity-0 translate-y-0">
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" x-data="{ showList: false }"
+                            x-intersect.once="showList = true">
 
-                                    {{-- ... (sisa kode kartu tidak perlu diubah) ... --}}
+                            @foreach ($kajian as $item)
+                                <div x-data="{ show: false }"
+                                    x-effect="if(showList) setTimeout(() => show = true, {{ $loop->index * 120 }})"
+                                    :class="{ 'opacity-100 translate-y-0': show }"
+                                    class="bg-gray-700/50 rounded-lg p-5 flex space-x-4 shadow-lg transform transition-all duration-700 h-full opacity-0 translate-y-3">
+
+                                    {{-- KONTEN KARTU TETAP --}}
                                     <div class="flex-shrink-0 text-center">
                                         <div class="bg-indigo-500 text-white rounded-md px-3 py-2">
                                             <p class="text-xs font-semibold uppercase">
@@ -50,25 +48,16 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="flex flex-col justify-center">
                                         <h3 class="font-bold text-lg text-white leading-tight">{{ $item->tema }}</h3>
                                         <div class="text-gray-400 text-sm mt-2 space-y-2">
                                             <div class="flex items-center space-x-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
+                                                <x-heroicon-o-clock class="h-4 w-4" />
                                                 <span>{{ $item->waktu }} WIB</span>
                                             </div>
                                             <div class="flex items-center space-x-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                </svg>
+                                                <x-heroicon-o-user class="h-4 w-4" />
                                                 <span>{{ $item->pemateri }}</span>
                                             </div>
                                         </div>
@@ -76,6 +65,7 @@
                                 </div>
                             @endforeach
                         </div>
+
                     </div>
                 </section>
 
