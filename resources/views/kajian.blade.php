@@ -39,12 +39,21 @@
                                             </p>
                                         </div>
                                         <div class="mt-2">
-                                            @if (\Carbon\Carbon::parse($item->hari)->isPast())
+                                            @if ($item->status == 'Selesai')
                                                 <span
-                                                    class="bg-gray-500/50 text-gray-300 text-xs font-semibold px-2.5 py-1 rounded-full">Selesai</span>
+                                                    class="bg-gray-500/50 text-gray-300 text-xs font-semibold px-2.5 py-1 rounded-full">
+                                                    Selesai
+                                                </span>
+                                            @elseif ($item->status == 'Sedang Berlangsung')
+                                                <span
+                                                    class="bg-blue-500/50 text-blue-300 text-xs font-semibold px-2.5 py-1 rounded-full">
+                                                    Berlangsung
+                                                </span>
                                             @else
                                                 <span
-                                                    class="bg-teal-500/50 text-teal-300 text-xs font-semibold px-2.5 py-1 rounded-full">Segera</span>
+                                                    class="bg-teal-500/50 text-teal-300 text-xs font-semibold px-2.5 py-1 rounded-full">
+                                                    Segera
+                                                </span>
                                             @endif
                                         </div>
                                     </div>
