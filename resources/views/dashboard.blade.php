@@ -490,6 +490,67 @@
 
                     <div class="mt-8 mb-2 border-t border-gray-300 dark:border-gray-600"></div>
 
+                    {{-- MANAGEMENT STRUKTUR ORGANISASI --}}
+                    <div class="bg-white dark:bg-gray-800 rounded-lg mb-6 mt-6">
+                        <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100 mb-4">
+                            Tambah Pengurus Masjid
+                        </h3>
+
+                        {{-- Form Input --}}
+                        {{-- Form Input --}}
+                        <form action="{{ route('organisasi.store') }}" method="POST"
+                            class="space-y-4 md:grid md:grid-cols-3 md:gap-4 md:space-y-0">
+                            @csrf
+
+                            {{-- Input Nama --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Nama Lengkap
+                                </label>
+                                <input type="text" name="nama" required
+                                    placeholder="Contoh: Bp. Drs. Dwi Sudiarso"
+                                    class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+
+                            {{-- Select Divisi / Posisi --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Posisi / Bagian
+                                </label>
+                                <select name="divisi" required
+                                    class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="" disabled selected>Pilih Posisi</option>
+
+                                    <optgroup label="Pimpinan">
+                                        <option value="Penasehat">Penasehat</option>
+                                        <option value="Ketua">Ketua</option>
+                                        <option value="Wakil Ketua">Wakil Ketua</option>
+                                        <option value="Sekretaris">Sekretaris</option>
+                                        <option value="Bendahara">Bendahara</option>
+                                    </optgroup>
+
+                                    <optgroup label="Bidang Kerja">
+                                        <option value="Seksi Dakwah">Seksi Dakwah</option>
+                                        <option value="Seksi Pembangunan">Seksi Pembangunan</option>
+                                        <option value="Seksi Pemuda & Kader">Seksi Pemuda & Kader</option>
+                                        <option value="Seksi Rumah Tangga">Seksi Rumah Tangga</option>
+                                        <option value="Seksi Sosial">Seksi Sosial</option>
+                                        <option value="Seksi Keamanan">Seksi Keamanan</option>
+                                        <option value="Seksi Keputrian">Seksi Keputrian</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            {{-- Tombol Submit --}}
+                            <div class="flex items-end">
+                                <button type="submit"
+                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md">
+                                    Tambah Pengurus
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
                     {{-- Tabel Daftar Pengurus --}}
                     @if ($organisasi->isEmpty())
                         {{-- TAMPILAN JIKA KOSONG --}}
