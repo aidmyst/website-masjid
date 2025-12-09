@@ -9,8 +9,11 @@ class Organisasi extends Model
 {
     use HasFactory;
 
-    // Pastikan nama tabel benar, jika tidak mengikuti konvensi Laravel (organisasis)
     protected $table = 'organisasi'; 
 
-    protected $fillable = ['gambar'];
+    protected $fillable = [
+        'nama', 
+        'divisi', 
+        'urutan'
+    ];
 }

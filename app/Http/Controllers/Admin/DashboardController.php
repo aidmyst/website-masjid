@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $imam = JadwalImam::first();
         $khatib = JadwalKhatib::first();
         $sejarah = Sejarah::orderBy('tahun', 'desc')->get();
-        $organisasi = Organisasi::latest()->get();
+        $organisasi = Organisasi::orderBy('urutan', 'asc')->get();
         $galeri = Galeri::latest()->get();
         $rekening = Rekening::first();
         $donaturs = Donatur::orderBy('created_at', 'desc')->get();
@@ -38,10 +38,10 @@ class DashboardController extends Controller
         // Ambil SEMUA data konfirmasi donasi (tanpa filter where)
         // Agar AlpineJS bisa memanipulasinya di frontend
         $konfirmasiDonasi = Donasi::with('donatur')
-                            ->orderBy('created_at', 'desc')
-                            ->get();
-        
-        $totalDonasiTerkumpul = Donasi::sum('nominal'); 
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $totalDonasiTerkumpul = Donasi::sum('nominal');
 
         return view('dashboard', compact(
             'totalKajian',

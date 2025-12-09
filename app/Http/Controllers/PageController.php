@@ -19,16 +19,20 @@ class PageController extends Controller
 {
     public function tentang()
     {
-        $organisasi = Organisasi::latest()->first();
-    
-        // Ubah path relatif menjadi URL absolut untuk Alpine JS
+        // REVISI DI SINI:
+        // Mengambil SEMUA data pengurus, diurutkan berdasarkan kolom 'urutan' (agar Penasehat muncul duluan)
+        // Jika kolom 'urutan' belum ada, bisa ganti jadi: Organisasi::all();
+        $organisasi = Organisasi::orderBy('urutan', 'asc')->get();
+
+        // Ubah path relatif menjadi URL absolut untuk Alpine JS (Tetap)
         $galeri = Galeri::latest()->get()->map(function ($g) {
             $g->url = asset($g->gambar);
             return $g;
         });
-    
+
+        // Data Sejarah (Tetap)
         $sejarah = Sejarah::orderBy('tahun', 'asc')->get();
-    
+
         return view('tentang', compact('organisasi', 'galeri', 'sejarah'));
     }
 

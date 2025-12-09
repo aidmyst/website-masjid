@@ -81,7 +81,8 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::delete('/sejarah/{sejarah}', [SejarahController::class, 'destroy'])->name('sejarah.destroy');
 
     // Struktur Organisasi
-    Route::post('/organisasi', [OrganisasiController::class, 'upload'])->name('organisasi.upload');
+    Route::post('/organisasi', [OrganisasiController::class, 'store'])->name('organisasi.store');
+    Route::put('/organisasi/{organisasi}', [OrganisasiController::class, 'update'])->name('organisasi.update');
     Route::delete('/organisasi/{organisasi}', [OrganisasiController::class, 'destroy'])->name('organisasi.destroy');
 
     // Galeri

@@ -3,53 +3,100 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Organisasi; // Ganti model
-use Illuminate\Support\Facades\File;
+use App\Models\Organisasi;
 
 class OrganisasiController extends Controller
 {
-    public function upload(Request $request)
+    public function store(Request $request)
     {
-        $request->validate([
-            'gambar' => 'required|image|mimes:jpg,png,jpeg,gif,webp|max:2048'
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:255',
+            // Validasi jabatan dihapus
+            'divisi' => 'required|string|max:255',
         ]);
-    
-        $file = $request->file('gambar');
-        $namaFile = time() . '_' . $file->getClientOriginalName();
-    
-        // Path ke public_html/uploads/organisasi
-        $uploadPath = base_path('../public_html/uploads/organisasi');
-    
-        // Pastikan folder ada
-        if (!File::exists($uploadPath)) {
-            File::makeDirectory($uploadPath, 0755, true);
+
+        // LOGIKA URUTAN BARU (Agar tampil rapi di web)
+        $urutan = 99;
+        switch ($request->divisi) {
+            case 'Penasehat':
+                $urutan = 1;
+                break;
+            case 'Ketua':
+                $urutan = 2;
+                break;
+            case 'Wakil Ketua':
+                $urutan = 3;
+                break;
+            case 'Sekretaris':
+                $urutan = 4;
+                break;
+            case 'Bendahara':
+                $urutan = 5;
+                break;
+            default:
+                $urutan = 10;
+                break; // Untuk semua Seksi
         }
-    
-        // Pindah file
-        $file->move($uploadPath, $namaFile);
-    
-        // Simpan path yang bisa diakses browser
+
         Organisasi::create([
-            'gambar' => 'uploads/organisasi/' . $namaFile
+            'nama' => $request->nama,
+            // 'jabatan' dihapus
+            'divisi' => $request->divisi,
+            'urutan' => $urutan
         ]);
-    
+
         return redirect()->route('dashboard')
             ->with('active_tab', 'sejarah')
-            ->with('success', 'Gambar struktur organisasi berhasil di-upload ✅');
+            ->with('success', 'Data pengurus berhasil ditambahkan ✅');
+    }
+
+    public function update(Request $request, Organisasi $organisasi)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'divisi' => 'required|string|max:255',
+        ]);
+
+        // Hitung ulang urutan jika divisi berubah
+        $urutan = 99;
+        switch ($request->divisi) {
+            case 'Penasehat':
+                $urutan = 1;
+                break;
+            case 'Ketua':
+                $urutan = 2;
+                break; // Sesuaikan dengan value di select option
+            case 'Wakil Ketua':
+                $urutan = 3;
+                break;
+            case 'Sekretaris':
+                $urutan = 4;
+                break;
+            case 'Bendahara':
+                $urutan = 5;
+                break;
+            default:
+                $urutan = 10;
+                break;
+        }
+
+        $organisasi->update([
+            'nama' => $request->nama,
+            'divisi' => $request->divisi,
+            'urutan' => $urutan
+        ]);
+
+        return redirect()->route('dashboard')
+            ->with('active_tab', 'sejarah') // Sesuaikan tab
+            ->with('success', 'Data pengurus berhasil diperbarui ✅');
     }
 
     public function destroy(Organisasi $organisasi)
     {
-        // Hapus file fisik
-        if (File::exists(public_path($organisasi->gambar))) {
-            File::delete(public_path($organisasi->gambar));
-        }
-
-        // Hapus record database
         $organisasi->delete();
 
         return redirect()->route('dashboard')
-        ->with('active_tab', 'sejarah')
-        ->with('success', 'Gambar struktur organisasi dihapus ✅');
+            ->with('active_tab', 'sejarah')
+            ->with('success', 'Data pengurus dihapus ✅');
     }
 }

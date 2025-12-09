@@ -187,40 +187,11 @@
                     </div>
                 </section>
 
-                </script>
-
-                <section x-data="{ open: false, selectedImage: '' }">
-                    <h2 class="text-3xl font-bold text-center text-gray-900">Struktur Organisasi</h2>
-                    <div class="mt-8 flex justify-center">
-                        @if ($organisasi)
-                            <img src="{{ asset($organisasi->gambar) }}" alt="Struktur Organisasi"
-                                @click="open = true; selectedImage = '{{ asset($organisasi->gambar) }}'"
-                                class="rounded-lg shadow-lg max-w-4xl w-full cursor-pointer transition hover:opacity-90">
-                        @else
-                            <img src="https://placehold.co/800x400/e2e8f0/334155?text=Struktur+Organisasi"
-                                alt="Struktur Organisasi" class="rounded-lg shadow-lg max-w-4xl w-full">
-                        @endif
-                    </div>
-
-                    <div x-show="open" @click.away="open = false" @keydown.escape.window="open = false"
-                        x-transition.opacity.duration.300ms
-                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75" x-cloak>
-                        <div class="relative max-w-4xl max-h-[90vh] mx-4">
-                            <img x-show="open" :src="selectedImage" alt="Struktur Organisasi diperbesar"
-                                class="rounded-lg object-contain max-h-[90vh]">
-
-                            <button @click="open = false"
-                                class="absolute -top-5 -right-5 h-12 w-12 bg-white rounded-full text-gray-800 text-3xl font-bold flex items-center justify-center shadow-lg">
-                                &times;
-                            </button>
-                        </div>
-                    </div>
-                </section>
+                <div class="border-b border-gray-300"></div>
 
                 <section class="mb-12">
+                    <h2 class="text-3xl font-bold text-center text-gray-900 mb-10">Galeri Kegiatan</h2>
                     <div class="bg-white rounded-2xl p-8 md:p-12 shadow-inner">
-                        <h2 class="text-3xl font-bold text-center text-gray-900 mb-10">Galeri Kegiatan</h2>
-
                         {{-- Cek apakah galeri memiliki data --}}
                         @if ($galeri->isNotEmpty())
                             {{-- JIKA ADA DATA: Tampilkan slider galeri seperti biasa --}}
@@ -324,6 +295,71 @@
 
                     </div>
                 </section>
+
+                <div class="border-b border-gray-300"></div>
+
+                    <section class="mb-12">
+                        <div class="container mx-auto px-4">
+                            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 md:mb-12">
+                                Struktur Pengurus Masjid
+                            </h2>
+
+                            @php
+                                $grouped = $organisasi->groupBy('divisi');
+                                // Urutan tampilan yang diinginkan
+                                $urutanTampil = [
+                                    'Penasehat',
+                                    'Ketua',
+                                    'Wakil Ketua',
+                                    'Sekretaris',
+                                    'Bendahara',
+                                    'Seksi Dakwah',
+                                    'Seksi Pembangunan',
+                                    'Seksi Pemuda & Kader',
+                                    'Seksi Rumah Tangga',
+                                    'Seksi Sosial',
+                                    'Seksi Keamanan',
+                                    'Seksi Keputrian',
+                                ];
+                            @endphp
+
+                            {{-- GRID TAMPILAN --}}
+                            <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                                @foreach ($urutanTampil as $posisi)
+                                    @if (isset($grouped[$posisi]))
+                                        <div
+                                            class="break-inside-avoid bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mb-6">
+                                            <div class="bg-indigo-600 px-4 py-2">
+                                                <h3 class="text-lg font-semibold text-white text-center tracking-wide">
+                                                    {{ $posisi }}</h3>
+                                            </div>
+                                            <div class="divide-y bg-white">
+                                                @foreach ($grouped[$posisi] as $anggota)
+                                                    <div
+                                                        class="flex items-center gap-3 p-4">
+                                                        <div
+                                                            class="w-10 h-10 rounded-full bg-gray-100 text-indigo-600 flex items-center justify-center flex-shrink-0">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                            </svg>
+                                                        </div>
+                                                        <div>
+                                                            <p
+                                                                class="font-semibold text-gray-900 text-base leading-tight">
+                                                                {{ $anggota->nama }}</p>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </section>
 
             </div>
         </main>
