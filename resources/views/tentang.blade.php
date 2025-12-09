@@ -23,15 +23,15 @@
                             <p class="text-base md:text-lg text-gray-600 leading-relaxed">
                                 Masjid Jami Aisyah, awalnya bernama <span class="font-semibold text-indigo-600">Masjid
                                     Al-Amin</span>,
-                                didirikan pada tahun 1984 di atas tanah wakaf dan mulai digunakan pada 1985.
-                                Setelah beberapa kali renovasi, masjid ini dibangun ulang secara total pada tahun 2015
-                                berkat bantuan dari Yayasan Bina Muwahhidin dan donatur lainnya dengan total biaya
+                                didirikan pada tahun 1984 di atas tanah wakaf dan mulai digunakan pada 1985. Masjid ini
+                                merupakan wakaf yang dikelola oleh Muhammadiyah. Setelah beberapa kali renovasi, masjid
+                                dibangun ulang secara total pada tahun 2015 berkat bantuan dari Yayasan Bina Muwahhidin
+                                dan donatur lainnya dengan total biaya
                                 <span class="font-semibold text-gray-800">1,2 Milyar Rupiah</span>.
                                 <br><br>
                                 Pada 5 Juni 2016, masjid baru beserta gedung TK diresmikan dengan nama
-                                <span class="font-semibold text-indigo-600">Masjid Jami Aisyah binti Abdul Aziz
-                                    Al-Musa</span>,
-                                sebagai penghormatan kepada donatur utama dari Arab Saudi.
+                                <span class="font-semibold text-indigo-600">ma Masjid Jami Aisyah binti Abdul Aziz
+                                    Al-Musa</span>, sebagai penghormatan kepada donatur utama dari Arab Saudi.
                             </p>
                         </div>
 
