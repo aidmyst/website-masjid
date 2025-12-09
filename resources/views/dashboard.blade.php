@@ -550,7 +550,7 @@
                             </div>
                         </form>
                     </div>
-                    
+
                     {{-- Tabel Daftar Pengurus --}}
                     @if ($organisasi->isEmpty())
                         {{-- TAMPILAN JIKA KOSONG --}}
@@ -826,9 +826,8 @@
                 <div x-show="tab === 'kajian'" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm space-y-6">
                     <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">Tambah Jadwal Kajian</h3>
 
-                    <!-- Form tambah -->
                     <form action="{{ route('kajian.store') }}" method="POST"
-                        class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"> {{-- gap antar kolom & jarak ke tabel --}}
+                        class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         @csrf
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">Tanggal</label>
@@ -837,7 +836,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">Waktu</label>
-                            <input type="text" name="waktu"
+                            <input type="text" name="waktu" placeholder="Contoh: 18:00 - Selesai"
                                 class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
                         <div>
@@ -853,165 +852,239 @@
                         </div>
                         <div class="col-span-full">
                             <button type="submit"
-                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md shadow">
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md shadow w-full md:w-auto">
                                 Tambah
                             </button>
                         </div>
                     </form>
 
-                    <!-- Tabel Jadwal Kajian -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-collapse rounded-lg shadow-sm overflow-hidden">
-                            <thead class="bg-indigo-600 text-white hidden sm:table-header-group">
+                    {{-- ================================================= --}}
+                    {{-- 💻 DESKTOP VIEW (Tabel) --}}
+                    {{-- ================================================= --}}
+                    <div class="hidden md:block overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-white uppercase bg-indigo-600">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                        Tanggal</th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                        Waktu</th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                        Tema
-                                    </th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                        Pemateri</th>
-                                    <th class="px-6 py-3 text-center text-xs font-bold tracking-wider uppercase">
-                                        Aksi</th>
+                                    <th class="px-6 py-3">Tanggal</th>
+                                    <th class="px-6 py-3">Waktu</th>
+                                    <th class="px-6 py-3">Tema</th>
+                                    <th class="px-6 py-3">Pemateri</th>
+                                    <th class="px-6 py-3 text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                                 @foreach ($kajian as $item)
-                                    <tr class="block sm:table-row mb-4 sm:mb-0">
-                                        <td class="sm:table-cell block px-6 py-2 text-gray-100">
-                                            <span class="font-semibold sm:hidden text-gray-100">Tanggal: </span>
+                                    {{-- Gunakan x-data untuk modal desktop juga agar konsisten --}}
+                                    <tr x-data="{ openModal: false }" class="bg-white dark:bg-gray-800">
+                                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                             {{ \Carbon\Carbon::parse($item->hari)->locale('id')->translatedFormat('j F Y') }}
                                         </td>
-                                        <td class="sm:table-cell block px-6 py-2 text-gray-100">
-                                            <span class="font-semibold sm:hidden text-gray-100">Waktu: </span>
-                                            {{ $item->waktu }}
-                                        </td>
-                                        <td class="sm:table-cell block px-6 py-2 text-gray-100">
-                                            <span class="font-semibold sm:hidden text-gray-100">Tema: </span>
-                                            {{ $item->tema }}
-                                        </td>
-                                        <td class="sm:table-cell block px-6 py-2 text-gray-100">
-                                            <span class="font-semibold sm:hidden text-gray-100">Pemateri: </span>
-                                            {{ $item->pemateri }}
-                                        </td>
-                                        <td class="sm:table-cell block px-6 py-2 text-gray-100">
-                                            <div class="flex flex-col sm:flex-row gap-2 mt-2 justify-center">
-                                                <!-- Tombol Edit -->
-                                                <button onclick="openModal('editModal-{{ $item->id }}')"
-                                                    class="w-full sm:w-auto bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow text-center">
+                                        <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $item->waktu }}</td>
+                                        <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $item->tema }}</td>
+                                        <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $item->pemateri }}</td>
+                                        <td class="px-6 py-4 text-center">
+                                            <div class="flex justify-center gap-2">
+                                                <button @click="openModal = true"
+                                                    class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow">
                                                     Edit
                                                 </button>
-
-                                                <!-- Tombol Hapus -->
                                                 <form action="{{ route('kajian.destroy', $item->id) }}"
-                                                    method="POST" onsubmit="return confirm('Yakin hapus data ini?')"
-                                                    class="w-full sm:w-auto">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button
-                                                        class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm shadow text-center">
+                                                    method="POST"
+                                                    onsubmit="return confirm('Yakin hapus jadwal ini?');">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit"
+                                                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm shadow">
                                                         Hapus
                                                     </button>
                                                 </form>
                                             </div>
 
-                                            <!-- Modal Edit Khusus Item Ini -->
-                                            <div id="editModal-{{ $item->id }}"
-                                                class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                                            {{-- MODAL EDIT (DESKTOP) --}}
+                                            <div x-show="openModal" x-cloak
+                                                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-left">
                                                 <div
                                                     class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg">
                                                     <h3
-                                                        class="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                                                        Edit Jadwal Kajian
+                                                        class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                                        Edit Jadwal
                                                     </h3>
-
                                                     <form action="{{ route('kajian.update', $item->id) }}"
-                                                        method="POST" class="space-y-5">
-                                                        @csrf
-                                                        @method('PUT')
-
+                                                        method="POST" class="space-y-4">
+                                                        @csrf @method('PUT')
                                                         <div>
                                                             <label
-                                                                class="block text-sm font-medium text-gray-900 dark:text-white mb-2 mt-3 ">Tanggal</label>
+                                                                class="block text-sm text-gray-700 dark:text-gray-300">Tanggal</label>
                                                             <input type="date" name="hari"
-                                                                class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500 custom-date-icon"
-                                                                value="{{ \Carbon\Carbon::parse($item->hari)->format('Y-m-d') }}">
+                                                                value="{{ \Carbon\Carbon::parse($item->hari)->format('Y-m-d') }}"
+                                                                class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white p-2 mt-1">
                                                         </div>
-
                                                         <div>
                                                             <label
-                                                                class="block text-sm font-medium text-gray-900 dark:text-white mb-2 mt-3">Waktu</label>
+                                                                class="block text-sm text-gray-700 dark:text-gray-300">Waktu</label>
                                                             <input type="text" name="waktu"
-                                                                class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
-                                                                value="{{ $item->waktu }}">
+                                                                value="{{ $item->waktu }}"
+                                                                class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white p-2 mt-1">
                                                         </div>
-
                                                         <div>
                                                             <label
-                                                                class="block text-sm font-medium text-gray-900 dark:text-white mb-2 mt-3">Tema</label>
+                                                                class="block text-sm text-gray-700 dark:text-gray-300">Tema</label>
                                                             <input type="text" name="tema"
-                                                                class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
-                                                                value="{{ $item->tema }}">
+                                                                value="{{ $item->tema }}"
+                                                                class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white p-2 mt-1">
                                                         </div>
-
                                                         <div>
                                                             <label
-                                                                class="block text-sm font-medium text-gray-900 dark:text-white mb-2 mt-3">Pemateri</label>
+                                                                class="block text-sm text-gray-700 dark:text-gray-300">Pemateri</label>
                                                             <input type="text" name="pemateri"
-                                                                class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
-                                                                value="{{ $item->pemateri }}">
+                                                                value="{{ $item->pemateri }}"
+                                                                class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white p-2 mt-1">
                                                         </div>
-
-                                                        <div class="flex justify-end gap-3 pt-4">
-                                                            <button type="button"
-                                                                onclick="closeModal('editModal-{{ $item->id }}')"
-                                                                class="px-4 py-2 rounded-md bg-gray-500 hover:bg-gray-600 text-white shadow">
-                                                                Batal
-                                                            </button>
+                                                        <div class="flex justify-end gap-2 mt-4">
+                                                            <button type="button" @click="openModal = false"
+                                                                class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Batal</button>
                                                             <button type="submit"
-                                                                class="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white shadow">
-                                                                Simpan
-                                                            </button>
+                                                                class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Simpan</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
-                                            <!-- End Modal -->
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+
+                    {{-- ================================================= --}}
+                    {{-- 📱 MOBILE VIEW (Card Style ala Organisasi) --}}
+                    {{-- ================================================= --}}
+                    <div class="md:hidden space-y-3 mt-3">
+                        @foreach ($kajian as $item)
+                            <div x-data="{ openModal: false }"
+                                class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm">
+
+                                {{-- TANGGAL --}}
+                                <p class="text-xs text-gray-400">Tanggal</p>
+                                <p class="font-semibold text-gray-900 dark:text-white">
+                                    {{ \Carbon\Carbon::parse($item->hari)->locale('id')->translatedFormat('j F Y') }}
+                                </p>
+
+                                {{-- WAKTU --}}
+                                <p class="text-xs text-gray-400 mt-2">Waktu</p>
+                                <p class="text-gray-700 dark:text-gray-300 font-medium">
+                                    {{ $item->waktu }}
+                                </p>
+
+                                {{-- TEMA --}}
+                                <p class="text-xs text-gray-400 mt-2">Tema</p>
+                                <p class="text-gray-900 dark:text-white font-semibold">
+                                    {{ $item->tema }}
+                                </p>
+
+                                {{-- PEMATERI --}}
+                                <p class="text-xs text-gray-400 mt-2">Pemateri</p>
+                                <p class="text-gray-700 dark:text-gray-300">
+                                    {{ $item->pemateri }}
+                                </p>
+
+                                {{-- BUTTONS --}}
+                                <div class="flex gap-2 mt-4">
+                                    {{-- Edit Button --}}
+                                    <button @click="openModal=true"
+                                        class="w-1/2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition">
+                                        Edit
+                                    </button>
+
+                                    {{-- Delete Button --}}
+                                    <form action="{{ route('kajian.destroy', $item->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin hapus jadwal ini?')" class="w-1/2">
+                                        @csrf @method('DELETE')
+                                        <button
+                                            class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+
+                                {{-- MOBILE MODAL (AlpineJS) --}}
+                                <div x-show="openModal" x-cloak
+                                    class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                                    <div class="bg-gray-800 p-6 rounded-lg w-11/12 max-w-sm text-white shadow-lg">
+                                        <h3 class="text-lg font-semibold mb-4 text-center">Edit Jadwal Kajian</h3>
+
+                                        <form action="{{ route('kajian.update', $item->id) }}" method="POST"
+                                            class="space-y-3">
+                                            @csrf @method('PUT')
+
+                                            <div>
+                                                <label class="text-sm text-gray-300">Tanggal</label>
+                                                <input type="date" name="hari"
+                                                    value="{{ \Carbon\Carbon::parse($item->hari)->format('Y-m-d') }}"
+                                                    class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                                            </div>
+
+                                            <div>
+                                                <label class="text-sm text-gray-300">Waktu</label>
+                                                <input type="text" name="waktu" value="{{ $item->waktu }}"
+                                                    class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                                            </div>
+
+                                            <div>
+                                                <label class="text-sm text-gray-300">Tema</label>
+                                                <input type="text" name="tema" value="{{ $item->tema }}"
+                                                    class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                                            </div>
+
+                                            <div>
+                                                <label class="text-sm text-gray-300">Pemateri</label>
+                                                <input type="text" name="pemateri" value="{{ $item->pemateri }}"
+                                                    class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                                            </div>
+
+                                            <div class="flex justify-end gap-2 mt-4">
+                                                <button type="button" @click="openModal=false"
+                                                    class="px-3 py-1 bg-gray-600 rounded hover:bg-gray-500">Batal</button>
+                                                <button type="submit"
+                                                    class="px-3 py-1 bg-indigo-600 rounded hover:bg-indigo-500">Simpan</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                {{-- END MOBILE MODAL --}}
+                            </div>
+                        @endforeach
+                    </div>
+
                 </div>
 
                 <div x-show="tab === 'donasi'" x-cloak
                     class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm space-y-8">
 
-                    {{-- Form Kelola Rekening --}}
+                    {{-- 1. Form Kelola Rekening (Tidak Berubah) --}}
                     <div>
-                        <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">Kelola Informasi
-                            Rekening</h3>
+                        <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">Kelola Informasi Rekening
+                        </h3>
                         <form action="{{ route('donasi.rekening.update') }}" method="POST"
                             enctype="multipart/form-data"
                             class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                             @csrf
                             <div>
-                                <label class="block text-sm font-medium text-gray-100">Nama Bank</label>
+                                <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Nama
+                                    Bank</label>
                                 <input type="text" name="nama_bank"
                                     value="{{ old('nama_bank', $rekening->nama_bank ?? '') }}"
                                     class="mt-1 block w-full h-10 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-100">Nomor Rekening</label>
+                                <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Nomor
+                                    Rekening</label>
                                 <input type="text" name="nomor_rekening"
                                     value="{{ old('nomor_rekening', $rekening->nomor_rekening ?? '') }}"
                                     class="mt-1 block w-full h-10 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-100">Atas Nama</label>
+                                <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Atas
+                                    Nama</label>
                                 <input type="text" name="atas_nama"
                                     value="{{ old('atas_nama', $rekening->atas_nama ?? '') }}"
                                     class="mt-1 block w-full h-10 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white">
@@ -1024,26 +1097,22 @@
                         </form>
                     </div>
 
-                    <div class="border-t border-gray-600"></div>
+                    <div class="border-t border-gray-300 dark:border-gray-600"></div>
 
+                    {{-- 2. Daftar Konfirmasi Donasi --}}
                     <div class="mt-8" x-data="{ kategoriFilter: '' }">
-                        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2 gap-4">
 
-                            {{-- Judul Tabel --}}
-                            <h4 class="font-semibold text-gray-100 text-lg">Daftar Konfirmasi Donasi</h4>
-
-                            {{-- Dropdown Filter (Tanpa Form Submit) --}}
+                        {{-- Header & Filter --}}
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-gray-100 text-lg">Daftar Konfirmasi Donasi
+                            </h4>
                             <div class="w-full sm:w-auto">
                                 <div class="flex items-center space-x-2">
-
-                                    {{-- PERUBAHAN DI SINI --}}
-                                    <span class="text-base text-gray-300 hidden sm:block whitespace-nowrap">Pilih
+                                    <span
+                                        class="text-base text-gray-700 dark:text-gray-300 hidden sm:block whitespace-nowrap">Pilih
                                         Kategori:</span>
-
-                                    {{-- x-model akan mengubah nilai 'kategoriFilter' secara realtime --}}
                                     <select x-model="kategoriFilter"
                                         class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white dark:border-gray-600 cursor-pointer">
-
                                         <option value="">Semua Kategori</option>
                                         <option value="pintu_surga">Pintu Surga</option>
                                         <option value="bmt">BMT</option>
@@ -1054,252 +1123,295 @@
                             </div>
                         </div>
 
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse rounded-lg shadow-sm overflow-hidden">
-                                <thead class="bg-indigo-600 text-white hidden sm:table-header-group">
+                        {{-- ========================================== --}}
+                        {{-- 💻 DESKTOP VIEW (Tabel)                    --}}
+                        {{-- ========================================== --}}
+                        <div class="hidden md:block overflow-x-auto">
+                            <table
+                                class="w-full border-collapse rounded-lg shadow-sm overflow-hidden text-sm text-left">
+                                <thead class="bg-indigo-600 text-white uppercase text-xs">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                            Tanggal Konfirmasi</th>
-                                        <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                            Donatur</th>
-                                        <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                            No. WA</th>
-                                        <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                            Kategori</th>
-                                        <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                            Nominal</th>
-                                        <th class="px-6 py-3 text-center text-xs font-bold tracking-wider uppercase">
-                                            Bukti TF</th>
-                                        <th class="px-6 py-3 text-center text-xs font-bold tracking-wider uppercase">
-                                            Aksi</th>
+                                        <th class="px-6 py-3">Tanggal</th>
+                                        <th class="px-6 py-3">Donatur</th>
+                                        <th class="px-6 py-3">No. WA</th>
+                                        <th class="px-6 py-3">Kategori</th>
+                                        <th class="px-6 py-3">Nominal</th>
+                                        <th class="px-6 py-3 text-center">Bukti TF</th>
+                                        <th class="px-6 py-3 text-center">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
-
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
                                     @forelse($konfirmasiDonasi as $konfirmasi)
-                                        {{-- LOGIKA ALPINE JS DI SINI --}}
-                                        {{-- Baris akan TAMPIL jika filter kosong ATAU filter cocok dengan kategori data --}}
-                                        <tr class="block sm:table-row mb-4 sm:mb-0 transition-all duration-300"
-                                            x-show="kategoriFilter === '' || kategoriFilter === '{{ $konfirmasi->kategori }}'">
+                                        <tr x-show="kategoriFilter === '' || kategoriFilter === '{{ $konfirmasi->kategori }}'"
+                                            x-data="{ openModal: false }"
+                                            class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
 
-                                            {{-- KOLOM: TANGGAL --}}
-                                            <td class="sm:table-cell block px-6 py-2 text-gray-200">
-                                                <span class="font-semibold sm:hidden">Tanggal: </span>
+                                            {{-- Data Columns --}}
+                                            <td class="px-6 py-4 text-gray-900 dark:text-white">
                                                 {{ \Carbon\Carbon::parse($konfirmasi->created_at)->locale('id')->isoFormat('D MMM Y') }}
                                             </td>
-
-                                            {{-- KOLOM NAMA DONATUR --}}
-                                            <td class="sm:table-cell block px-6 py-2 text-gray-200">
-                                                <span class="font-semibold sm:hidden">Donatur: </span>
+                                            <td class="px-6 py-4 text-gray-900 dark:text-white">
                                                 {{ $konfirmasi->donatur->nama ?? 'N/A' }}
                                             </td>
-
-                                            {{-- KOLOM NO. WA --}}
-                                            <td class="sm:table-cell block px-6 py-2 text-gray-200">
-                                                <span class="font-semibold sm:hidden">No. WA: </span>
+                                            <td class="px-6 py-4 text-gray-900 dark:text-white">
                                                 {{ $konfirmasi->donatur->no_wa ?? 'N/A' }}
                                             </td>
-
-                                            {{-- KOLOM KATEGORI --}}
-                                            <td class="sm:table-cell block px-6 py-2 text-gray-200">
-                                                <span class="font-semibold sm:hidden">Kategori: </span>
+                                            <td class="px-6 py-4 text-gray-900 dark:text-white">
                                                 {{ ucwords(str_replace('_', ' ', $konfirmasi->kategori)) }}
                                             </td>
-
-                                            {{-- KOLOM NOMINAL --}}
-                                            <td class="sm:table-cell block px-6 py-2 text-gray-200">
-                                                <span class="font-semibold sm:hidden">Nominal: </span>
+                                            <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">
                                                 Rp {{ number_format($konfirmasi->nominal, 0, ',', '.') }}
                                             </td>
-
-                                            {{-- KOLOM BUKTI TF --}}
-                                            <td class="sm:table-cell block px-6 py-2 text-center">
+                                            <td class="px-6 py-4 text-center">
                                                 <a href="{{ asset('storage/' . $konfirmasi->bukti_tf) }}"
                                                     target="_blank"
-                                                    class="text-indigo-400 hover:text-indigo-300 underline text-sm">
-                                                    Lihat Bukti
-                                                </a>
+                                                    class="text-indigo-600 dark:text-indigo-400 hover:underline">Lihat</a>
                                             </td>
-
-                                            {{-- KOLOM AKSI --}}
-                                            <td class="sm:table-cell block px-6 py-2 text-center">
-                                                <div class="flex flex-col sm:flex-row gap-2 mt-2 justify-center">
-
-                                                    {{-- Tombol Edit --}}
-                                                    <button onclick="openModal('editModal-{{ $konfirmasi->id }}')"
-                                                        class="w-full sm:w-auto bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow text-center">
+                                            <td class="px-6 py-4 text-center">
+                                                <div class="flex justify-center gap-2">
+                                                    <button @click="openModal = true"
+                                                        class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded shadow text-xs">
                                                         Edit
                                                     </button>
-
-                                                    {{-- Tombol Hapus --}}
                                                     <form
                                                         action="{{ route('donasi.konfirmasi.destroy', $konfirmasi->id) }}"
                                                         method="POST"
-                                                        onsubmit="return confirm('Yakin tolak/hapus konfirmasi ini?')"
-                                                        class="w-full sm:w-auto">
-                                                        @csrf
-                                                        @method('DELETE')
+                                                        onsubmit="return confirm('Yakin hapus data ini?')">
+                                                        @csrf @method('DELETE')
                                                         <button type="submit"
-                                                            class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm shadow text-center">
+                                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded shadow text-xs">
                                                             Hapus
                                                         </button>
                                                     </form>
                                                 </div>
 
-                                                {{-- Modal Edit --}}
-                                                <div id="editModal-{{ $konfirmasi->id }}"
-                                                    class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                                                {{-- MODAL EDIT (Desktop) --}}
+                                                <div x-show="openModal" x-cloak
+                                                    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-left">
                                                     <div
-                                                        class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg text-left">
-                                                        {{-- ← tambahkan text-left --}}
-
+                                                        class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg">
                                                         <h3
                                                             class="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                                                            Edit Konfirmasi Donasi
-                                                        </h3>
-
+                                                            Edit Konfirmasi Donasi</h3>
                                                         <form
                                                             action="{{ route('donasi.konfirmasi.update', $konfirmasi->id) }}"
-                                                            method="POST" class="space-y-5">
-                                                            @csrf
-                                                            @method('PUT')
-
-                                                            {{-- Nama Donatur --}}
+                                                            method="POST" class="space-y-4">
+                                                            @csrf @method('PUT')
                                                             <div>
                                                                 <label
-                                                                    class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                                                                    Nama Donatur
-                                                                </label>
+                                                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama
+                                                                    Donatur</label>
                                                                 <input type="text" name="nama"
-                                                                    class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
-                                                                    value="{{ $konfirmasi->donatur->nama ?? '' }}">
+                                                                    value="{{ $konfirmasi->donatur->nama ?? '' }}"
+                                                                    class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white mt-1">
                                                             </div>
-
-                                                            {{-- Nomor WA --}}
                                                             <div>
                                                                 <label
-                                                                    class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                                                                    Nomor WA
-                                                                </label>
+                                                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor
+                                                                    WA</label>
                                                                 <input type="text" name="no_wa"
-                                                                    class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
-                                                                    value="{{ $konfirmasi->donatur->no_wa ?? '' }}">
+                                                                    value="{{ $konfirmasi->donatur->no_wa ?? '' }}"
+                                                                    class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white mt-1">
                                                             </div>
-
-                                                            {{-- Nominal --}}
                                                             <div>
                                                                 <label
-                                                                    class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                                                                    Nominal Donasi
-                                                                </label>
-
+                                                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nominal</label>
                                                                 <input type="text" name="nominal"
-                                                                    id="nominal-{{ $konfirmasi->id }}"
-                                                                    class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
                                                                     value="{{ number_format($konfirmasi->nominal, 0, ',', '.') }}"
-                                                                    oninput="formatRupiah(this)">
+                                                                    oninput="formatRupiah(this)"
+                                                                    class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white mt-1">
                                                             </div>
-
-                                                            {{-- Tombol --}}
-                                                            <div class="flex justify-end gap-3 pt-4">
-                                                                <button type="button"
-                                                                    onclick="closeModal('editModal-{{ $konfirmasi->id }}')"
-                                                                    class="px-4 py-2 rounded-md bg-gray-500 hover:bg-gray-600 text-white shadow">
-                                                                    Batal
-                                                                </button>
+                                                            <div class="flex justify-end gap-2 mt-4">
+                                                                <button type="button" @click="openModal = false"
+                                                                    class="px-4 py-2 bg-gray-500 text-white rounded">Batal</button>
                                                                 <button type="submit"
-                                                                    class="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white shadow">
-                                                                    Simpan
-                                                                </button>
+                                                                    class="px-4 py-2 bg-indigo-600 text-white rounded">Simpan</button>
                                                             </div>
                                                         </form>
-
                                                     </div>
                                                 </div>
-
-                                                {{-- End Modal --}}
                                             </td>
-
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="px-6 py-4 text-center text-gray-400">
-                                                Belum ada data konfirmasi donasi sama sekali.
+                                            <td colspan="7"
+                                                class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                                                Belum ada data konfirmasi donasi.
                                             </td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
+
+                        {{-- ========================================== --}}
+                        {{-- 📱 MOBILE VIEW (Card Style)                --}}
+                        {{-- ========================================== --}}
+                        <div class="md:hidden space-y-3">
+                            @forelse($konfirmasiDonasi as $konfirmasi)
+                                <div x-data="{ openModal: false }"
+                                    x-show="kategoriFilter === '' || kategoriFilter === '{{ $konfirmasi->kategori }}'"
+                                    class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm transition-all duration-300">
+
+                                    {{-- Tanggal --}}
+                                    <p class="text-xs text-gray-400">
+                                        {{ \Carbon\Carbon::parse($konfirmasi->created_at)->locale('id')->isoFormat('D MMM Y') }}
+                                    </p>
+
+                                    {{-- Nama Donatur (Judul) --}}
+                                    <h5 class="font-bold text-gray-900 dark:text-white text-lg mt-1">
+                                        {{ $konfirmasi->donatur->nama ?? 'Tanpa Nama' }}
+                                    </h5>
+
+                                    {{-- Kategori Badge --}}
+                                    <span
+                                        class="inline-block px-2 py-1 text-xs font-semibold rounded bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200 mt-2">
+                                        {{ ucwords(str_replace('_', ' ', $konfirmasi->kategori)) }}
+                                    </span>
+
+                                    <div class="mt-3 space-y-1">
+                                        {{-- Nominal --}}
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-500 dark:text-gray-400">Nominal:</span>
+                                            <span class="font-semibold text-gray-900 dark:text-white">
+                                                Rp {{ number_format($konfirmasi->nominal, 0, ',', '.') }}
+                                            </span>
+                                        </div>
+                                        {{-- WA --}}
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-500 dark:text-gray-400">WhatsApp:</span>
+                                            <span class="text-gray-700 dark:text-gray-300">
+                                                {{ $konfirmasi->donatur->no_wa ?? '-' }}
+                                            </span>
+                                        </div>
+                                        {{-- Bukti TF --}}
+                                        <div class="flex justify-between text-sm items-center">
+                                            <span class="text-gray-500 dark:text-gray-400">Bukti:</span>
+                                            <a href="{{ asset('storage/' . $konfirmasi->bukti_tf) }}"
+                                                target="_blank" class="text-blue-500 hover:underline text-xs">Lihat
+                                                Gambar</a>
+                                        </div>
+                                    </div>
+
+                                    {{-- ACTION BUTTONS --}}
+                                    <div class="flex gap-2 mt-4 border-t dark:border-gray-700 pt-3">
+                                        <button @click="openModal = true"
+                                            class="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 rounded-md text-sm font-medium transition">
+                                            Edit
+                                        </button>
+
+                                        <form action="{{ route('donasi.konfirmasi.destroy', $konfirmasi->id) }}"
+                                            method="POST" onsubmit="return confirm('Yakin hapus data ini?')"
+                                            class="flex-1">
+                                            @csrf @method('DELETE')
+                                            <button type="submit"
+                                                class="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium transition">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    {{-- MOBILE MODAL (AlpineJS) --}}
+                                    <div x-show="openModal" x-cloak
+                                        class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                                        <div class="bg-gray-800 p-6 rounded-lg w-11/12 max-w-sm text-white shadow-lg">
+                                            <h3 class="text-lg font-semibold mb-4 text-center">Edit Donasi</h3>
+
+                                            <form action="{{ route('donasi.konfirmasi.update', $konfirmasi->id) }}"
+                                                method="POST" class="space-y-3">
+                                                @csrf @method('PUT')
+
+                                                <div>
+                                                    <label class="text-sm text-gray-300">Nama Donatur</label>
+                                                    <input type="text" name="nama"
+                                                        value="{{ $konfirmasi->donatur->nama ?? '' }}"
+                                                        class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                                                </div>
+                                                <div>
+                                                    <label class="text-sm text-gray-300">Nomor WA</label>
+                                                    <input type="text" name="no_wa"
+                                                        value="{{ $konfirmasi->donatur->no_wa ?? '' }}"
+                                                        class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                                                </div>
+                                                <div>
+                                                    <label class="text-sm text-gray-300">Nominal</label>
+                                                    <input type="text" name="nominal"
+                                                        value="{{ number_format($konfirmasi->nominal, 0, ',', '.') }}"
+                                                        oninput="formatRupiah(this)"
+                                                        class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                                                </div>
+
+                                                <div class="flex justify-end gap-2 mt-4">
+                                                    <button type="button" @click="openModal=false"
+                                                        class="px-3 py-1 bg-gray-600 rounded hover:bg-gray-500">Batal</button>
+                                                    <button type="submit"
+                                                        class="px-3 py-1 bg-indigo-600 rounded hover:bg-indigo-500">Simpan</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    {{-- END MOBILE MODAL --}}
+
+                                </div>
+                            @empty
+                                <div
+                                    class="text-center p-6 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                                    Belum ada data konfirmasi donasi.
+                                </div>
+                            @endforelse
+                        </div>
+
                     </div>
                 </div>
 
                 <div x-show="tab === 'donatur'" x-cloak class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
 
-                    {{-- 1. Judul diubah warnanya agar terlihat di card --}}
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Daftar Akun Donatur
-                        (Jamaah)</h3>
+                    {{-- Judul Header --}}
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">
+                        Daftar Akun Donatur (Jamaah)
+                    </h3>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-collapse rounded-lg shadow-sm overflow-hidden">
-                            <thead class="bg-indigo-600 text-white hidden sm:table-header-group">
+                    {{-- ================================================= --}}
+                    {{-- 💻 DESKTOP VIEW (Tabel)                           --}}
+                    {{-- ================================================= --}}
+                    <div class="hidden md:block overflow-x-auto">
+                        <table class="w-full border-collapse rounded-lg shadow-sm overflow-hidden text-sm text-left">
+                            <thead class="bg-indigo-600 text-white uppercase text-xs">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">Nama
-                                        Donatur</th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">No.
-                                        WhatsApp</th>
-                                    <th class="px-6 py-3 text-left text-xs font-bold tracking-wider uppercase">
-                                        Tanggal Terdaftar</th>
-                                    <th class="px-6 py-3 text-center text-xs font-bold tracking-wider uppercase">
-                                        Aksi</th>
+                                    <th class="px-6 py-3 font-bold tracking-wider">Nama Donatur</th>
+                                    <th class="px-6 py-3 font-bold tracking-wider">No. WhatsApp</th>
+                                    <th class="px-6 py-3 font-bold tracking-wider">Tanggal Terdaftar</th>
+                                    <th class="px-6 py-3 font-bold tracking-wider text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
-
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
                                 @forelse($donaturs as $donatur)
-                                    <tr class="block sm:table-row mb-4 sm:mb-0">
-
-                                        {{-- 2. Warna teks diubah agar terbaca di mode terang & gelap --}}
-                                        <td class="sm:table-cell block px-6 py-2 text-gray-900 dark:text-gray-200">
-                                            {{-- 3. Warna label mobile juga diubah --}}
-                                            <span
-                                                class="font-semibold sm:hidden text-gray-600 dark:text-gray-400">Nama:
-                                            </span>
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                             {{ $donatur->nama }}
                                         </td>
-
-                                        <td class="sm:table-cell block px-6 py-2 text-gray-900 dark:text-gray-200">
-                                            <span class="font-semibold sm:hidden text-gray-600 dark:text-gray-400">No.
-                                                WA: </span>
+                                        <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
                                             {{ $donatur->no_wa }}
                                         </td>
-
-                                        <td class="sm:table-cell block px-6 py-2 text-gray-900 dark:text-gray-200">
-                                            <span
-                                                class="font-semibold sm:hidden text-gray-600 dark:text-gray-400">Terdaftar:
-                                            </span>
+                                        <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
                                             {{ $donatur->created_at->locale('id')->isoFormat('D MMMM YYYY') }}
                                         </td>
-
-                                        <td class="sm:table-cell block px-6 py-2 text-center">
-                                            <div class="flex flex-col sm:flex-row gap-2 mt-2 justify-center">
-                                                <form action="{{ route('donatur.destroy', $donatur->id) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('Yakin hapus akun donatur ini? Tindakan ini tidak bisa dibatalkan.')"
-                                                    class="w-full sm:w-auto">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm shadow text-center">
-                                                        Hapus
-                                                    </button>
-                                                </form>
-                                            </div>
+                                        <td class="px-6 py-4 text-center">
+                                            <form action="{{ route('donatur.destroy', $donatur->id) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Yakin hapus akun donatur ini? Tindakan ini tidak bisa dibatalkan.')">
+                                                @csrf @method('DELETE')
+                                                <button type="submit"
+                                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs shadow transition">
+                                                    Hapus
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center text-gray-400">
+                                        <td colspan="4"
+                                            class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                                             Belum ada donatur yang mendaftar.
                                         </td>
                                     </tr>
@@ -1307,6 +1419,56 @@
                             </tbody>
                         </table>
                     </div>
+
+                    {{-- ================================================= --}}
+                    {{-- 📱 MOBILE VIEW (Card Style)                       --}}
+                    {{-- ================================================= --}}
+                    <div class="md:hidden space-y-3">
+                        @forelse($donaturs as $donatur)
+                            <div
+                                class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm">
+
+                                {{-- Nama Donatur --}}
+                                <p class="text-xs text-gray-400">Nama Donatur</p>
+                                <p class="font-bold text-gray-900 dark:text-white text-lg mb-2">
+                                    {{ $donatur->nama }}
+                                </p>
+
+                                <div class="grid grid-cols-2 gap-2 mb-4">
+                                    {{-- No WA --}}
+                                    <div>
+                                        <p class="text-xs text-gray-400">WhatsApp</p>
+                                        <p class="text-gray-700 dark:text-gray-300 text-sm font-medium">
+                                            {{ $donatur->no_wa }}
+                                        </p>
+                                    </div>
+                                    {{-- Tanggal --}}
+                                    <div>
+                                        <p class="text-xs text-gray-400">Terdaftar</p>
+                                        <p class="text-gray-700 dark:text-gray-300 text-sm">
+                                            {{ $donatur->created_at->locale('id')->isoFormat('D MMM Y') }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {{-- Action Button --}}
+                                <form action="{{ route('donatur.destroy', $donatur->id) }}" method="POST"
+                                    onsubmit="return confirm('Yakin hapus akun donatur ini?')">
+                                    @csrf @method('DELETE')
+                                    <button type="submit"
+                                        class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition shadow-sm">
+                                        Hapus Akun
+                                    </button>
+                                </form>
+                            </div>
+                        @empty
+                            <div
+                                class="text-center p-6 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900 rounded-lg border dark:border-gray-700">
+                                <p>Belum ada donatur yang mendaftar.</p>
+                            </div>
+                        @endforelse
+                    </div>
+
                 </div>
             </div>
         </div>
