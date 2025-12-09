@@ -304,14 +304,6 @@
                             Struktur Pengurus Masjid
                         </h2>
 
-                        {{-- CEK APAKAH ADA DATA --}}
-                        @if ($organisasi->isEmpty())
-                            <div class="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                                <p class="text-lg font-medium text-gray-500">Data pengurus belum ditambahkan</p>
-                                <p class="text-sm text-gray-400">Silakan hubungi admin untuk informasi lebih lanjut.
-                                </p>
-                            </div>
-                        @else
                             @php
                                 $grouped = $organisasi->groupBy('divisi');
                                 // Urutan tampilan yang diinginkan
@@ -371,7 +363,9 @@
                 </section>
 
             </div>
-        </main>
+
+    </div>
+    </main>
     </div>
 
     {{-- FOOTER --}}
