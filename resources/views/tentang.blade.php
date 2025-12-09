@@ -298,12 +298,20 @@
 
                 <div class="border-b border-gray-300"></div>
 
-                    <section class="mb-12">
-                        <div class="container mx-auto px-4">
-                            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 md:mb-12">
-                                Struktur Pengurus Masjid
-                            </h2>
+                <section class="mb-12">
+                    <div class="container mx-auto px-4">
+                        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-6 md:mb-12">
+                            Struktur Pengurus Masjid
+                        </h2>
 
+                        {{-- CEK APAKAH ADA DATA --}}
+                        @if ($organisasi->isEmpty())
+                            <div class="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                                <p class="text-lg font-medium text-gray-500">Data pengurus belum ditambahkan</p>
+                                <p class="text-sm text-gray-400">Silakan hubungi admin untuk informasi lebih lanjut.
+                                </p>
+                            </div>
+                        @else
                             @php
                                 $grouped = $organisasi->groupBy('divisi');
                                 // Urutan tampilan yang diinginkan
@@ -335,12 +343,12 @@
                                             </div>
                                             <div class="divide-y bg-white">
                                                 @foreach ($grouped[$posisi] as $anggota)
-                                                    <div
-                                                        class="flex items-center gap-3 p-4">
+                                                    <div class="flex items-center gap-3 p-4">
                                                         <div
                                                             class="w-10 h-10 rounded-full bg-gray-100 text-indigo-600 flex items-center justify-center flex-shrink-0">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                fill="none" viewBox="0 0 24 24"
+                                                                stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                                     stroke-width="2"
                                                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -358,8 +366,9 @@
                                     @endif
                                 @endforeach
                             </div>
-                        </div>
-                    </section>
+                        @endif
+                    </div>
+                </section>
 
             </div>
         </main>

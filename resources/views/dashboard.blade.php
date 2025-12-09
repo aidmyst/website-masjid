@@ -552,249 +552,273 @@
                     </div>
 
                     {{-- Tabel Daftar Pengurus --}}
-                    <div class="overflow-hidden bg-white dark:bg-gray-800 rounded-lg">
+                    @if ($organisasi->isEmpty())
+                        {{-- TAMPILAN JIKA KOSONG --}}
+                        <div class="p-10 text-center">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Belum ada data pengurus</h3>
+                            <p class="mt-1 text-gray-500 dark:text-gray-400">Data pengurus belum ditambahkan. Silakan
+                                isi form di atas.
+                            </p>
+                        </div>
+                    @else
+                        {{-- TAMPILAN JIKA ADA DATA (TABEL & LIST) --}}
+                        <div class="overflow-hidden bg-white dark:bg-gray-800 rounded-lg shadow">
 
-                        {{-- DESKTOP VIEW --}}
-                        <div class="hidden md:block overflow-x-auto">
+                            {{-- DESKTOP VIEW --}}
+                            <div class="hidden md:block overflow-x-auto">
 
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-white uppercase bg-indigo-600">
-                                    <tr>
-                                        <th class="px-6 py-3">Nama Pengurus</th>
-                                        <th class="px-6 py-3">Posisi / Bagian</th>
-                                        <th class="px-6 py-3 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
+                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <thead class="text-xs text-white uppercase bg-indigo-600">
+                                        <tr>
+                                            <th class="px-6 py-3">Nama Pengurus</th>
+                                            <th class="px-6 py-3">Posisi / Bagian</th>
+                                            <th class="px-6 py-3 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
 
-                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                    @foreach ($organisasi as $item)
-                                        <tr x-data="{ showEditModal: false }">
-                                            <td class="px-6 py-4 text-gray-900 dark:text-white">
-                                                {{ $item->nama }}</td>
-                                            <td class="px-6 py-4 text-gray-900 dark:text-white">
-                                                {{ $item->divisi }}</td>
+                                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                        @foreach ($organisasi as $item)
+                                            <tr x-data="{ showEditModal: false }">
+                                                <td class="px-6 py-4 text-gray-900 dark:text-white">
+                                                    {{ $item->nama }}</td>
+                                                <td class="px-6 py-4 text-gray-900 dark:text-white">
+                                                    {{ $item->divisi }}</td>
 
-                                            <td class="px-6 py-4 text-center">
-                                                <div class="flex gap-2 justify-center">
+                                                <td class="px-6 py-4 text-center">
+                                                    <div class="flex gap-2 justify-center">
 
-                                                    {{-- EDIT BUTTON --}}
-                                                    <button @click="showEditModal = true"
-                                                        class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow">
-                                                        Edit
-                                                    </button>
-
-                                                    {{-- DELETE --}}
-                                                    <form action="{{ route('organisasi.destroy', $item->id) }}"
-                                                        method="POST" onsubmit="return confirm('Hapus data ini?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm shadow">
-                                                            Hapus
+                                                        {{-- EDIT BUTTON --}}
+                                                        <button @click="showEditModal = true"
+                                                            class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow">
+                                                            Edit
                                                         </button>
-                                                    </form>
-                                                </div>
 
-                                                {{-- MODAL DESKTOP --}}
-                                                <div x-show="showEditModal" x-cloak
-                                                    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-
-                                                    <div
-                                                        class="bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg text-left">
-
-                                                        <h3 class="text-lg font-semibold text-white mb-6">Edit Pengurus
-                                                        </h3>
-
-                                                        <form
-                                                            action="{{ route('organisasi.update', ['organisasi' => $item->id]) }}"
-                                                            method="POST" class="space-y-4">
+                                                        {{-- DELETE --}}
+                                                        <form action="{{ route('organisasi.destroy', $item->id) }}"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Yakin hapus data ini?');">
                                                             @csrf
-                                                            @method('PUT')
-
-                                                            <div>
-                                                                <label
-                                                                    class="block text-sm text-gray-300 mb-1">Nama</label>
-                                                                <input type="text" name="nama"
-                                                                    value="{{ $item->nama }}" required
-                                                                    class="w-full rounded-md dark:bg-gray-700 dark:text-white border-gray-600">
-                                                            </div>
-
-                                                            <div>
-                                                                <label class="block text-sm text-gray-300 mb-1">Posisi
-                                                                    / Bagian</label>
-                                                                <select name="divisi" required
-                                                                    class="w-full rounded-md dark:bg-gray-700 dark:text-white border-gray-600">
-                                                                    <optgroup label="Pimpinan">
-                                                                        <option value="Penasehat"
-                                                                            {{ $item->divisi == 'Penasehat' ? 'selected' : '' }}>
-                                                                            Penasehat</option>
-                                                                        <option value="Ketua"
-                                                                            {{ $item->divisi == 'Ketua' ? 'selected' : '' }}>
-                                                                            Ketua
-                                                                        </option>
-                                                                        <option value="Wakil Ketua"
-                                                                            {{ $item->divisi == 'Wakil Ketua' ? 'selected' : '' }}>
-                                                                            Wakil Ketua</option>
-                                                                        <option value="Sekretaris"
-                                                                            {{ $item->divisi == 'Sekretaris' ? 'selected' : '' }}>
-                                                                            Sekretaris</option>
-                                                                        <option value="Bendahara"
-                                                                            {{ $item->divisi == 'Bendahara' ? 'selected' : '' }}>
-                                                                            Bendahara</option>
-                                                                    </optgroup>
-
-                                                                    <optgroup label="Bidang Kerja">
-                                                                        <option value="Seksi Dakwah"
-                                                                            {{ $item->divisi == 'Seksi Dakwah' ? 'selected' : '' }}>
-                                                                            Seksi Dakwah</option>
-                                                                        <option value="Seksi Pembangunan"
-                                                                            {{ $item->divisi == 'Seksi Pembangunan' ? 'selected' : '' }}>
-                                                                            Seksi Pembangunan</option>
-                                                                        <option value="Seksi Pemuda & Kader"
-                                                                            {{ $item->divisi == 'Seksi Pemuda & Kader' ? 'selected' : '' }}>
-                                                                            Seksi Pemuda & Kader</option>
-                                                                        <option value="Seksi Rumah Tangga"
-                                                                            {{ $item->divisi == 'Seksi Rumah Tangga' ? 'selected' : '' }}>
-                                                                            Seksi Rumah Tangga</option>
-                                                                        <option value="Seksi Sosial"
-                                                                            {{ $item->divisi == 'Seksi Sosial' ? 'selected' : '' }}>
-                                                                            Seksi Sosial</option>
-                                                                        <option value="Seksi Keamanan"
-                                                                            {{ $item->divisi == 'Seksi Keamanan' ? 'selected' : '' }}>
-                                                                            Seksi Keamanan</option>
-                                                                        <option value="Seksi Keputrian"
-                                                                            {{ $item->divisi == 'Seksi Keputrian' ? 'selected' : '' }}>
-                                                                            Seksi Keputrian</option>
-                                                                    </optgroup>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="flex justify-end gap-3 pt-4">
-                                                                <button type="button" @click="showEditModal = false"
-                                                                    class="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-700 text-white">Batal</button>
-                                                                <button type="submit"
-                                                                    class="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white">Simpan</button>
-                                                            </div>
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm shadow">
+                                                                Hapus
+                                                            </button>
                                                         </form>
                                                     </div>
-                                                </div>
 
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                                    {{-- MODAL DESKTOP --}}
+                                                    <div x-show="showEditModal" x-cloak
+                                                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
-                        {{-- 📱 MOBILE VIEW --}}
-                        <div class="sm:hidden space-y-3 mt-3">
-                            @foreach ($organisasi as $item)
-                                <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm"
-                                    x-data="{ openModal: false }">
+                                                        <div
+                                                            class="bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg text-left">
 
-                                    <p class="text-xs text-gray-400">Nama Pengurus</p>
-                                    <p class="font-semibold text-gray-900 dark:text-white">{{ $item->nama }}</p>
+                                                            <h3 class="text-lg font-semibold text-white mb-6">Edit
+                                                                Pengurus
+                                                            </h3>
 
-                                    <p class="text-xs text-gray-400 mt-2">Posisi / Bagian</p>
-                                    <p class="text-gray-700 dark:text-gray-300">{{ $item->divisi }}</p>
+                                                            <form
+                                                                action="{{ route('organisasi.update', ['organisasi' => $item->id]) }}"
+                                                                method="POST" class="space-y-4">
+                                                                @csrf
+                                                                @method('PUT')
 
-                                    <div class="flex gap-2 mt-4">
-                                        {{-- Edit Button --}}
-                                        <button @click="openModal=true"
-                                            class="w-1/2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition">
-                                            Edit
-                                        </button>
+                                                                <div>
+                                                                    <label
+                                                                        class="block text-sm text-gray-300 mb-1">Nama</label>
+                                                                    <input type="text" name="nama"
+                                                                        value="{{ $item->nama }}" required
+                                                                        class="w-full rounded-md dark:bg-gray-700 dark:text-white border-gray-600">
+                                                                </div>
 
-                                        {{-- Delete Button --}}
-                                        <form action="{{ route('sejarah.destroy', $item->id) }}" method="POST"
-                                            onsubmit="return confirm('Yakin hapus data ini?')" class="w-1/2">
-                                            @csrf @method('DELETE')
-                                            <button
-                                                class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition">
-                                                Hapus
+                                                                <div>
+                                                                    <label
+                                                                        class="block text-sm text-gray-300 mb-1">Posisi
+                                                                        / Bagian</label>
+                                                                    <select name="divisi" required
+                                                                        class="w-full rounded-md dark:bg-gray-700 dark:text-white border-gray-600">
+                                                                        <optgroup label="Pimpinan">
+                                                                            <option value="Penasehat"
+                                                                                {{ $item->divisi == 'Penasehat' ? 'selected' : '' }}>
+                                                                                Penasehat
+                                                                            </option>
+                                                                            <option value="Ketua"
+                                                                                {{ $item->divisi == 'Ketua' ? 'selected' : '' }}>
+                                                                                Ketua
+                                                                            </option>
+                                                                            <option value="Wakil Ketua"
+                                                                                {{ $item->divisi == 'Wakil Ketua' ? 'selected' : '' }}>
+                                                                                Wakil
+                                                                                Ketua</option>
+                                                                            <option value="Sekretaris"
+                                                                                {{ $item->divisi == 'Sekretaris' ? 'selected' : '' }}>
+                                                                                Sekretaris
+                                                                            </option>
+                                                                            <option value="Bendahara"
+                                                                                {{ $item->divisi == 'Bendahara' ? 'selected' : '' }}>
+                                                                                Bendahara
+                                                                            </option>
+                                                                        </optgroup>
+
+                                                                        <optgroup label="Bidang Kerja">
+                                                                            <option value="Seksi Dakwah"
+                                                                                {{ $item->divisi == 'Seksi Dakwah' ? 'selected' : '' }}>
+                                                                                Seksi
+                                                                                Dakwah</option>
+                                                                            <option value="Seksi Pembangunan"
+                                                                                {{ $item->divisi == 'Seksi Pembangunan' ? 'selected' : '' }}>
+                                                                                Seksi Pembangunan</option>
+                                                                            <option value="Seksi Pemuda & Kader"
+                                                                                {{ $item->divisi == 'Seksi Pemuda & Kader' ? 'selected' : '' }}>
+                                                                                Seksi Pemuda & Kader</option>
+                                                                            <option value="Seksi Rumah Tangga"
+                                                                                {{ $item->divisi == 'Seksi Rumah Tangga' ? 'selected' : '' }}>
+                                                                                Seksi Rumah Tangga</option>
+                                                                            <option value="Seksi Sosial"
+                                                                                {{ $item->divisi == 'Seksi Sosial' ? 'selected' : '' }}>
+                                                                                Seksi
+                                                                                Sosial</option>
+                                                                            <option value="Seksi Keamanan"
+                                                                                {{ $item->divisi == 'Seksi Keamanan' ? 'selected' : '' }}>
+                                                                                Seksi
+                                                                                Keamanan</option>
+                                                                            <option value="Seksi Keputrian"
+                                                                                {{ $item->divisi == 'Seksi Keputrian' ? 'selected' : '' }}>
+                                                                                Seksi
+                                                                                Keputrian</option>
+                                                                        </optgroup>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="flex justify-end gap-3 pt-4">
+                                                                    <button type="button"
+                                                                        @click="showEditModal = false"
+                                                                        class="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-700 text-white">Batal</button>
+                                                                    <button type="submit"
+                                                                        class="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white">Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {{-- 📱 MOBILE VIEW --}}
+                            <div class="sm:hidden space-y-3 p-4 bg-gray-50 dark:bg-gray-900">
+                                @foreach ($organisasi as $item)
+                                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm"
+                                        x-data="{ openModal: false }">
+
+                                        <p class="text-xs text-gray-400">Nama Pengurus</p>
+                                        <p class="font-semibold text-gray-900 dark:text-white">{{ $item->nama }}</p>
+
+                                        <p class="text-xs text-gray-400 mt-2">Posisi / Bagian</p>
+                                        <p class="text-gray-700 dark:text-gray-300">{{ $item->divisi }}</p>
+
+                                        <div class="flex gap-2 mt-4">
+                                            {{-- Edit Button --}}
+                                            <button @click="openModal=true"
+                                                class="w-1/2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition">
+                                                Edit
                                             </button>
-                                        </form>
-                                    </div>
 
-                                    {{-- MOBILE MODAL --}}
-                                    <div x-show="openModal" x-cloak
-                                        class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                                        <div class="bg-gray-800 p-6 rounded-lg w-11/12 max-w-sm text-white">
-                                            <h3 class="text-lg font-semibold mb-4">Edit Pengurus</h3>
-
-                                            <form action="{{ route('organisasi.update', $item->id) }}" method="POST"
-                                                class="space-y-3">
-                                                @csrf @method('PUT')
-
-                                                <input type="text" name="nama" value="{{ $item->nama }}"
-                                                    class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2">
-
-                                                <select name="divisi"
-                                                    class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2">
-                                                    <optgroup label="Pimpinan">
-                                                        <option value="Penasehat"
-                                                            {{ $item->divisi == 'Penasehat' ? 'selected' : '' }}>
-                                                            Penasehat
-                                                        </option>
-                                                        <option value="Ketua"
-                                                            {{ $item->divisi == 'Ketua' ? 'selected' : '' }}>Ketua
-                                                        </option>
-                                                        <option value="Wakil Ketua"
-                                                            {{ $item->divisi == 'Wakil Ketua' ? 'selected' : '' }}>
-                                                            Wakil
-                                                            Ketua</option>
-                                                        <option value="Sekretaris"
-                                                            {{ $item->divisi == 'Sekretaris' ? 'selected' : '' }}>
-                                                            Sekretaris
-                                                        </option>
-                                                        <option value="Bendahara"
-                                                            {{ $item->divisi == 'Bendahara' ? 'selected' : '' }}>
-                                                            Bendahara
-                                                        </option>
-                                                    </optgroup>
-                                                    <optgroup label="Bidang Kerja">
-                                                        <option value="Seksi Dakwah"
-                                                            {{ $item->divisi == 'Seksi Dakwah' ? 'selected' : '' }}>
-                                                            Seksi
-                                                            Dakwah</option>
-                                                        <option value="Seksi Pembangunan"
-                                                            {{ $item->divisi == 'Seksi Pembangunan' ? 'selected' : '' }}>
-                                                            Seksi Pembangunan</option>
-                                                        <option value="Seksi Pemuda & Kader"
-                                                            {{ $item->divisi == 'Seksi Pemuda & Kader' ? 'selected' : '' }}>
-                                                            Seksi Pemuda & Kader</option>
-                                                        <option value="Seksi Rumah Tangga"
-                                                            {{ $item->divisi == 'Seksi Rumah Tangga' ? 'selected' : '' }}>
-                                                            Seksi Rumah Tangga</option>
-                                                        <option value="Seksi Sosial"
-                                                            {{ $item->divisi == 'Seksi Sosial' ? 'selected' : '' }}>
-                                                            Seksi
-                                                            Sosial</option>
-                                                        <option value="Seksi Keamanan"
-                                                            {{ $item->divisi == 'Seksi Keamanan' ? 'selected' : '' }}>
-                                                            Seksi
-                                                            Keamanan</option>
-                                                        <option value="Seksi Keputrian"
-                                                            {{ $item->divisi == 'Seksi Keputrian' ? 'selected' : '' }}>
-                                                            Seksi
-                                                            Keputrian</option>
-                                                    </optgroup>
-                                                </select>
-
-                                                <div class="flex justify-end gap-2">
-                                                    <button type="button" @click="openModal=false"
-                                                        class="px-3 py-1 bg-gray-600 rounded">Batal</button>
-                                                    <button type="submit"
-                                                        class="px-3 py-1 bg-indigo-600 rounded">Simpan</button>
-                                                </div>
+                                            {{-- Delete Button --}}
+                                            <form action="{{ route('organisasi.destroy', $item->id) }}"
+                                                method="POST" onsubmit="return confirm('Yakin hapus data ini?')"
+                                                class="w-1/2">
+                                                @csrf @method('DELETE')
+                                                <button
+                                                    class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition">
+                                                    Hapus
+                                                </button>
                                             </form>
                                         </div>
-                                    </div>
 
-                                </div>
-                            @endforeach
+                                        {{-- MOBILE MODAL --}}
+                                        <div x-show="openModal" x-cloak
+                                            class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                                            <div class="bg-gray-800 p-6 rounded-lg w-11/12 max-w-sm text-white">
+                                                <h3 class="text-lg font-semibold mb-4">Edit Pengurus</h3>
+
+                                                <form action="{{ route('organisasi.update', $item->id) }}"
+                                                    method="POST" class="space-y-3">
+                                                    @csrf @method('PUT')
+
+                                                    <input type="text" name="nama" value="{{ $item->nama }}"
+                                                        class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2">
+
+                                                    <select name="divisi"
+                                                        class="w-full dark:bg-gray-700 border border-gray-600 rounded p-2">
+                                                        <optgroup label="Pimpinan">
+                                                            <option value="Penasehat"
+                                                                {{ $item->divisi == 'Penasehat' ? 'selected' : '' }}>
+                                                                Penasehat
+                                                            </option>
+                                                            <option value="Ketua"
+                                                                {{ $item->divisi == 'Ketua' ? 'selected' : '' }}>Ketua
+                                                            </option>
+                                                            <option value="Wakil Ketua"
+                                                                {{ $item->divisi == 'Wakil Ketua' ? 'selected' : '' }}>
+                                                                Wakil
+                                                                Ketua</option>
+                                                            <option value="Sekretaris"
+                                                                {{ $item->divisi == 'Sekretaris' ? 'selected' : '' }}>
+                                                                Sekretaris
+                                                            </option>
+                                                            <option value="Bendahara"
+                                                                {{ $item->divisi == 'Bendahara' ? 'selected' : '' }}>
+                                                                Bendahara
+                                                            </option>
+                                                        </optgroup>
+                                                        <optgroup label="Bidang Kerja">
+                                                            <option value="Seksi Dakwah"
+                                                                {{ $item->divisi == 'Seksi Dakwah' ? 'selected' : '' }}>
+                                                                Seksi
+                                                                Dakwah</option>
+                                                            <option value="Seksi Pembangunan"
+                                                                {{ $item->divisi == 'Seksi Pembangunan' ? 'selected' : '' }}>
+                                                                Seksi Pembangunan</option>
+                                                            <option value="Seksi Pemuda & Kader"
+                                                                {{ $item->divisi == 'Seksi Pemuda & Kader' ? 'selected' : '' }}>
+                                                                Seksi Pemuda & Kader</option>
+                                                            <option value="Seksi Rumah Tangga"
+                                                                {{ $item->divisi == 'Seksi Rumah Tangga' ? 'selected' : '' }}>
+                                                                Seksi Rumah Tangga</option>
+                                                            <option value="Seksi Sosial"
+                                                                {{ $item->divisi == 'Seksi Sosial' ? 'selected' : '' }}>
+                                                                Seksi
+                                                                Sosial</option>
+                                                            <option value="Seksi Keamanan"
+                                                                {{ $item->divisi == 'Seksi Keamanan' ? 'selected' : '' }}>
+                                                                Seksi
+                                                                Keamanan</option>
+                                                            <option value="Seksi Keputrian"
+                                                                {{ $item->divisi == 'Seksi Keputrian' ? 'selected' : '' }}>
+                                                                Seksi
+                                                                Keputrian</option>
+                                                        </optgroup>
+                                                    </select>
+
+                                                    <div class="flex justify-end gap-2">
+                                                        <button type="button" @click="openModal=false"
+                                                            class="px-3 py-1 bg-gray-600 rounded">Batal</button>
+                                                        <button type="submit"
+                                                            class="px-3 py-1 bg-indigo-600 rounded">Simpan</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <div x-show="tab === 'kajian'" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm space-y-6">
