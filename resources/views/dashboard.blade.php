@@ -711,7 +711,7 @@
                             </div>
 
                             {{-- 📱 MOBILE VIEW --}}
-                            <div class="sm:hidden space-y-3 p-4 bg-gray-50 dark:bg-gray-900">
+                            <div class="sm:hidden space-y-3 mt-3">
                                 @foreach ($organisasi as $item)
                                     <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm"
                                         x-data="{ openModal: false }">
