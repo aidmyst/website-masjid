@@ -341,7 +341,7 @@
 
                                                     {{-- EDIT --}}
                                                     <button @click="openModal = true"
-                                                        class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-xs">
+                                                        class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow">
                                                         Edit
                                                     </button>
 
@@ -351,7 +351,7 @@
                                                         onsubmit="return confirm('Yakin hapus data ini?')">
                                                         @csrf @method('DELETE')
                                                         <button type="submit"
-                                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-xs">
+                                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm shadow">
                                                             Hapus
                                                         </button>
                                                     </form>
