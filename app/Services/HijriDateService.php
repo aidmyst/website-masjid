@@ -3,24 +3,37 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class HijriDateService
 {
     public function getCurrentHijriDate()
     {
         try {
-            $response = Http::get('https://api.aladhan.com/v1/gToH', ['date' => now()->format('d-m-Y')]);
+            $response = Http::timeout(5)
+                ->withHeaders([
+                    'Accept-Encoding' => 'gzip, deflate',
+                ])
+                ->get(
+                    'https://api.aladhan.com/v1/gToH/' . now()->format('d-m-Y')
+                );
 
             if ($response->successful()) {
-                $data = $response->json()['data']['hijri'];
+                $hijri = $response->json('data.hijri');
+
                 return [
-                    'day'   => $data['day'],
-                    'month' => $data['month']['en'],
-                    'year'  => $data['year'],
+                    'day'   => $hijri['day'],
+                    'month' => $hijri['month']['en'],
+                    'year'  => $hijri['year'],
                 ];
             }
-        } catch (\Exception $e) {
-            // Jika API gagal, kembalikan nilai default
+
+            Log::error('Hijri API failed', [
+                'status' => $response->status(),
+                'body'   => $response->body(),
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Hijri API exception: ' . $e->getMessage());
         }
 
         return [

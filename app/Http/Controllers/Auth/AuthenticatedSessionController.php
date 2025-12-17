@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest; // Jika pakai Breeze default, atau pakai Request biasa
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-use App\Models\User; // tetap perlu untuk objek user, tapi tidak pakai database
 
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Tampilkan form login
+     * Tampilkan form login.
      */
     public function create(): View
     {
@@ -20,55 +20,40 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Login tanpa database (HANYA 1 email + password)
+     * Handle login request (REAL DATABASE AUTH).
      */
     public function store(Request $request): RedirectResponse
     {
-        // validasi form
-        $request->validate([
+        // 1. Validasi Input
+        $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // Hardcoded akun admin
-        $adminEmail = 'jamiaisyah125@gmail.com';
-        $adminPassword = 'jamiaisyah125@';  // ganti sesukamu
-
-        // Cek email
-        if ($request->email !== $adminEmail) {
-            return back()->withErrors([
-                'email' => 'Akun tidak diizinkan.'
-            ]);
+        // 2. Cek ke Database (Tabel Users)
+        // Auth::attempt akan:
+        // a. Mencari user berdasarkan email.
+        // b. Memverifikasi apakah hash password di DB cocok dengan input password.
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            
+            // Jika Berhasil:
+            $request->session()->regenerate(); // Mencegah session fixation
+            return redirect()->intended('/dashboard');
         }
 
-        // Cek password
-        if ($request->password !== $adminPassword) {
-            return back()->withErrors([
-                'password' => 'Password salah.'
-            ]);
-        }
-
-        // Buat user dummy (tanpa database)
-        $fakeUser = new User();
-        $fakeUser->id = 1;
-        $fakeUser->name = "Admin Masjid";
-        $fakeUser->email = $adminEmail;
-
-        // Manual login
-        Auth::login($fakeUser);
-
-        // Regenerasi session
-        $request->session()->regenerate();
-
-        return redirect()->intended('/dashboard');
+        // 3. Jika Gagal (Email tidak ada atau Password salah):
+        return back()->withErrors([
+            'email' => 'Email atau password yang Anda masukkan salah.',
+        ])->onlyInput('email');
     }
 
     /**
-     * Logout
+     * Destroy an authenticated session.
      */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
