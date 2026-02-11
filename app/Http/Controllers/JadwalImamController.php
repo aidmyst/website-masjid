@@ -9,14 +9,12 @@ class JadwalImamController extends Controller
 {
     public function update(Request $request)
     {
-        // PERBAIKAN: Ubah 'required' menjadi 'nullable'
         $request->validate([
             'subuh'        => 'nullable|string|max:255',
             'dhuhur_ashar' => 'nullable|string|max:255',
             'maghrib_isya' => 'nullable|string|max:255',
         ]);
 
-        // Update data (ID 1) atau buat baru jika belum ada
         JadwalImam::updateOrCreate(
             ['id' => 1],
             [
@@ -26,7 +24,6 @@ class JadwalImamController extends Controller
             ]
         );
 
-        // Redirect kembali ke Dashboard (Tab Masjid)
         return redirect()->route('dashboard')
             ->with('active_tab', 'masjid') 
             ->with('success', 'Jadwal Imam berhasil diperbarui!');

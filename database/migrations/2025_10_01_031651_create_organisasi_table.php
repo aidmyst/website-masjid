@@ -12,9 +12,8 @@ return new class extends Migration
 
         Schema::create('organisasi', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');     // Nama Pengurus
-            // Kolom 'jabatan' DIHAPUS
-            $table->string('divisi');   // Isi: Ketua Takmir, Sekretaris, Seksi Dakwah, dll.
+            $table->string('nama');
+            $table->string('divisi');
             $table->integer('urutan')->default(100); 
             $table->timestamps();
         });

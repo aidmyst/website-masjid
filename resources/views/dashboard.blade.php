@@ -26,16 +26,13 @@
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
                     <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Donatur Terdaftar</h4>
                     <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
-                        {{-- Menghitung jumlah donatur dari tabel 'donaturs' --}}
                         {{ $donaturs->count() }}
                     </p>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-                    {{-- Judul bisa diubah agar lebih jelas --}}
                     <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Donasi Terkumpul</h4>
                     <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
-                        {{-- Menggunakan variabel $totalDonasiPending yang baru --}}
                         Rp {{ number_format($totalDonasiTerkumpul, 0, ',', '.') }}
                     </p>
                 </div>
@@ -89,7 +86,7 @@
                 </div>
 
                 <div class="py-6">
-                    <!-- Konten Masjid dalam Angka -->
+                    <!-- Statistik Masjid -->
                     <div x-show="tab === 'masjid'" x-cloak class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
                         <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">
                             Kelola Statistik Masjid
@@ -99,7 +96,6 @@
                             keuangan, dan lainnya.
                         </p>
 
-                        <!-- Contoh form/input angka -->
                         <form action="{{ route('statistik.store') }}" method="POST"
                             class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                             @csrf
@@ -145,10 +141,9 @@
                             </div>
                         </form>
 
-                        {{-- GARIS PEMBATAS --}}
                         <div class="border-t border-gray-200 dark:border-gray-700 my-10"></div>
 
-                        {{-- BAGIAN BARU: FORM JADWAL IMAM --}}
+                        {{-- Jadwal Imam --}}
                         <div>
                             <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">
                                 Kelola Jadwal Imam Harian
@@ -161,7 +156,7 @@
                                 class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                                 @csrf
 
-                                {{-- Input Subuh --}}
+                                {{-- Subuh --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                                         Imam Subuh
@@ -171,7 +166,7 @@
                                         placeholder="Contoh: Bp. Alan Pratama">
                                 </div>
 
-                                {{-- Input Dhuhur & Ashar --}}
+                                {{-- Dhuhur & Ashar --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                                         Imam Dhuhur & Ashar
@@ -181,7 +176,7 @@
                                         class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-indigo-500">
                                 </div>
 
-                                {{-- Input Maghrib & Isya --}}
+                                {{-- Maghrib & Isya --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
                                         Imam Maghrib & Isya
@@ -200,10 +195,9 @@
                             </form>
                         </div>
 
-                        {{-- GARIS PEMBATAS --}}
                         <div class="border-t border-gray-200 dark:border-gray-700 my-10"></div>
 
-                        {{-- BAGIAN BARU: FORM JADWAL KHATIB --}}
+                        {{-- Jadwal Khatib --}}
                         <div>
                             <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">
                                 Kelola Jadwal Khatib Jum'at
@@ -277,15 +271,15 @@
                 <!-- Tab Kelola Sejarah -->
                 <div x-show="tab === 'sejarah'" x-cloak class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
 
-                    {{-- KELOLA TIMELINE SEJARAH --}}
+                    {{-- Timeline --}}
                     <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">
                         Timeline Sejarah Masjid
                     </h3>
-                    {{-- Form Tambah Sejarah --}}
+                    
                     <form action="{{ route('sejarah.store') }}" method="POST"
                         class="mt-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
                         @csrf
-                        {{-- Kolom Tahun (dikecilkan) --}}
+                        {{-- Tahun --}}
                         <div class="md:col-span-2">
                             <label for="tahun" class="block text-sm font-medium text-gray-100">Tahun</label>
                             <select name="tahun" id="tahun"
@@ -297,24 +291,25 @@
                                 @endfor
                             </select>
                         </div>
-                        {{-- Kolom Deskripsi (memperlebar sisa ruang) --}}
+
+                        {{-- Deskripsi --}}
                         <div class="md:col-span-8">
                             <label for="deskripsi" class="block text-sm font-medium text-gray-100">Deskripsi</label>
                             <input type="text" name="deskripsi" id="deskripsi"
                                 class="mt-1 block w-full h-10 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white"
                                 required>
                         </div>
-                        {{-- Kolom Tombol --}}
+
                         <div class="md:col-span-2 flex items-end">
                             <button type="submit"
                                 class="w-full h-10 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Tambah</button>
                         </div>
                     </form>
 
-                    {{-- Tabel Data Sejarah --}}
+                    {{-- Tabel Sejarah --}}
                     <div class="mt-6">
 
-                        {{-- DESKTOP VIEW --}}
+                        {{-- Dekstop --}}
                         <div class="hidden sm:block overflow-x-auto rounded-lg shadow-sm">
                             <table class="w-full border-collapse text-sm text-gray-200">
                                 <thead class="bg-indigo-600 text-white text-xs uppercase">
@@ -363,7 +358,7 @@
                             </table>
                         </div>
 
-                        {{-- 📱 MOBILE VIEW (MATCH ORGANISASI STYLE) --}}
+                        {{-- Mobile --}}
                         <div class="sm:hidden space-y-3 mt-3">
                             @foreach ($sejarah as $item)
                                 <div x-data="{ openMobileModal: false }"
@@ -377,7 +372,7 @@
                                     <p class="text-xs text-gray-400 mt-3">Deskripsi</p>
                                     <p class="text-gray-300">{{ $item->deskripsi }}</p>
 
-                                    {{-- ACTION BUTTONS --}}
+                                    {{-- Aksi --}}
                                     <div class="flex gap-2 mt-4">
                                         {{-- Edit --}}
                                         <button @click="openMobileModal=true"
@@ -396,10 +391,9 @@
                                         </form>
                                     </div>
 
-                                    {{-- MODAL MOBILE (SAMA FORMATNYA DENGAN ORGANISASI) --}}
+                                    {{-- Modal Mobile --}}
                                     <div x-show="openMobileModal" x-cloak
                                         class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-
                                         <div class="bg-gray-800 p-6 rounded-lg w-11/12 max-w-md text-white shadow-lg">
 
                                             <h3 class="text-lg font-semibold mb-4 text-center">Edit Timeline Sejarah
@@ -447,7 +441,7 @@
 
                     <div class="my-8 border-t border-gray-300 dark:border-gray-600"></div>
 
-                    {{-- UPLOAD GALERI --}}
+                    {{-- Galeri Kegiatan --}}
                     <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">
                         Upload Galeri Kegiatan Masjid
                     </h3>
@@ -470,7 +464,6 @@
                         <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Galeri Kegiatan Terbaru
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {{-- Menggunakan variabel $galeri dari controller --}}
                             @foreach ($galeri as $item)
                                 <div class="border rounded p-2 relative">
                                     <img src="{{ asset($item->gambar) }}" alt="Galeri Kegiatan"
@@ -490,19 +483,17 @@
 
                     <div class="mt-8 mb-2 border-t border-gray-300 dark:border-gray-600"></div>
 
-                    {{-- MANAGEMENT STRUKTUR ORGANISASI --}}
+                    {{-- Struktur Pengurus --}}
                     <div class="bg-white dark:bg-gray-800 rounded-lg mb-6 mt-6">
                         <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100 mb-4">
                             Tambah Pengurus Masjid
                         </h3>
 
-                        {{-- Form Input --}}
-                        {{-- Form Input --}}
                         <form action="{{ route('organisasi.store') }}" method="POST"
                             class="space-y-4 md:grid md:grid-cols-3 md:gap-4 md:space-y-0">
                             @csrf
 
-                            {{-- Input Nama --}}
+                            {{-- Nama --}}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     Nama Lengkap
@@ -512,7 +503,7 @@
                                     class="w-full rounded-md border-gray-300 dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500">
                             </div>
 
-                            {{-- Select Divisi / Posisi --}}
+                            {{-- Divisi --}}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     Posisi / Bagian
@@ -551,9 +542,8 @@
                         </form>
                     </div>
 
-                    {{-- Tabel Daftar Pengurus --}}
+                    {{-- Tabel Pengurus --}}
                     @if ($organisasi->isEmpty())
-                        {{-- TAMPILAN JIKA KOSONG --}}
                         <div class="p-10 text-center">
                             <div class="flex justify-center mb-4">
                             </div>
@@ -563,12 +553,10 @@
                             </p>
                         </div>
                     @else
-                        {{-- TAMPILAN JIKA ADA DATA (TABEL & LIST) --}}
+
                         <div class="overflow-hidden bg-white dark:bg-gray-800 rounded-lg shadow">
-
-                            {{-- DESKTOP VIEW --}}
+                            {{-- Deskstop --}}
                             <div class="hidden md:block overflow-x-auto">
-
                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                     <thead class="text-xs text-white uppercase bg-indigo-600">
                                         <tr>
@@ -586,16 +574,17 @@
                                                 <td class="px-6 py-4 text-gray-900 dark:text-white">
                                                     {{ $item->divisi }}</td>
 
+                                                {{-- Aksi --}}
                                                 <td class="px-6 py-4 text-center">
                                                     <div class="flex gap-2 justify-center">
 
-                                                        {{-- EDIT BUTTON --}}
+                                                        {{-- Edit --}}
                                                         <button @click="showEditModal = true"
                                                             class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow">
                                                             Edit
                                                         </button>
 
-                                                        {{-- DELETE --}}
+                                                        {{-- Hapus --}}
                                                         <form action="{{ route('organisasi.destroy', $item->id) }}"
                                                             method="POST"
                                                             onsubmit="return confirm('Yakin hapus data ini?');">
@@ -608,23 +597,18 @@
                                                         </form>
                                                     </div>
 
-                                                    {{-- MODAL DESKTOP --}}
+                                                    {{-- Modal Dekstop --}}
                                                     <div x-show="showEditModal" x-cloak
                                                         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-
                                                         <div
                                                             class="bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-lg text-left">
-
-                                                            <h3 class="text-lg font-semibold text-white mb-6">Edit
-                                                                Pengurus
+                                                            <h3 class="text-lg font-semibold text-white mb-6">Edit Pengurus
                                                             </h3>
-
                                                             <form
                                                                 action="{{ route('organisasi.update', ['organisasi' => $item->id]) }}"
                                                                 method="POST" class="space-y-4">
                                                                 @csrf
                                                                 @method('PUT')
-
                                                                 <div>
                                                                     <label
                                                                         class="block text-sm text-gray-300 mb-1">Nama</label>
@@ -632,11 +616,9 @@
                                                                         value="{{ $item->nama }}" required
                                                                         class="w-full rounded-md dark:bg-gray-700 dark:text-white border-gray-600">
                                                                 </div>
-
                                                                 <div>
                                                                     <label
-                                                                        class="block text-sm text-gray-300 mb-1">Posisi
-                                                                        / Bagian</label>
+                                                                        class="block text-sm text-gray-300 mb-1">Posisi / Bagian</label>
                                                                     <select name="divisi" required
                                                                         class="w-full rounded-md dark:bg-gray-700 dark:text-white border-gray-600">
                                                                         <optgroup label="Pimpinan">
@@ -710,26 +692,24 @@
                                 </table>
                             </div>
 
-                            {{-- 📱 MOBILE VIEW --}}
+                            {{-- Mobile --}}
                             <div class="sm:hidden space-y-3 mt-3">
                                 @foreach ($organisasi as $item)
                                     <div class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm"
                                         x-data="{ openModal: false }">
-
                                         <p class="text-xs text-gray-400">Nama Pengurus</p>
                                         <p class="font-semibold text-gray-900 dark:text-white">{{ $item->nama }}</p>
-
                                         <p class="text-xs text-gray-400 mt-2">Posisi / Bagian</p>
                                         <p class="text-gray-700 dark:text-gray-300">{{ $item->divisi }}</p>
 
                                         <div class="flex gap-2 mt-4">
-                                            {{-- Edit Button --}}
+                                            {{-- Edit  --}}
                                             <button @click="openModal=true"
                                                 class="w-1/2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition">
                                                 Edit
                                             </button>
 
-                                            {{-- Delete Button --}}
+                                            {{-- Hapus --}}
                                             <form action="{{ route('organisasi.destroy', $item->id) }}"
                                                 method="POST" onsubmit="return confirm('Yakin hapus data ini?')"
                                                 class="w-1/2">
@@ -741,7 +721,7 @@
                                             </form>
                                         </div>
 
-                                        {{-- MOBILE MODAL --}}
+                                        {{-- Modal Mobile --}}
                                         <div x-show="openModal" x-cloak
                                             class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
                                             <div class="bg-gray-800 p-6 rounded-lg w-11/12 max-w-sm text-white">
@@ -823,6 +803,7 @@
                     @endif
                 </div>
 
+                {{-- Jadwal Kajian --}}
                 <div x-show="tab === 'kajian'" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm space-y-6">
                     <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">Tambah Jadwal Kajian</h3>
 
@@ -858,10 +839,8 @@
                         </div>
                     </form>
 
-                    {{-- ================================================= --}}
-                    {{-- 💻 DESKTOP VIEW (Tabel) --}}
-                    {{-- ================================================= --}}
-                    <div class="hidden md:block overflow-x-auto">
+                    {{-- Dekstop (Tabel) --}}
+                    <div class="hidden md:block overflow-x-auto rounded-xl">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-white uppercase bg-indigo-600">
                                 <tr>
@@ -874,7 +853,6 @@
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                                 @foreach ($kajian as $item)
-                                    {{-- Gunakan x-data untuk modal desktop juga agar konsisten --}}
                                     <tr x-data="{ openModal: false }" class="bg-white dark:bg-gray-800">
                                         <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                             {{ \Carbon\Carbon::parse($item->hari)->locale('id')->translatedFormat('j F Y') }}
@@ -883,11 +861,15 @@
                                         <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $item->tema }}</td>
                                         <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $item->pemateri }}</td>
                                         <td class="px-6 py-4 text-center">
+
+                                            {{-- Aksi --}}
                                             <div class="flex justify-center gap-2">
+                                                {{-- Edit --}}
                                                 <button @click="openModal = true"
                                                     class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded-md text-sm shadow">
                                                     Edit
                                                 </button>
+                                                {{-- Hapus --}}
                                                 <form action="{{ route('kajian.destroy', $item->id) }}"
                                                     method="POST"
                                                     onsubmit="return confirm('Yakin hapus jadwal ini?');">
@@ -899,7 +881,7 @@
                                                 </form>
                                             </div>
 
-                                            {{-- MODAL EDIT (DESKTOP) --}}
+                                            {{-- Modal Dekstop --}}
                                             <div x-show="openModal" x-cloak
                                                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-left">
                                                 <div
@@ -939,6 +921,7 @@
                                                                 value="{{ $item->pemateri }}"
                                                                 class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white p-2 mt-1">
                                                         </div>
+                                                        
                                                         <div class="flex justify-end gap-2 mt-4">
                                                             <button type="button" @click="openModal = false"
                                                                 class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Batal</button>
@@ -955,47 +938,41 @@
                         </table>
                     </div>
 
-                    {{-- ================================================= --}}
-                    {{-- 📱 MOBILE VIEW (Card Style ala Organisasi) --}}
-                    {{-- ================================================= --}}
+                    {{-- Mobile (Tabel) --}}
                     <div class="md:hidden space-y-3 mt-3">
                         @foreach ($kajian as $item)
                             <div x-data="{ openModal: false }"
                                 class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm">
 
-                                {{-- TANGGAL --}}
                                 <p class="text-xs text-gray-400">Tanggal</p>
                                 <p class="font-semibold text-gray-900 dark:text-white">
                                     {{ \Carbon\Carbon::parse($item->hari)->locale('id')->translatedFormat('j F Y') }}
                                 </p>
 
-                                {{-- WAKTU --}}
                                 <p class="text-xs text-gray-400 mt-2">Waktu</p>
                                 <p class="text-gray-700 dark:text-gray-300 font-medium">
                                     {{ $item->waktu }}
                                 </p>
 
-                                {{-- TEMA --}}
                                 <p class="text-xs text-gray-400 mt-2">Tema</p>
                                 <p class="text-gray-900 dark:text-white font-semibold">
                                     {{ $item->tema }}
                                 </p>
 
-                                {{-- PEMATERI --}}
                                 <p class="text-xs text-gray-400 mt-2">Pemateri</p>
                                 <p class="text-gray-700 dark:text-gray-300">
                                     {{ $item->pemateri }}
                                 </p>
 
-                                {{-- BUTTONS --}}
+                                {{-- Aksi --}}
                                 <div class="flex gap-2 mt-4">
-                                    {{-- Edit Button --}}
+                                    {{-- Edit --}}
                                     <button @click="openModal=true"
                                         class="w-1/2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 text-sm font-medium rounded-lg transition">
                                         Edit
                                     </button>
 
-                                    {{-- Delete Button --}}
+                                    {{-- Aksi --}}
                                     <form action="{{ route('kajian.destroy', $item->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin hapus jadwal ini?')" class="w-1/2">
                                         @csrf @method('DELETE')
@@ -1006,7 +983,7 @@
                                     </form>
                                 </div>
 
-                                {{-- MOBILE MODAL (AlpineJS) --}}
+                                {{-- Modal Mobile --}}
                                 <div x-show="openModal" x-cloak
                                     class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
                                     <div class="bg-gray-800 p-6 rounded-lg w-11/12 max-w-sm text-white shadow-lg">
@@ -1050,17 +1027,16 @@
                                         </form>
                                     </div>
                                 </div>
-                                {{-- END MOBILE MODAL --}}
                             </div>
                         @endforeach
                     </div>
 
                 </div>
 
+                {{-- Donasi --}}
                 <div x-show="tab === 'donasi'" x-cloak
                     class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm space-y-8">
 
-                    {{-- 1. Form Kelola Rekening (Tidak Berubah) --}}
                     <div>
                         <h3 class="font-semibold text-lg text-gray-900 dark:text-gray-100">Kelola Informasi Rekening
                         </h3>
@@ -1099,10 +1075,10 @@
 
                     <div class="border-t border-gray-300 dark:border-gray-600"></div>
 
-                    {{-- 2. Daftar Konfirmasi Donasi --}}
+                    {{-- Daftar Konfirmasi Donasi --}}
                     <div class="mt-8" x-data="{ kategoriFilter: '' }">
 
-                        {{-- Header & Filter --}}
+                        {{-- Filter --}}
                         <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-4">
                             <h4 class="font-semibold text-gray-900 dark:text-gray-100 text-lg">Daftar Konfirmasi Donasi
                             </h4>
@@ -1123,9 +1099,7 @@
                             </div>
                         </div>
 
-                        {{-- ========================================== --}}
-                        {{-- 💻 DESKTOP VIEW (Tabel)                    --}}
-                        {{-- ========================================== --}}
+                        {{-- Dekstop (Tabel) --}}
                         <div class="hidden md:block overflow-x-auto">
                             <table
                                 class="w-full border-collapse rounded-lg shadow-sm overflow-hidden text-sm text-left">
@@ -1146,7 +1120,6 @@
                                             x-data="{ openModal: false }"
                                             class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
 
-                                            {{-- Data Columns --}}
                                             <td class="px-6 py-4 text-gray-900 dark:text-white">
                                                 {{ \Carbon\Carbon::parse($konfirmasi->created_at)->locale('id')->isoFormat('D MMM Y') }}
                                             </td>
@@ -1167,12 +1140,16 @@
                                                     target="_blank"
                                                     class="text-indigo-600 dark:text-indigo-400 hover:underline">Lihat</a>
                                             </td>
+
+                                            {{-- Aksi --}}
                                             <td class="px-6 py-4 text-center">
                                                 <div class="flex justify-center gap-2">
+                                                    {{-- Edit --}}
                                                     <button @click="openModal = true"
                                                         class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded shadow text-xs">
                                                         Edit
                                                     </button>
+                                                    {{-- Hapus --}}
                                                     <form
                                                         action="{{ route('donasi.konfirmasi.destroy', $konfirmasi->id) }}"
                                                         method="POST"
@@ -1185,7 +1162,7 @@
                                                     </form>
                                                 </div>
 
-                                                {{-- MODAL EDIT (Desktop) --}}
+                                                {{-- Modal Dekstop --}}
                                                 <div x-show="openModal" x-cloak
                                                     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-left">
                                                     <div
@@ -1244,47 +1221,39 @@
                             </table>
                         </div>
 
-                        {{-- ========================================== --}}
-                        {{-- 📱 MOBILE VIEW (Card Style)                --}}
-                        {{-- ========================================== --}}
+                        {{-- Mobile (Tabel) --}}
                         <div class="md:hidden space-y-3">
                             @forelse($konfirmasiDonasi as $konfirmasi)
                                 <div x-data="{ openModal: false }"
                                     x-show="kategoriFilter === '' || kategoriFilter === '{{ $konfirmasi->kategori }}'"
                                     class="p-4 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-600 shadow-sm transition-all duration-300">
 
-                                    {{-- Tanggal --}}
                                     <p class="text-xs text-gray-400">
                                         {{ \Carbon\Carbon::parse($konfirmasi->created_at)->locale('id')->isoFormat('D MMM Y') }}
                                     </p>
 
-                                    {{-- Nama Donatur (Judul) --}}
                                     <h5 class="font-bold text-gray-900 dark:text-white text-lg mt-1">
                                         {{ $konfirmasi->donatur->nama ?? 'Tanpa Nama' }}
                                     </h5>
 
-                                    {{-- Kategori Badge --}}
                                     <span
                                         class="inline-block px-2 py-1 text-xs font-semibold rounded bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200 mt-2">
                                         {{ ucwords(str_replace('_', ' ', $konfirmasi->kategori)) }}
                                     </span>
 
                                     <div class="mt-3 space-y-1">
-                                        {{-- Nominal --}}
                                         <div class="flex justify-between text-sm">
                                             <span class="text-gray-500 dark:text-gray-400">Nominal:</span>
                                             <span class="font-semibold text-gray-900 dark:text-white">
                                                 Rp {{ number_format($konfirmasi->nominal, 0, ',', '.') }}
                                             </span>
                                         </div>
-                                        {{-- WA --}}
                                         <div class="flex justify-between text-sm">
                                             <span class="text-gray-500 dark:text-gray-400">WhatsApp:</span>
                                             <span class="text-gray-700 dark:text-gray-300">
                                                 {{ $konfirmasi->donatur->no_wa ?? '-' }}
                                             </span>
                                         </div>
-                                        {{-- Bukti TF --}}
                                         <div class="flex justify-between text-sm items-center">
                                             <span class="text-gray-500 dark:text-gray-400">Bukti:</span>
                                             <a href="{{ asset('storage/' . $konfirmasi->bukti_tf) }}"
@@ -1293,13 +1262,15 @@
                                         </div>
                                     </div>
 
-                                    {{-- ACTION BUTTONS --}}
+                                    {{-- Aksi --}}
                                     <div class="flex gap-2 mt-4 border-t dark:border-gray-700 pt-3">
+                                        {{-- Edit --}}
                                         <button @click="openModal = true"
                                             class="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 rounded-md text-sm font-medium transition">
                                             Edit
                                         </button>
 
+                                        {{-- Hapus --}}
                                         <form action="{{ route('donasi.konfirmasi.destroy', $konfirmasi->id) }}"
                                             method="POST" onsubmit="return confirm('Yakin hapus data ini?')"
                                             class="flex-1">
@@ -1311,7 +1282,7 @@
                                         </form>
                                     </div>
 
-                                    {{-- MOBILE MODAL (AlpineJS) --}}
+                                    {{-- Mobile Modal --}}
                                     <div x-show="openModal" x-cloak
                                         class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
                                         <div class="bg-gray-800 p-6 rounded-lg w-11/12 max-w-sm text-white shadow-lg">
@@ -1350,7 +1321,6 @@
                                             </form>
                                         </div>
                                     </div>
-                                    {{-- END MOBILE MODAL --}}
 
                                 </div>
                             @empty
@@ -1366,14 +1336,11 @@
 
                 <div x-show="tab === 'donatur'" x-cloak class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
 
-                    {{-- Judul Header --}}
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-6">
                         Daftar Akun Donatur (Jamaah)
                     </h3>
 
-                    {{-- ================================================= --}}
-                    {{-- 💻 DESKTOP VIEW (Tabel)                           --}}
-                    {{-- ================================================= --}}
+                    {{-- Dekstop (Tabel) --}}
                     <div class="hidden md:block overflow-x-auto">
                         <table class="w-full border-collapse rounded-lg shadow-sm overflow-hidden text-sm text-left">
                             <thead class="bg-indigo-600 text-white uppercase text-xs">
@@ -1420,9 +1387,7 @@
                         </table>
                     </div>
 
-                    {{-- ================================================= --}}
-                    {{-- 📱 MOBILE VIEW (Card Style)                       --}}
-                    {{-- ================================================= --}}
+                    {{-- Mobile (Tabel) --}}
                     <div class="md:hidden space-y-3">
                         @forelse($donaturs as $donatur)
                             <div
@@ -1487,8 +1452,8 @@
         }
 
         function formatRupiah(input) {
-            let angka = input.value.replace(/\D/g, ""); // hapus semua selain angka
-            input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // tambahkan titik tiap 3 digit
+            let angka = input.value.replace(/\D/g, "");
+            input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
     </script>
 

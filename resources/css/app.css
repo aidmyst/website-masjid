@@ -5,8 +5,6 @@
     display: none !important;
 }
 
-/* HALAMAN BERANDA */
-/* Animasi Ken Burns untuk gambar Hero */
 @keyframes ken-burns {
     0% {
         transform: scale(1) translate(0, 0);
@@ -19,7 +17,6 @@
     animation: ken-burns 20s ease-out infinite alternate;
 }
 
-/* Animasi Fade In Up untuk Section */
 @keyframes fade-in-up {
     from {
         opacity: 0;
@@ -51,18 +48,15 @@
     }
 }
 
-/* styling khusus icon kalender */
 .custom-date-icon::-webkit-calendar-picker-indicator {
-    filter: invert(1); /* bikin warnanya putih */
-    cursor: pointer; /* biar kursor jadi pointer */
+    filter: invert(1);
+    cursor: pointer;
 }
 
-/* CSS untuk ikon kalender putih di input date */
 .custom-date-icon::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
 
-/* HALAMAN TENTANG */
 @keyframes fade-in-up {
     from {
         opacity: 0;

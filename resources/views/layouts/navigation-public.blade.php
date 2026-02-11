@@ -1,4 +1,3 @@
-{{-- NAVIGASI --}}
 <nav class="bg-gray-800 sticky top-0 z-50 shadow-md" x-data="{ open: false }">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
@@ -14,7 +13,7 @@
                 </a>
             </div>
 
-            {{-- Menu Navigasi Desktop --}}
+            {{-- Desktop --}}
             <div class="hidden md:flex md:items-center md:space-x-6">
                 <x-nav-link :href="route('beranda')"
                     :active="request()->routeIs('home') || request()->routeIs('beranda')">Beranda</x-nav-link>
@@ -29,7 +28,7 @@
                     :active="request()->routeIs('donasi')">Donasi</x-nav-link>
             </div>
 
-            {{-- Tombol Menu Mobile --}}
+            {{-- Tombol Mobile --}}
             <div class="absolute inset-y-0 right-0 flex items-center md:hidden">
                 <button @click="open = !open" type="button"
                     class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white transition">

@@ -9,7 +9,6 @@ class DonaturController extends Controller
 {
     public function index()
     {
-        // pastikan user login
         if (!session('donatur_id')) {
             return redirect()->route('donasi')->with('error', 'Silakan login terlebih dahulu.');
         }

@@ -9,7 +9,6 @@ class JadwalKhatibController extends Controller
 {
     public function update(Request $request)
     {
-        // Validasi (boleh kosong/nullable jika pekan ke-5 tidak ada)
         $request->validate([
             'jumat_1' => 'nullable|string|max:255',
             'jumat_2' => 'nullable|string|max:255',
@@ -18,7 +17,6 @@ class JadwalKhatibController extends Controller
             'jumat_5' => 'nullable|string|max:255',
         ]);
 
-        // Update data (ID 1)
         JadwalKhatib::updateOrCreate(
             ['id' => 1],
             [

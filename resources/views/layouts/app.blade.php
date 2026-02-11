@@ -26,33 +26,15 @@
         class="min-h-screen 
         {{ request()->is('dashboard*') ? 'bg-gray-900 dark:bg-gray-900' : 'bg-gray-100 dark:bg-gray-100' }}">
 
-        {{-- ========================================================== --}}
-        {{--                REVISI UTAMA ADA DI BLOK INI              --}}
-        {{-- ========================================================== --}}
-
-        {{-- Cek dulu apakah halaman ini mengirim slot navigasi kustom --}}
         @if (isset($navigation))
-            {{-- 
-                Jika ya (seperti dari hal. konfirmasi_donasi), 
-                tampilkan isi slot itu. 
-                (Jika slotnya dikirim kosong, maka tidak akan tampil apa-apa).
-            --}}
             {{ $navigation }}
         @else
-            {{-- 
-                Jika tidak ada slot kustom, jalankan logika navigasi 
-                standar Anda (publik atau dashboard).
-            --}}
             @if (request()->is('dashboard*'))
                 @include('layouts.navigation-dashboard')
             @else
                 @include('layouts.navigation-public')
             @endif
         @endif
-        {{-- ========================================================== --}}
-        {{--                       AKHIR REVISI                       --}}
-        {{-- ========================================================== --}}
-
 
         @isset($header)
             <header class="bg-white dark:bg-gray-800 shadow">
@@ -70,10 +52,10 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
         AOS.init({
-            duration: 900, // durasi animasi (ms)
-            once: true, // hanya animasi sekali
+            duration: 900,
+            once: true,
             easing: 'ease-in-out',
-            offset: 100, // jarak mulai animasi
+            offset: 100,
         });
     </script>
 

@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/StatistikController.php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -17,9 +16,8 @@ class StatistikController extends Controller
             'program' => 'required|integer',
         ]);
 
-        // Simpan atau update (hanya ada 1 baris statistik)
         Statistik::updateOrCreate(
-            ['id' => 1], // pastikan selalu update row dengan id = 1
+            ['id' => 1],
             [
                 'jamaah' => $request->jamaah,
                 'tpq' => $request->tpq,

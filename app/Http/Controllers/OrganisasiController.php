@@ -11,11 +11,9 @@ class OrganisasiController extends Controller
     {
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
-            // Validasi jabatan dihapus
             'divisi' => 'required|string|max:255',
         ]);
 
-        // LOGIKA URUTAN BARU (Agar tampil rapi di web)
         $urutan = 99;
         switch ($request->divisi) {
             case 'Penasehat':
@@ -35,12 +33,11 @@ class OrganisasiController extends Controller
                 break;
             default:
                 $urutan = 10;
-                break; // Untuk semua Seksi
+                break;
         }
 
         Organisasi::create([
             'nama' => $request->nama,
-            // 'jabatan' dihapus
             'divisi' => $request->divisi,
             'urutan' => $urutan
         ]);
@@ -57,7 +54,6 @@ class OrganisasiController extends Controller
             'divisi' => 'required|string|max:255',
         ]);
 
-        // Hitung ulang urutan jika divisi berubah
         $urutan = 99;
         switch ($request->divisi) {
             case 'Penasehat':
@@ -65,7 +61,7 @@ class OrganisasiController extends Controller
                 break;
             case 'Ketua':
                 $urutan = 2;
-                break; // Sesuaikan dengan value di select option
+                break;
             case 'Wakil Ketua':
                 $urutan = 3;
                 break;
@@ -87,7 +83,7 @@ class OrganisasiController extends Controller
         ]);
 
         return redirect()->route('dashboard')
-            ->with('active_tab', 'sejarah') // Sesuaikan tab
+            ->with('active_tab', 'sejarah')
             ->with('success', 'Data pengurus berhasil diperbarui ✅');
     }
 

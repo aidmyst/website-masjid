@@ -19,18 +19,13 @@ class PageController extends Controller
 {
     public function tentang()
     {
-        // REVISI DI SINI:
-        // Mengambil SEMUA data pengurus, diurutkan berdasarkan kolom 'urutan' (agar Penasehat muncul duluan)
-        // Jika kolom 'urutan' belum ada, bisa ganti jadi: Organisasi::all();
         $organisasi = Organisasi::orderBy('urutan', 'asc')->get();
 
-        // Ubah path relatif menjadi URL absolut untuk Alpine JS (Tetap)
         $galeri = Galeri::latest()->get()->map(function ($g) {
             $g->url = asset($g->gambar);
             return $g;
         });
 
-        // Data Sejarah (Tetap)
         $sejarah = Sejarah::orderBy('tahun', 'asc')->get();
 
         return view('tentang', compact('organisasi', 'galeri', 'sejarah'));
@@ -61,32 +56,21 @@ class PageController extends Controller
     public function donasi()
     {
         $rekening = Rekening::first();
-
-        // 3. Mengambil data untuk TABEL di bawah (Pintu Surga, BMT, dll)
-        // Kita ambil dari tabel 'donasis', bukan 'laporan_donasis'
-        $laporan = Donasi::with('donatur') // Muat relasi donatur
-            ->orderBy('created_at', 'desc') // Gunakan created_at
+        $laporan = Donasi::with('donatur')
+            ->orderBy('created_at', 'desc')
             ->get()
             ->groupBy('kategori');
 
-        // --- LOGIKA BARU UNTUK RINGKASAN BULANAN ---
         $now = Carbon::now();
 
-        // 4. Ambil semua donasi bulan ini dari tabel 'donasis'
-        $laporanBulanIni = Donasi::whereYear('created_at', $now->year) // Gunakan created_at
-            ->whereMonth('created_at', $now->month) // Gunakan created_at
+        $laporanBulanIni = Donasi::whereYear('created_at', $now->year)
+            ->whereMonth('created_at', $now->month)
             ->get();
 
-        // 5. Hitung total pemasukan (Goal 1)
-        $totalDonasiBulanIni = $laporanBulanIni->sum('nominal'); // Gunakan kolom 'nominal'
-
-        // 6. Hitung jumlah transaksi (Goal 2 & 3)
+        $totalDonasiBulanIni = $laporanBulanIni->sum('nominal'); 
         $jumlahTransaksiBulanIni = $laporanBulanIni->count();
-
-        // Format nama bulan saat ini dalam Bahasa Indonesia
         Carbon::setLocale('id');
         $namaBulanIni = $now->translatedFormat('F Y');
-        // --- AKHIR LOGIKA BARU ---
 
         return view('donasi', compact(
             'rekening',

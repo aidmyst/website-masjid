@@ -1,29 +1,26 @@
 <x-app-layout>
     <div class="flex-grow">
         <main>
-            @if (session('donasi_success'))
-                <div x-data="{ show: true }" {{-- Hilang otomatis setelah 4 detik --}} x-init="setTimeout(() => show = false, 2000)" x-show="show"
-                    style="display: none;" {{-- Sembunyikan, biarkan Alpine yang urus --}} {{-- Latar belakang overlay --}}
+            {{-- @if (session('donasi_success'))
+                <div x-data="{ show: true }"  x-init="setTimeout(() => show = false, 2000)" x-show="show"
+                    style="display: none;"
                     class="fixed inset-0 bg-black/30 z-[9998] flex items-center justify-center p-4"
                     x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-200"
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
-                    {{-- Kotak Modal Pop-up --}}
                     <div class="bg-white w-full max-w-sm rounded-xl shadow-2xl p-8 text-center"
                         x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                         x-transition:leave="transition ease-in duration-200"
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
 
-                        {{-- Ikon Checkmark (SVG) --}}
                         <svg class="mx-auto h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
 
-                        {{-- Judul dan Pesan --}}
                         <h3 class="text-xl font-semibold text-gray-800 mt-4">Berhasil!</h3>
                         <p class="text-gray-600 mt-2">
                             {{ session('donasi_success') }}
@@ -31,13 +28,12 @@
 
                     </div>
                 </div>
-            @endif
+            @endif --}}
 
-            <div x-data="{ showLogin: {{ session('error') ? 'true' : 'false' }}, showRegister: false }" class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-16">
-                {{-- Hero Section dengan Animasi Lengkap --}}
+            <div x-data="{ showLogin: {{ session('error') ? 'true' : 'false' }} }" class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-16">
                 <section x-data="{ startAnimation: false }" x-intersect.once:enter="startAnimation = true"
                     class="relative text-white text-center overflow-hidden">
-                    {{-- Pembungkus utama --}}
+
                     <div class="min-h-[550px] flex items-center justify-center px-4">
                         <div style="background-image: url('{{ asset('images/donasi.webp') }}')"
                             class="rounded-xl shadow-lg px-6 py-32 md:p-24 lg:p-32 transform origin-center mx-auto max-w-7xl w-full
@@ -45,7 +41,7 @@
                             x-show="startAnimation" x-transition:enter="transition ease-out duration-700"
                             x-transition:enter-start="scale-50 opacity-0"
                             x-transition:enter-end="scale-100 opacity-100">
-                            {{-- Overlay --}}
+
                             <div class="absolute inset-0 bg-black opacity-50 rounded-xl"></div>
 
                             {{-- Konten --}}
@@ -68,7 +64,7 @@
                                 </p>
 
                                 {{-- Tombol Donasi --}}
-                                <button {{-- LOGIKA DI SINI: --}} {{-- Cek apakah Cookie 'donatur_nama' ada. Jika ada, langsung ke halaman konfirmasi. Jika tidak, buka modal login. --}}
+                                <button
                                     @click="{{ \Illuminate\Support\Facades\Cookie::get('donatur_nama') ? 'window.location.href=\'' . route('konfirmasi.donasi') . '\'' : 'showLogin = true' }}"
                                     class="mt-8 sm:mt-10 inline-block bg-white text-black font-bold py-3 px-8 sm:py-4 sm:px-10 rounded-full text-base sm:text-lg
                                     transition-all duration-200 ease-out hover:scale-105 hover:bg-gray-100 active:scale-95 active:bg-gray-200"
@@ -80,9 +76,7 @@
                         </div>
                     </div>
 
-                    {{-- ========================= --}}
-                    {{-- MODAL DATA DIRI DONATUR --}}
-                    {{-- ========================= --}}
+                    {{-- Modal Data Diri Donatur --}}
                     <div x-show="showLogin" x-cloak
                         class="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4">
 
@@ -138,10 +132,12 @@
                 </section>
 
                 {{-- Tujuan Program --}}
-                {{-- PERBAIKAN 2: Tambahkan animasi fade-in pada section ini --}}
-                <section x-data="{ show: false }" x-intersect.once="show = true" x-show="show"
-                    x-transition:enter="transition ease-out duration-700 delay-200" x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100">
+                <section x-data="{ show: false }" x-intersect.once="show = true" x-cloak
+                    :class="show
+                        ?
+                        'opacity-100 translate-y-0' :
+                        'opacity-0 translate-y-8'"
+                    class="transition-all duration-700 ease-out">
 
                     <h2 class="text-3xl font-bold text-center text-gray-900">Tujuan Program Donasi</h2>
                     <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -178,6 +174,7 @@
 
                 <div class="border-b border-gray-300"></div>
 
+                {{-- Transparansi --}}
                 <section id="donasi" x-data="{ tab: 'pintu_surga' }">
                     <div class="text-center">
                         <h2 class="text-3xl font-bold text-gray-900">Transparansi & Rincian Program</h2>
@@ -187,11 +184,10 @@
                         </p>
                     </div>
 
-                    {{-- Ringkasan Laporan Bulanan (Dinamis) --}}
                     <div
                         class="mt-6 sm:mt-8 max-w-2xl mx-auto bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-4 sm:p-6 border border-gray-100">
 
-                        {{-- Header Card --}}
+                        {{-- Header --}}
                         <div
                             class="border-b border-dashed pb-4 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <h3 class="font-bold text-lg text-indigo-700 flex items-center">
@@ -202,11 +198,10 @@
                             </span>
                         </div>
 
-                        {{-- Body Card --}}
+                        {{-- Body --}}
                         <div class="space-y-4">
 
-                            {{-- Item 1: Total Pemasukan --}}
-                            {{-- Di HP: Label di atas, Angka di bawah (besar). Di PC: Kiri Kanan --}}
+                            {{-- Total Pemasukan --}}
                             <div
                                 class="flex flex-col sm:flex-row justify-between sm:items-center bg-indigo-50 px-4 py-3 rounded-xl border border-indigo-100">
                                 <span class="text-gray-600 text-sm sm:text-base font-medium mb-1 sm:mb-0">Total
@@ -216,7 +211,7 @@
                                 </span>
                             </div>
 
-                            {{-- Item 2: Jumlah Transaksi --}}
+                            {{-- Jumlah Transaksi --}}
                             <div
                                 class="flex flex-col sm:flex-row justify-between sm:items-center bg-gray-50 px-4 py-3 rounded-xl border border-gray-200">
                                 <span class="text-gray-600 text-sm sm:text-base font-medium mb-1 sm:mb-0">Jumlah
@@ -229,7 +224,7 @@
                         </div>
                     </div>
 
-                    {{-- Tabs Navigasi yang Diperbarui untuk Mobile (4 Tabs dalam Satu Frame) --}}
+                    {{-- Menu Tab --}}
                     <div class="mt-14 max-w-4xl mx-auto border-b border-gray-200">
                         <nav class="-mb-px flex justify-between text-center text-sm font-medium">
                             <template
@@ -253,7 +248,7 @@
                         </nav>
                     </div>
 
-                    {{-- Konten Tabs --}}
+                    {{-- Konten Tab --}}
                     <div class="mt-10 max-w-3xl mx-auto">
                         <div x-show="tab === 'pintu_surga'" x-transition:enter="transition ease-out duration-500"
                             x-transition:enter-start="opacity-0 translate-y-4"
@@ -348,34 +343,20 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // Ambil elemen form berdasarkan ID yang baru kita buat
             const formDataDiri = document.getElementById('formDataDiri');
 
             if (formDataDiri) {
                 formDataDiri.addEventListener('submit', function(e) {
-                    // KITA TIDAK PAKAI e.preventDefault(); 
-                    // Biarkan form submit secara normal ke server.
 
                     const btn = formDataDiri.querySelector('button[type="submit"]');
-
-                    // 1. Ubah tulisan tombol
-                    btn.innerHTML = `
-                    Memproses...
-                `;
-
-                    // 2. Disable tombol agar tidak bisa diklik lagi
+                    btn.innerHTML = `Memproses...`;
                     btn.disabled = true;
-
-                    // 3. Ubah style agar terlihat non-aktif (opsional)
                     btn.classList.add('opacity-75', 'cursor-not-allowed');
                 });
             }
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Memaksa AlpineJS membuka modal karena ada error
-            // Asumsi root elemen Alpine Anda memiliki x-data="{ showLogin: false, ... }"
-            // Kita cari elemen root tersebut dan ubah datanya
             const modalData = document.querySelector('[x-data*="showLogin"]');
             if (modalData) {
                 modalData.__x.$data.showLogin = true;

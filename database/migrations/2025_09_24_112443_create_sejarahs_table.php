@@ -9,7 +9,6 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    // ... dalam file ...create_sejarah_table.php
 
 public function up(): void
 {

@@ -9,6 +9,5 @@ class JadwalImam extends Model
 {
     use HasFactory;
     
-    // Izinkan kolom ini diisi
     protected $fillable = ['subuh', 'dhuhur_ashar', 'maghrib_isya'];
 }

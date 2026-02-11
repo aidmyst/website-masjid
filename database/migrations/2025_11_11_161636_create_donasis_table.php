@@ -1,5 +1,4 @@
 <?php
-// File: ...create_donasis_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('donasis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('donatur_id')->constrained('donaturs')->onDelete('cascade'); // Relasi ke donatur
+            $table->foreignId('donatur_id')->constrained('donaturs')->onDelete('cascade');
             $table->string('kategori');
-            $table->decimal('nominal', 15, 2); // Gunakan decimal untuk uang
-            $table->string('bukti_tf'); // Path ke file bukti transfer
-            $table->string('status')->default('pending'); // Untuk admin
+            $table->decimal('nominal', 15, 2);
+            $table->string('bukti_tf');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

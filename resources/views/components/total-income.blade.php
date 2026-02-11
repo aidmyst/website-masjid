@@ -9,7 +9,7 @@
     x-intersect.once:enter="start = true"
     x-init="$watch('start', value => {
         if (value) {
-            const duration = 2000; // Durasi animasi 2 detik
+            const duration = 2000;
             let startTime = null;
             const easeOutQuint = t => 1 - Math.pow(1 - t, 5);
 
@@ -32,6 +32,5 @@
     })"
     x-text="currentValue.toLocaleString('id-ID')"
 >
-    {{-- Tampilkan 0 sebagai nilai awal sebelum JS berjalan --}}
     0
 </span>

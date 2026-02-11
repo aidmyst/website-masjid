@@ -12,7 +12,7 @@
     x-intersect.once:enter="start = true"
     x-init="$watch('start', value => {
         if (value) {
-            const duration = 2000; // Durasi animasi tetap 2 detik
+            const duration = 2000;
             let startTime = null;
             const easeOutQuint = t => 1 - Math.pow(1 - t, 5);
 

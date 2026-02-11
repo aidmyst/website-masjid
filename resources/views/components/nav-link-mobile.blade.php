@@ -1,4 +1,3 @@
-{{-- File: resources/views/components/nav-link-mobile.blade.php --}}
 @props(['href', 'active' => false])
 
 @php

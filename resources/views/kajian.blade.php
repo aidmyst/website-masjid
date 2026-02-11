@@ -7,7 +7,6 @@
                 <section x-data>
                     <div class="bg-gray-800 text-white rounded-xl shadow-lg overflow-hidden p-4">
                         <div>
-                            {{-- REVISI DI SINI: Menggunakan x-init untuk memastikan judul selalu muncul --}}
                             <div x-data="{ show: false }" x-init="setTimeout(() => show = true, 250)" x-show="show"
                                 x-transition:enter="transition ease-out duration-500"
                                 x-transition:enter-start="opacity-0 transform -translate-y-4"
@@ -28,7 +27,7 @@
                                     :class="{ 'opacity-100 translate-y-0': show }"
                                     class="bg-gray-700/50 rounded-lg p-5 flex space-x-4 shadow-lg transform transition-all duration-700 h-full opacity-0 translate-y-3">
 
-                                    {{-- KONTEN KARTU TETAP --}}
+                                    {{-- Card --}}
                                     <div class="flex-shrink-0 text-center">
                                         <div class="bg-indigo-500 text-white rounded-md px-3 py-2">
                                             <p class="text-xs font-semibold uppercase">
@@ -126,7 +125,7 @@
         </main>
     </div>
 
-    {{-- FOOTER --}}
+    {{-- Footer --}}
     <footer class="bg-gray-800">
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
             <div class="text-center">
@@ -135,7 +134,7 @@
                 </h3>
                 <div class="mt-6 flex justify-center items-center space-x-6">
 
-                    {{-- Tautan Instagram --}}
+                    {{-- Instagram --}}
                     <a href="https://www.instagram.com/masjid_jami_aisyah/" target="_blank"
                         class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">Instagram</span>
@@ -146,7 +145,7 @@
                         </svg>
                     </a>
 
-                    {{-- Tautan WhatsApp --}}
+                    {{-- WhatsApp --}}
                     <a href="https://wa.me/628122637217" target="_blank"
                         class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">WhatsApp</span>
@@ -156,7 +155,7 @@
                         </svg>
                     </a>
 
-                    {{-- Tautan Google Maps BARU --}}
+                    {{-- Google Maps --}}
                     <a href="https://www.google.com/maps/place/631.Masjid+Jami+Aisyah+Binti+Abdul+Aziz+Al+Musa+%D9%85%D8%B3%D8%AC%D8%AF+%D8%AC%D8%A7%D9%85%D8%B9+%D8%B9%D8%A7%D8%A6%D8%B4%D8%A9+%D8%A8%D9%86%D8%AA+%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2+%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%89+%D8%BA%D9%81%D8%B1+%D8%A7%D9%84%D9%84%D9%87+%D9%84%D9%87%D8%A7%E2%80%AD/@-7.5570334,110.750316,17z/data=!3m1!4b1!4m6!3m5!1s0x2e7a14f1447b40bd:0x3472496efbb3b427!8m2!3d-7.5570334!4d110.7528909!16s%2Fg%2F11f00plnqy?entry=ttu&g_ep=EgoyMDI1MDkxNS4wIKXMDSoASAFQAw%3D%3D"
                         target="_blank" class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">Google Maps</span>

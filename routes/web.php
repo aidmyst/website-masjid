@@ -14,15 +14,11 @@ use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\DonasiController;
 use App\Http\Controllers\AuthDonasiController;
 
-// =========================================================
-// REDIRECT DOMAIN UTAMA → BERANDA
-// =========================================================
+// Redirect Domain Utama
 Route::get('/', [PageController::class, 'beranda'])->name('home');
 
 
-// =========================================================
-// RUTE WEBSITE PUBLIK
-// =========================================================
+// Rute Website (Publik)
 Route::middleware('web')->group(function () {
 
     // Halaman Utama
@@ -31,9 +27,7 @@ Route::middleware('web')->group(function () {
     Route::get('/donasi', [PageController::class, 'donasi'])->name('donasi');
     Route::get('/kajian', [KajianController::class, 'index'])->name('kajian');
 
-    // ============================
-    // Data Diri Donatur (NEW)
-    // ============================
+    // Data Diri Donatur
     Route::post('/donasi/data-diri', [AuthDonasiController::class, 'dataDiri'])
         ->name('donasi.datadiri');
 
@@ -49,9 +43,7 @@ Route::middleware('web')->group(function () {
 });
 
 
-// =========================================================
-// RUTE ADMIN (Dashboard)
-// =========================================================
+// Rute Dashboard (Admin)
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -75,21 +67,21 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     // Jadwal Khatib
     Route::post('/jadwal-khatib', [JadwalKhatibController::class, 'update'])->name('khatib.update');
 
-    // Sejarah
+    // Timeline
     Route::post('/sejarah', [SejarahController::class, 'store'])->name('sejarah.store');
     Route::put('/sejarah/{sejarah}', [SejarahController::class, 'update'])->name('sejarah.update');
     Route::delete('/sejarah/{sejarah}', [SejarahController::class, 'destroy'])->name('sejarah.destroy');
 
-    // Struktur Organisasi
+    // Struktur Pengurus
     Route::post('/organisasi', [OrganisasiController::class, 'store'])->name('organisasi.store');
     Route::put('/organisasi/{organisasi}', [OrganisasiController::class, 'update'])->name('organisasi.update');
     Route::delete('/organisasi/{organisasi}', [OrganisasiController::class, 'destroy'])->name('organisasi.destroy');
 
-    // Galeri
+    // Galeri Kegiatan
     Route::post('/galeri', [GaleriController::class, 'upload'])->name('galeri.upload');
     Route::delete('/galeri/{galeri}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
 
-    // Donasi Admin
+    // Donasi
     Route::post('/donasi/rekening', [DonasiController::class, 'updateRekening'])
         ->name('donasi.rekening.update');
     Route::delete('/donasi/konfirmasi/{konfirmasi}', [DonasiController::class, 'destroyKonfirmasi'])
@@ -97,7 +89,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::put('/donasi/konfirmasi/{id}', [DonasiController::class, 'updateKonfirmasi'])
         ->name('donasi.konfirmasi.update');
 
-    // Hapus akun donatur
+    // Donatur
     Route::delete('/donatur/{donatur}', [AuthDonasiController::class, 'destroy'])
         ->name('donatur.destroy');
 

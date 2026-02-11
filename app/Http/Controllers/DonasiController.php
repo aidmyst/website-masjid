@@ -5,30 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Donasi;
 use App\Models\Rekening;
-use App\Models\Donatur; // Tambahkan Model Donatur
-use Illuminate\Support\Facades\Cookie; // Tambahkan Facade Cookie
+use App\Models\Donatur;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
 class DonasiController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Ambil ID dari Cookie
         $donaturId = $request->cookie('donatur_id');
 
-        // 2. Cek apakah Cookie ID ada?
         if (!$donaturId) {
             return redirect()->route('donasi')
                 ->with('error', 'Silakan isi data diri terlebih dahulu.');
         }
 
-        // 3. [PENTING] Cek apakah ID tersebut MASIH ADA di Database?
-        // Ini mengatasi kasus: Admin hapus akun -> User refresh halaman -> Error/Nama Lama
         $donatur = Donatur::find($donaturId);
 
         if (!$donatur) {
-            // Jika data di database sudah hilang (dihapus admin),
-            // Kita paksa hapus cookie di browser user dan tendang ke halaman depan
             Cookie::expire('donatur_id');
             Cookie::expire('donatur_nama');
             Cookie::expire('donatur_wa');
@@ -37,8 +31,6 @@ class DonasiController extends Controller
                 ->with('error', 'Sesi Anda telah berakhir atau data dihapus. Silakan isi data kembali.');
         }
 
-        // 4. Jika valid, gunakan nama ASLI dari database (bukan dari cookie)
-        // agar data selalu fresh sesuai yang baru diinput/diedit
         $namaDonatur = $donatur->nama;
 
         $rekening = Rekening::first();
@@ -46,9 +38,6 @@ class DonasiController extends Controller
         return view('konfirmasi_donasi', compact('rekening', 'namaDonatur'));
     }
 
-    // ==============================
-    // SIMPAN DONASI
-    // ==============================
     public function store(Request $request)
     {
         $request->validate([
@@ -57,10 +46,9 @@ class DonasiController extends Controller
             'bukti_tf' => 'required|image|mimes:jpeg,png,jpg|max:10240',
         ]);
 
-        // Pastikan cookie ada sebelum menyimpan
         $namaDonatur = $request->cookie('donatur_nama');
         $noWaDonatur = $request->cookie('donatur_wa');
-        $donaturId   = $request->cookie('donatur_id'); // Jika perlu relasi ID
+        $donaturId   = $request->cookie('donatur_id');
 
         if (!$namaDonatur || !$noWaDonatur) {
             return redirect()->route('donasi')->with('error', 'Sesi Anda habis, silakan isi data diri ulang.');
@@ -69,9 +57,9 @@ class DonasiController extends Controller
         $buktiPath = $request->file('bukti_tf')->store('bukti_transfer', 'public');
 
         Donasi::create([
-            'donatur_id'   => $donaturId,       // Masukkan ID jika relasi database membutuhkan
-            'nama_donatur' => $namaDonatur,     // Ambil dari cookie
-            'no_wa'        => $noWaDonatur,     // Ambil dari cookie
+            'donatur_id'   => $donaturId,
+            'nama_donatur' => $namaDonatur,
+            'no_wa'        => $noWaDonatur,     
             'kategori'     => $request->kategori,
             'nominal'      => $request->nominal,
             'bukti_tf'     => $buktiPath,
@@ -107,9 +95,6 @@ class DonasiController extends Controller
             ->with('success', 'Informasi rekening berhasil diperbarui');
     }
 
-    // ==============================
-    // HAPUS KONFIRMASI DONASI
-    // ==============================
     public function destroyKonfirmasi(Donasi $konfirmasi)
     {
         if ($konfirmasi->bukti_tf) {
@@ -122,31 +107,23 @@ class DonasiController extends Controller
             ->with('active_tab', 'donasi')
             ->with('success', 'Konfirmasi donasi telah dihapus.');
     }
-
-    // ==============================
-    // UPDATE KONFIRMASI DONASI
-    // ==============================
     public function updateKonfirmasi(Request $request, $id)
     {
         $request->validate([
             'nama'    => 'required|string|max:255',
             'no_wa'   => 'required|string|max:20',
-            'nominal' => 'required',  // JANGAN numeric karena input sudah 900.000
+            'nominal' => 'required', 
         ]);
 
         $donasi = Donasi::findOrFail($id);
-
-        // Format nominal: hilangkan titik (900.000 → 900000)
         $nominalBersih = str_replace('.', '', $request->nominal);
 
-        // Update tabel donatur jika relasi ada
         if ($donasi->donatur) {
             $donasi->donatur->nama = $request->nama;
             $donasi->donatur->no_wa = $request->no_wa;
             $donasi->donatur->save();
         }
 
-        // Update nominal donasi
         $donasi->nominal = $nominalBersih;
         $donasi->save();
 

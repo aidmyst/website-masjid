@@ -1,17 +1,14 @@
 <x-app-layout>
-    {{-- KONTEN UTAMA HALAMAN --}}
     <div class="flex-grow">
         <main>
             <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-16">
 
-                <section x-data="{ visible: false }" x-init="setTimeout(() => visible = true, 50)" {{-- UBAH DI SINI: --}} {{-- 1. py-16: Memberi jarak atas/bawah yang lega di Mobile --}}
-                    {{-- 2. md:py-0: Menghapus jarak tersebut di Desktop (kembali ke layout asli) --}}
+                <section x-data="{ visible: false }" x-init="setTimeout(() => visible = true, 50)"
                     class="min-h-[80vh] bg-gradient-to-br from-gray-50 to-white flex items-center justify-center overflow-hidden 
                     rounded-xl py-8 md:py-0">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-5xl px-6 md:px-10">
 
-                        {{-- TEKS --}}
                         {{-- order-2: Di mobile teks ada di bawah --}}
                         <div x-show="visible" x-transition:enter="transition duration-700 ease-out transform"
                             x-transition:enter-start="opacity-0 -translate-x-8"
@@ -35,7 +32,6 @@
                             </p>
                         </div>
 
-                        {{-- GAMBAR --}}
                         {{-- order-1: Di mobile gambar ada di atas --}}
                         <div x-show="visible" x-transition:enter="transition duration-700 ease-out transform delay-200"
                             x-transition:enter-start="opacity-0 translate-x-8 scale-95"
@@ -43,7 +39,6 @@
                             class="order-1 md:order-2 relative flex justify-center">
 
                             {{-- Wrapper Gambar --}}
-                            {{-- w-full di mobile agar lebar proporsional, md:w-[90%] di desktop --}}
                             <div class="relative rounded-2xl overflow-hidden shadow-2xl group w-full md:w-[90%]">
                                 <img src="{{ asset('images/masjid-jami.webp') }}" alt="Foto Masjid Jami Aisyah"
                                     class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-700 ease-out">
@@ -53,7 +48,7 @@
                                     class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-700">
                                 </div>
 
-                                {{-- Label Lokasi --}}
+                                {{-- Lokasi --}}
                                 <div
                                     class="absolute bottom-3 left-3 text-white opacity-0 group-hover:opacity-100 transition duration-700">
                                     <p class="text-xs uppercase tracking-wider">Masjid Jami Aisyah</p>
@@ -71,7 +66,7 @@
                             show = true;
                             observer.disconnect();
                         }
-                    }, { threshold: 0.3 });
+                    }, { threshold: 0.3 }); //30% layar
                     observer.observe($el);">
 
                     {{-- Judul --}}
@@ -81,7 +76,7 @@
                         Visi & Misi
                     </h2>
 
-                    {{-- Visi --}}
+                    {{-- Visi Misi --}}
                     <div class="max-w-4xl mx-auto transition-all duration-700 ease-out delay-200"
                         :class="show ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-90 translate-y-6'">
 
@@ -92,7 +87,6 @@
                             text-center transform hover:-translate-y-1 hover:shadow-indigo-500/40 
                             transition duration-500 ease-out border border-indigo-400/30">
 
-                            {{-- Glow Background --}}
                             <div
                                 class="absolute inset-0 rounded-2xl md:rounded-3xl 
                                 blur-xl opacity-40 -z-10 
@@ -116,12 +110,11 @@
                     </div>
                 </section>
 
-
                 <section class="bg-gradient-to-br from-gray-50 to-white pt-12 md:pt-16 pb-4 overflow-hidden rounded-xl"
                     x-data="timeline()" x-init="updateLineHeight()" @scroll.window.throttle.50ms="updateLineHeight()">
 
                     <div class="mx-auto max-w-5xl px-6" x-ref="timelineWrapper">
-                        {{-- JUDUL --}}
+                        {{-- Judul --}}
                         <div class="text-center mb-20">
                             <h2 class="text-4xl font-bold text-gray-900 tracking-tight">Timeline Masjid Jami Aisyah</h2>
                             <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -130,10 +123,9 @@
                             </p>
                         </div>
 
-                        {{-- TIMELINE --}}
+                        {{-- Timeline --}}
                         <div class="relative">
                             @if ($sejarah->isNotEmpty())
-                                {{-- PERUBAHAN 1: Posisi garis diubah untuk mobile (kiri) dan desktop (tengah) --}}
                                 <div
                                     class="absolute top-0 h-full w-1 bg-gray-200 rounded-full left-4 -translate-x-1/2 md:left-1/2">
                                 </div>
@@ -146,10 +138,8 @@
                             <div class="space-y-8 md:space-y-4 relative z-10 mb-20" x-ref="timelineContent">
                                 @forelse ($sejarah as $item)
                                     <div x-data="{ visible: false }" x-intersect.once.margin.-100px="visible = true"
-                                        {{-- PERUBAHAN 2: Tata letak item diubah. Padding kiri ditambahkan untuk mobile. --}}
                                         class="relative pl-12 md:pl-0 flex flex-col md:flex-row md:items-center {{ $loop->even ? 'md:flex-row-reverse' : '' }}">
 
-                                        {{-- PERUBAHAN 3: Konten kartu sekarang menempati seluruh ruang yang tersedia di dalam container ber-padding. --}}
                                         <div class="w-full md:w-5/12 {{ $loop->odd ? 'md:pr-8' : 'md:pl-8' }}">
                                             <div class="bg-white rounded-2xl shadow-xl p-8 transition-all duration-700 ease-out border border-gray-100"
                                                 :class="visible ? 'opacity-100 translate-y-0 scale-100' :
@@ -159,7 +149,6 @@
                                             </div>
                                         </div>
 
-                                        {{-- PERUBAHAN 4: Posisi titik (dot) diubah menjadi absolut untuk mobile dan kembali relatif untuk desktop. --}}
                                         <div
                                             class="absolute top-5 left-4 -translate-x-1/2 md:relative md:top-auto md:left-auto md:translate-x-0 md:w-2/12 flex justify-center x-ref='dot'">
                                             <div class="relative flex items-center justify-center h-5 w-5">
@@ -172,7 +161,6 @@
                                             </div>
                                         </div>
 
-                                        {{-- Spacer untuk desktop tetap sama --}}
                                         <div class="hidden md:block md:w-5/12"></div>
                                     </div>
                                 @empty
@@ -189,12 +177,11 @@
 
                 <div class="border-b border-gray-300"></div>
 
+                {{-- Galeri Kegiatan --}}
                 <section class="mb-12">
                     <h2 class="text-3xl font-bold text-center text-gray-900 mb-10">Galeri Kegiatan</h2>
                     <div class="bg-white rounded-2xl p-8 md:p-12 shadow-inner">
-                        {{-- Cek apakah galeri memiliki data --}}
                         @if ($galeri->isNotEmpty())
-                            {{-- JIKA ADA DATA: Tampilkan slider galeri seperti biasa --}}
                             <div x-data="responsiveGaleriSlider({{ $galeri->count() }})" x-init="init()">
                                 <div class="relative max-w-5xl mx-auto" x-intersect:enter.once="isIntersecting = true">
                                     <div x-ref="slider" class="overflow-hidden"
@@ -246,8 +233,8 @@
                                     </div>
                                 </div>
 
-                                {{-- Kode Modal Galeri --}}
-                                <div x-show="open" @click.away="closeModal()" @keydown.escape.window="closeModal()"
+                                {{-- Modal Galeri --}}
+                                <div x-show="open" @keydown.escape.window="closeModal()"
                                     x-transition.opacity.duration.300ms
                                     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
                                     x-cloak>
@@ -259,29 +246,25 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- Sisipkan script responsiveGaleriSlider di sini jika belum ada di file js utama --}}
                         @else
-                            {{-- JIKA DATA KOSONG: Tampilkan 3 kartu placeholder dengan tulisan --}}
                             <div class="max-w-5xl mx-auto">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                                    {{-- Kartu Placeholder 1 --}}
+                                    {{-- Card 1 --}}
                                     <div
                                         class="relative bg-gray-200 rounded-lg shadow-md flex items-center justify-center">
-                                        {{-- Elemen ini menjaga rasio aspek kartu --}}
                                         <div class="pt-[70%]"></div>
-                                        {{-- Tulisan yang diposisikan di tengah --}}
                                         <span class="absolute text-lg font-semibold text-gray-400">Galeri 1</span>
                                     </div>
 
-                                    {{-- Kartu Placeholder 2 --}}
+                                    {{-- Card 2 --}}
                                     <div
                                         class="relative bg-gray-200 rounded-lg shadow-md flex items-center justify-center">
                                         <div class="pt-[70%]"></div>
                                         <span class="absolute text-lg font-semibold text-gray-400">Galeri 2</span>
                                     </div>
 
-                                    {{-- Kartu Placeholder 3 --}}
+                                    {{-- Card 3 --}}
                                     <div
                                         class="relative bg-gray-200 rounded-lg shadow-md flex items-center justify-center">
                                         <div class="pt-[70%]"></div>
@@ -304,7 +287,6 @@
                             Struktur Pengurus Masjid
                         </h2>
 
-                        {{-- CEK APAKAH ADA DATA --}}
                         @if ($organisasi->isEmpty())
                             <div class="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-300">
                                 <p class="text-lg font-medium text-gray-500">Data pengurus belum ditambahkan</p>
@@ -314,7 +296,6 @@
                         @else
                             @php
                                 $grouped = $organisasi->groupBy('divisi');
-                                // Urutan tampilan yang diinginkan
                                 $urutanTampil = [
                                     'Penasehat',
                                     'Ketua',
@@ -331,10 +312,10 @@
                                 ];
                             @endphp
 
-                            {{-- GRID TAMPILAN --}}
+                            {{-- Tampilan Grid Pengurus --}}
                             <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
                                 @foreach ($urutanTampil as $posisi)
-                                    @if (isset($grouped[$posisi]))
+                                    @if (isset($grouped[$posisi]))  
                                         <div
                                             class="break-inside-avoid bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mb-6">
                                             <div class="bg-indigo-600 px-4 py-2">
@@ -376,7 +357,7 @@
     </main>
     </div>
 
-    {{-- FOOTER --}}
+    {{-- Footer --}}
     <footer class="bg-gray-800">
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
             <div class="text-center">
@@ -385,7 +366,7 @@
                 </h3>
                 <div class="mt-6 flex justify-center items-center space-x-6">
 
-                    {{-- Tautan Instagram --}}
+                    {{-- Instagram --}}
                     <a href="https://www.instagram.com/masjid_jami_aisyah/" target="_blank"
                         class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">Instagram</span>
@@ -396,7 +377,7 @@
                         </svg>
                     </a>
 
-                    {{-- Tautan WhatsApp --}}
+                    {{-- WhatsApp --}}
                     <a href="https://wa.me/628122637217" target="_blank"
                         class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">WhatsApp</span>
@@ -406,7 +387,7 @@
                         </svg>
                     </a>
 
-                    {{-- Tautan Google Maps BARU --}}
+                    {{-- Google Maps --}}
                     <a href="https://www.google.com/maps/place/631.Masjid+Jami+Aisyah+Binti+Abdul+Aziz+Al+Musa+%D9%85%D8%B3%D8%AC%D8%AF+%D8%AC%D8%A7%D9%85%D8%B9+%D8%B9%D8%A7%D8%A6%D8%B4%D8%A9+%D8%A8%D9%86%D8%AA+%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2+%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%89+%D8%BA%D9%81%D8%B1+%D8%A7%D9%84%D9%84%D9%87+%D9%84%D9%87%D8%A7%E2%80%AD/@-7.5570334,110.750316,17z/data=!3m1!4b1!4m6!3m5!1s0x2e7a14f1447b40bd:0x3472496efbb3b427!8m2!3d-7.5570334!4d110.7528909!16s%2Fg%2F11f00plnqy?entry=ttu&g_ep=EgoyMDI1MDkxNS4wIKXMDSoASAFQAw%3D%3D"
                         target="_blank" class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">Google Maps</span>
@@ -454,24 +435,19 @@
 
                     const scrollY = window.scrollY;
                     const windowHeight = window.innerHeight;
-
-                    // Titik tengah layar
                     const centerScreen = scrollY + windowHeight / 2;
 
                     let newHeight = 0;
 
-                    // Loop semua dot
                     dots.forEach(dot => {
                         const rect = dot.getBoundingClientRect();
-                        const dotY = scrollY + rect.top + rect.height / 2; // posisi tengah dot
+                        const dotY = scrollY + rect.top + rect.height / 2;
 
-                        // Jika dot sudah lewat tengah layar, garis harus mencapai dot itu
                         if (dotY <= centerScreen) {
                             newHeight = dotY - (wrapper.offsetTop + wrapper.getBoundingClientRect().top - scrollY);
                         }
                     });
 
-                    // Batasi agar tidak melebihi area timeline
                     const maxHeight = this.$refs.timelineContent.offsetHeight;
                     this.lineHeight = Math.min(newHeight, maxHeight);
                 }
@@ -534,9 +510,9 @@
                     }
                 },
 
-                // BARU: Fungsi untuk mengupdate index saat di-scroll/swipe di mobile
+                // Mobile slider
                 updateIndexOnScroll() {
-                    if (!this.showButtons) { // Hanya berjalan di mode mobile
+                    if (!this.showButtons) {
                         const slider = this.$refs.slider;
                         const currentIndex = Math.round(slider.scrollLeft / this.itemWidth);
                         if (this.startIndex !== currentIndex) {

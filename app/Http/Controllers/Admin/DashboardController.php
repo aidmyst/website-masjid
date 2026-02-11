@@ -17,12 +17,8 @@ use App\Models\Donatur;
 
 class DashboardController extends Controller
 {
-    /**
-     * Menampilkan halaman dashboard admin.
-     */
     public function index()
     {
-        // Data lain
         $totalKajian = Kajian::count();
         $kajian = Kajian::orderBy('hari', 'desc')->get();
         $statistik = Statistik::firstOrCreate(['id' => 1]);
@@ -33,10 +29,6 @@ class DashboardController extends Controller
         $galeri = Galeri::latest()->get();
         $rekening = Rekening::first();
         $donaturs = Donatur::orderBy('created_at', 'desc')->get();
-
-        // --- BAGIAN DONASI ---
-        // Ambil SEMUA data konfirmasi donasi (tanpa filter where)
-        // Agar AlpineJS bisa memanipulasinya di frontend
         $konfirmasiDonasi = Donasi::with('donatur')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -56,7 +48,6 @@ class DashboardController extends Controller
             'konfirmasiDonasi',
             'totalDonasiTerkumpul',
             'donaturs'
-            // Variabel $selectedKategori tidak lagi diperlukan
         ));
     }
 }

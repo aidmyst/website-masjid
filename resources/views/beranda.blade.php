@@ -1,8 +1,6 @@
 <x-app-layout>
-    {{-- KONTEN UTAMA HALAMAN --}}
     <div class="flex-grow">
         <main>
-            {{-- Hero Section (Gambar Full-Width - VERSI PERBAIKAN) --}}
             <section class="w-full relative text-center h-[80vh] sm:h-[100vh] overflow-hidden">
                 <div class="absolute inset-0 overflow-hidden">
                     <img src="{{ asset('images/masjid-jami.webp') }}" alt="Masjid Jami"
@@ -10,7 +8,6 @@
                 </div>
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70"></div>
 
-                {{-- Alpine.js untuk animasi teks yang lebih sederhana --}}
                 <div x-data="{ show: false }" x-intersect:enter="show = true" x-intersect:leave="show = false"
                     class="absolute inset-0 flex flex-col items-center justify-center p-4 text-white">
 
@@ -28,17 +25,14 @@
                 </div>
             </section>
 
-            {{-- Konten di dalam Container --}}
             <div class="bg-gray-50">
                 <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-20">
-
-                    {{-- Tambahkan x-data dan x-intersect pada section --}}
+                    {{-- Layanan & Program Unggulan --}}
                     <section x-data="{ startAnimation: false }" x-intersect.once:enter="startAnimation = true">
                         <h2 class="text-3xl font-bold text-center text-gray-900">Layanan & Program Unggulan</h2>
                         <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
-                            {{-- Beri delay yang berbeda untuk setiap kartu --}}
-                            <x-service-card delay="0ms"> {{-- MODIFIKASI: Kirim status animasi --}}
+                            <x-service-card delay="0ms"> 
                                 <x-slot name="icon">
                                     <x-heroicon-o-clock class="w-6 h-6" />
                                 </x-slot>
@@ -46,9 +40,8 @@
                                 Akses informasi waktu sholat fardhu yang akurat dan diperbarui setiap hari.
                             </x-service-card>
 
-                            <x-service-card delay="150ms"> {{-- MODIFIKASI: Kirim status animasi --}}
+                            <x-service-card delay="150ms"> 
                                 <x-slot name="icon">
-                                    {{-- Mengganti @svg dengan komponen untuk konsistensi --}}
                                     <x-heroicon-o-academic-cap class="w-6 h-6" />
                                 </x-slot>
                                 <x-slot name="title">Pendidikan Al-Qur'an (TPA)</x-slot>
@@ -56,7 +49,7 @@
                                 dewasa.
                             </x-service-card>
 
-                            <x-service-card delay="300ms"> {{-- MODIFIKASI: Kirim status animasi --}}
+                            <x-service-card delay="300ms"> 
                                 <x-slot name="icon">
                                     <x-heroicon-o-book-open class="w-6 h-6" />
                                 </x-slot>
@@ -64,10 +57,9 @@
                                 Ikuti berbagai kajian rutin bersama asatidz terkemuka untuk menambah wawasan.
                             </x-service-card>
 
-                            <x-service-card delay="450ms"> {{-- MODIFIKASI: Kirim status animasi --}}
+                            <x-service-card delay="450ms"> 
                                 <x-slot name="icon">
                                     <x-heroicon-o-banknotes class="w-6 h-6" />
-                                    {{-- Mengganti 'banknotes' dengan 'gift' yang lebih relevan --}}
                                 </x-slot>
                                 <x-slot name="title">Program Donasi</x-slot>
                                 Berpartisipasi dalam program berbagi makanan dan santunan.
@@ -76,7 +68,7 @@
                         </div>
                     </section>
 
-                    {{-- Statistik Animasi --}}
+                    {{-- Statistik Masjid --}}
                     <section class="bg-white p-8 rounded-lg shadow-lg">
                         <h2 class="text-3xl font-bold text-center text-gray-900">Statistik Masjid</h2>
                         <div class="mt-12 grid grid-cols-1 gap-8 text-center sm:grid-cols-2 lg:grid-cols-4">
@@ -88,9 +80,9 @@
                     </section>
 
                     <div class="border-b border-gray-300"></div>
-
+                    
+                    {{-- Tab Jadwal Imam dan Khatib --}}
                     <div x-data="{ tab: 'imam' }" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-                        {{-- Menu Bar --}}
                         <div class="flex justify-center space-x-4 mb-8">
                             <button @click="tab = 'imam'"
                                 :class="tab === 'imam' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'"
@@ -182,7 +174,6 @@
                                     <div
                                         class="mt-12 flex flex-col md:flex-row flex-wrap justify-center items-stretch gap-4">
                                         @php
-                                            // Kita buat array dinamis dari data database
                                             $petugasJumat = [
                                                 ['pekan' => 'Jum\'at 1', 'khatib' => $khatib->jumat_1 ?? 'Belum ditentukan'],
                                                 ['pekan' => 'Jum\'at 2', 'khatib' => $khatib->jumat_2 ?? 'Belum ditentukan'],
@@ -190,7 +181,6 @@
                                                 ['pekan' => 'Jum\'at 4', 'khatib' => $khatib->jumat_4 ?? 'Belum ditentukan'],
                                             ];
 
-                                            // Hanya tambahkan pekan ke-5 jika datanya diisi oleh admin
                                             if (!empty($khatib->jumat_5)) {
                                                 $petugasJumat[] = [
                                                     'pekan' => 'Jum\'at 5',
@@ -200,7 +190,6 @@
                                         @endphp
 
                                         @foreach ($petugasJumat as $petugas)
-                                            {{-- Wrapper Statis (Tanpa AlpineJS dan Transition) --}}
                                             <div class="w-full md:w-[20rem] max-w-xs mx-auto md:mx-0">
 
                                                 <div
@@ -350,7 +339,7 @@
                 </div>
             </div>
 
-            {{-- Jadwal Sholat & Kalender Hijriyah (Full-Width Background) --}}
+            {{-- Jadwal Sholat & Kalender Hijriyah --}}
             <section class="relative py-16 bg-fixed bg-cover bg-center"
                 style="background-image: url('{{ asset('images/sholat.webp') }}')">
                 <div class="absolute inset-0 bg-black opacity-50"></div>
@@ -394,14 +383,12 @@
 
                         {{-- Kolom Kanan: Kalender Hijriyah --}}
                         <div class="lg:col-span-1">
-                            {{-- Tambahkan kelas "flex flex-col" di sini --}}
                             <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col">
                                 <div class="p-6 bg-indigo-500 text-white">
                                     <h2 class="text-2xl font-bold">Kalender Hijriyah
                                     </h2>
                                     <p class="opacity-80">&nbsp;</p>
                                 </div>
-                                {{-- Tambahkan kelas "flex-grow" di sini --}}
                                 <div class="p-6 flex flex-grow flex-col items-center justify-center text-center">
                                     <div class="text-6xl font-bold text-gray-600">
                                         {{ $hijriDate['day'] }}</div>
@@ -416,10 +403,9 @@
                 </div>
             </section>
 
-            {{-- Konten Lanjutan di dalam Container --}}
             <div class="bg-gray-50">
                 <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-20">
-                    {{-- Peta Lokasi Masjid --}}
+                    {{-- Lokasi Masjid --}}
                     <section>
                         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                             <div class="p-6 bg-indigo-500 text-white">
@@ -439,6 +425,7 @@
         </main>
     </div>
 
+    {{-- Footer --}}
     <footer class="bg-gray-800">
         <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
             <div class="text-center">
@@ -447,7 +434,7 @@
                 </h3>
                 <div class="mt-6 flex justify-center items-center space-x-6">
 
-                    {{-- Tautan Instagram --}}
+                    {{-- Instagram --}}
                     <a href="https://www.instagram.com/masjid_jami_aisyah/" target="_blank"
                         class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">Instagram</span>
@@ -458,7 +445,7 @@
                         </svg>
                     </a>
 
-                    {{-- Tautan WhatsApp --}}
+                    {{-- WhatsApp --}}
                     <a href="https://wa.me/628122637217" target="_blank"
                         class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">WhatsApp</span>
@@ -468,7 +455,7 @@
                         </svg>
                     </a>
 
-                    {{-- Tautan Google Maps BARU --}}
+                    {{-- Google Maps --}}
                     <a href="https://www.google.com/maps/place/631.Masjid+Jami+Aisyah+Binti+Abdul+Aziz+Al+Musa+%D9%85%D8%B3%D8%AC%D8%AF+%D8%AC%D8%A7%D9%85%D8%B9+%D8%B9%D8%A7%D8%A6%D8%B4%D8%A9+%D8%A8%D9%86%D8%AA+%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2+%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%89+%D8%BA%D9%81%D8%B1+%D8%A7%D9%84%D9%84%D9%87+%D9%84%D9%87%D8%A7%E2%80%AD/@-7.5570334,110.750316,17z/data=!3m1!4b1!4m6!3m5!1s0x2e7a14f1447b40bd:0x3472496efbb3b427!8m2!3d-7.5570334!4d110.7528909!16s%2Fg%2F11f00plnqy?entry=ttu&g_ep=EgoyMDI1MDkxNS4wIKXMDSoASAFQAw%3D%3D"
                         target="_blank" class="text-gray-400 hover:text-indigo-500 transition">
                         <span class="sr-only">Google Maps</span>

@@ -1,31 +1,14 @@
 <x-app-layout>
-    {{-- ========================================================== --}}
-    {{--            SLOT NAVIGASI KUSTOM (DIKOSONGKAN)            --}}
-    {{-- ========================================================== --}}
     <x-slot name="navigation">
-        {{-- Slot ini sengaja dikosongkan agar tidak ada navbar --}}
     </x-slot>
-    {{-- ========================================================== --}}
 
-
-    {{-- Wrapper konten utama --}}
+    {{-- Konten Utama --}}
     <div class="pt-12">
-        {{-- Container terluar (lebar) untuk padding di layar besar --}}
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            {{-- ========================================================== --}}
-            {{--     WRAPPER KONTEN (SEKARANG MENJADI max-w-2xl)     --}}
-            {{-- ========================================================== --}}
-            {{-- Semua konten (header & kartu) dimasukkan ke dalam div ini --}}
             <div class="max-w-2xl mx-auto">
-
-                {{-- 1. Header Kustom (Tombol Back & Nama) --}}
-                {{-- 1. Header Kustom (Tombol Back & Nama) --}}
-                {{-- Container Utama: Menggunakan flex-row (sebaris) & flex-wrap (agar aman jika nama panjang) --}}
-                {{-- Container Utama: Flex Row & Wrap --}}
                 <div class="flex flex-row flex-wrap items-center justify-between gap-4 mb-6 sm:mb-8">
 
-                    {{-- 1. TOMBOL BACK (Kiri) --}}
+                    {{-- Tombol Kembali --}}
                     <div class="mb-0">
                         <a href="{{ route('donasi') }}" dir="ltr"
                             class="inline-flex flex-row items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-xl shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors">
@@ -38,9 +21,7 @@
                         </a>
                     </div>
 
-                    {{-- 2. NAMA DONATUR --}}
-                    {{-- Mobile: Pindah ke baris baru (w-full) & Rata Kiri (text-left) --}}
-                    {{-- Desktop: Lebar otomatis (sm:w-auto) & Rata Kanan (sm:text-right) --}}
+                    {{-- Nama Donatur --}}
                     @if (isset($namaDonatur))
                         <div class="w-full sm:w-auto text-left sm:text-right">
                             <div class="bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm inline-block">
@@ -53,11 +34,9 @@
                             </div>
                         </div>
                     @endif
-
                 </div>
 
-                {{-- 2. Bagian 1: Info Rekening --}}
-                {{-- (Class max-w-2xl dan padding luar dihapus dari sini) --}}
+                {{-- Informasi Rekening --}}
                 <section id="donasi-rekening" class="text-center">
                     <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
                         <h2 class="text-2xl font-bold text-gray-900 text-center">Salurkan Donasi Anda</h2>
@@ -105,9 +84,8 @@
                     </div>
                 </section>
 
-                {{-- 3. Bagian 2: Form Konfirmasi --}}
+                {{-- Form Konfirmasi --}}
                 <section class="pt-8 pb-12">
-                    {{-- (Class max-w-2xl dan padding luar dihapus dari sini) --}}
                     <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 text-left">
                         <h2 class="text-2xl font-bold text-gray-900 text-center">Konfirmasi Donasi Anda</h2>
                         <p class="text-base text-gray-600 text-center mb-6">Setelah berhasil transfer, mohon isi form di
@@ -129,6 +107,7 @@
                             enctype="multipart/form-data">
                             @csrf
                             <div class="space-y-4">
+
                                 {{-- Kategori Donasi --}}
                                 <div>
                                     <label for="kategori"
@@ -159,8 +138,6 @@
                                     <input type="text" id="nominal_display"
                                         class="font-sans mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         placeholder="Contoh: 50.000">
-
-                                    <!-- VALUE ASLI UNTUK DIKIRIM KE BACKEND -->
                                     <input type="hidden" id="nominal" name="nominal">
 
                                     @error('nominal')
@@ -190,45 +167,33 @@
             </div>
             </section>
 
-        </div> {{-- Penutup 'max-w-2xl' --}}
+        </div>
 
-    </div> {{-- Penutup 'max-w-7xl' --}}
-    </div> {{-- Penutup 'pt-12' --}}
+    </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const formKonfirmasi = document.getElementById('formKonfirmasi');
             if (formKonfirmasi) {
                 formKonfirmasi.addEventListener('submit', function(e) {
-                    // Jangan pakai e.preventDefault() agar form tetap terkirim
 
                     const btn = formKonfirmasi.querySelector('button[type="submit"]');
-
-                    // Simpan teks asli jaga-jaga (opsional)
-                    // const originalText = btn.innerText;
-
-                    // Ubah teks tombol dan tambahkan ikon loading
-                    btn.innerHTML = `
-                    Memproses...
-                `;
-
-                    // Matikan tombol agar tidak double submit
+                    btn.innerHTML = `Memproses...`;
                     btn.disabled = true;
                     btn.classList.add('opacity-75', 'cursor-not-allowed');
                 });
             }
-
         });
 
         function copyRekening(text) {
-            // 1. Salin ke clipboard menggunakan API modern
+            // Menyalin ke clipboard
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(text);
             } else {
-                // Fallback untuk browser lama/mobile tertentu
                 let textArea = document.createElement("textarea");
                 textArea.value = text;
-                textArea.style.position = "fixed"; // Hindari scroll ke bawah
+                textArea.style.position = "fixed";
                 document.body.appendChild(textArea);
                 textArea.focus();
                 textArea.select();
@@ -239,25 +204,14 @@
                 }
                 document.body.removeChild(textArea);
             }
-
-            // 2. Tampilkan efek visual "Tersalin!"
-            const feedback = document.getElementById('copy-feedback');
-            if (feedback) {
-                feedback.classList.remove('opacity-0'); // Munculkan
-                setTimeout(() => {
-                    feedback.classList.add('opacity-0'); // Hilangkan setelah 2 detik
-                }, 2000);
-            }
         }
 
         const inputDisplay = document.getElementById("nominal_display");
         const inputHidden = document.getElementById("nominal");
 
         inputDisplay.addEventListener("input", function() {
-            let angka = this.value.replace(/\D/g, ""); // hilangkan semua non-digit
-            inputHidden.value = angka; // simpan angka murni untuk backend
-
-            // Format titik per ribuan
+            let angka = this.value.replace(/\D/g, "");
+            inputHidden.value = angka;
             this.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         });
     </script>
