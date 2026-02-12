@@ -13,7 +13,6 @@ class AuthDonasiController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'no_wa' => 'required|string|max:20',
-            'alamat' => 'nullable|string|max:255',
         ]);
 
         $nama = trim($request->nama);
@@ -36,7 +35,6 @@ class AuthDonasiController extends Controller
         $donatur = Donatur::create([
             'nama' => $nama,
             'no_wa' => $noWa,
-            'alamat' => $request->alamat,
         ]);
 
         Cookie::expire('donatur_id');
