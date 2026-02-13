@@ -249,51 +249,56 @@
                     </div>
 
                     {{-- Konten Tab --}}
-                    <div class="mt-10 max-w-3xl mx-auto">
-                        <div x-show="tab === 'pintu_surga'" x-transition:enter="transition ease-out duration-500"
-                            x-transition:enter-start="opacity-0 translate-y-4"
-                            x-transition:enter-end="opacity-100 translate-y-0">
-                            @include('partials.laporan-donasi-tabel', [
-                                'kategori' => 'pintu_surga',
-                                'judul' => 'Kotak Infak Pintu Surga (Pembangunan)',
-                                'deskripsi' =>
-                                    'Donasi untuk pembangunan dan perawatan fisik masjid, mulai dari renovasi, perbaikan fasilitas, hingga penambahan sarana ibadah.',
-                                'laporan' => $laporan['pintu_surga'] ?? [],
-                            ])
-                        </div>
-                        <div x-show="tab === 'bmt'" x-transition:enter="transition ease-out duration-500"
-                            x-transition:enter-start="opacity-0 translate-y-4"
-                            x-transition:enter-end="opacity-100 translate-y-0">
-                            @include('partials.laporan-donasi-tabel', [
-                                'kategori' => 'bmt',
-                                'judul' => 'Kotak Infak BMT (Santunan & Sosial)',
-                                'deskripsi' =>
-                                    'Infak ini secara khusus disalurkan untuk program sosial dan santunan, menjadi jembatan kebaikan langsung dari Anda kepada mereka yang paling membutuhkan.',
-                                'laporan' => $laporan['bmt'] ?? [],
-                            ])
-                        </div>
-                        <div x-show="tab === 'jumat'" x-transition:enter="transition ease-out duration-500"
-                            x-transition:enter-start="opacity-0 translate-y-4"
-                            x-transition:enter-end="opacity-100 translate-y-0">
-                            @include('partials.laporan-donasi-tabel', [
-                                'kategori' => 'jumat',
-                                'judul' => 'Kotak Infak Sholat Jum\'at (Operasional)',
-                                'deskripsi' =>
-                                    'Donasi untuk kebutuhan operasional bulanan, seperti listrik, air, kebersihan, dan kegiatan ibadah rutin termasuk perawatan fasilitas serta mendukung kelancaran kajian.',
-                                'laporan' => $laporan['jumat'] ?? [],
-                            ])
-                        </div>
-                        <div x-show="tab === 'kebersihan'" x-transition:enter="transition ease-out duration-500"
-                            x-transition:enter-start="opacity-0 translate-y-4"
-                            x-transition:enter-end="opacity-100 translate-y-0">
-                            @include('partials.laporan-donasi-tabel', [
-                                'kategori' => 'kebersihan',
-                                'judul' => 'Kotak Infak Kebersihan (Pemeliharaan Fasilitas)',
-                                'deskripsi' =>
-                                    'Infak khusus untuk merawat tempat wudhu dan kamar mandi agar tetap bersih, sehat, dan layak digunakan.',
-                                'laporan' => $laporan['kebersihan'] ?? [],
-                            ])
-                        </div>
+                    <div class="mt-10 max-w-5xl mx-auto">
+
+                        <template x-if="tab === 'pintu_surga'">
+                            <div x-transition>
+                                @include('partials.laporan-donasi-tabel', [
+                                    'kategori' => 'pintu_surga',
+                                    'judul' => 'Kotak Infak Pintu Surga (Pembangunan)',
+                                    'deskripsi' =>
+                                        'Donasi untuk pembangunan dan perawatan fisik masjid, mulai dari renovasi, perbaikan fasilitas, hingga penambahan sarana ibadah.',
+                                    'laporan' => $laporan['pintu_surga'] ?? [],
+                                ])
+                            </div>
+                        </template>
+
+                        <template x-if="tab === 'bmt'">
+                            <div x-transition>
+                                @include('partials.laporan-donasi-tabel', [
+                                    'kategori' => 'bmt',
+                                    'judul' => 'Kotak Infak BMT (Santunan & Sosial)',
+                                    'deskripsi' =>
+                                        'Infak ini secara khusus disalurkan untuk program sosial dan santunan, menjadi jembatan kebaikan langsung dari Anda kepada mereka yang paling membutuhkan.',
+                                    'laporan' => $laporan['bmt'] ?? [],
+                                ])
+                            </div>
+                        </template>
+
+                        <template x-if="tab === 'jumat'">
+                            <div x-transition>
+                                @include('partials.laporan-donasi-tabel', [
+                                    'kategori' => 'jumat',
+                                    'judul' => 'Kotak Infak Sholat Jumat (Operasional)',
+                                    'deskripsi' =>
+                                        'Untuk listrik, air, kebersihan dan operasional.Donasi untuk kebutuhan operasional bulanan, seperti listrik, air, kebersihan, dan kegiatan ibadah rutin termasuk perawatan fasilitas serta mendukung kelancaran kajian.',
+                                    'laporan' => $laporan['jumat'] ?? [],
+                                ])
+                            </div>
+                        </template>
+
+                        <template x-if="tab === 'kebersihan'">
+                            <div x-transition>
+                                @include('partials.laporan-donasi-tabel', [
+                                    'kategori' => 'kebersihan',
+                                    'judul' => 'Kotak Infak Kebersihan',
+                                    'deskripsi' =>
+                                        'Infak khusus untuk merawat tempat wudhu dan kamar mandi agar tetap bersih, sehat, dan layak digunakan.',
+                                    'laporan' => $laporan['kebersihan'] ?? [],
+                                ])
+                            </div>
+                        </template>
+
                     </div>
                 </section>
 
@@ -340,7 +345,103 @@
         </div>
     </footer>
 
+    <style>
+        .scroll-snap-x {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .scroll-snap-x::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scroll-snap-align-start {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+
     <script>
+        function donasiSlider(totalCount) {
+            return {
+                startIndex: 0,
+                visibleCount: 3,
+                totalCount: totalCount,
+                gap: 16,
+                itemWidth: 260,
+                showButtons: true,
+
+                init() {
+                    this.$nextTick(() => {
+                        setTimeout(() => this.update(), 50);
+                    });
+
+                    window.addEventListener('resize', () => this.update());
+                },
+
+                update() {
+                    if (!this.$refs.slider || !this.$refs.track) return;
+
+                    const sliderWidth = this.$refs.slider.clientWidth;
+
+                    const style = window.getComputedStyle(this.$refs.track);
+                    const paddingX =
+                        parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+
+                    const realWidth = sliderWidth - paddingX;
+                    const w = window.innerWidth;
+
+                    this.startIndex = 0;
+
+                    if (w < 640) {
+                        this.visibleCount = 1;
+                        this.showButtons = false;
+                        this.itemWidth = realWidth; // FULL tanpa dikurangi gap
+                    } else if (w < 1024) {
+                        this.visibleCount = 2;
+                        this.showButtons = true;
+                        this.itemWidth = (realWidth - this.gap) / 2;
+                    } else {
+                        this.visibleCount = 3;
+                        this.showButtons = true;
+                        this.itemWidth = (realWidth - (this.gap * 2)) / 3;
+                    }
+                },
+
+                updateIndexOnScroll() {
+                    if (!this.showButtons) {
+                        const slider = this.$refs.slider;
+                        const currentIndex = Math.round(slider.scrollLeft / (this.itemWidth + this.gap));
+                        if (this.startIndex !== currentIndex) {
+                            this.startIndex = currentIndex;
+                        }
+                    }
+                },
+
+                next() {
+                    if (this.startIndex + this.visibleCount < this.totalCount)
+                        this.startIndex++;
+                },
+
+                prev() {
+                    if (this.startIndex > 0)
+                        this.startIndex--;
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
 
             const formDataDiri = document.getElementById('formDataDiri');
