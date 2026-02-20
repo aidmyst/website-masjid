@@ -408,7 +408,7 @@
                     if (w < 640) {
                         this.visibleCount = 1;
                         this.showButtons = false;
-                        this.itemWidth = realWidth; // FULL tanpa dikurangi gap
+                        this.itemWidth = realWidth;
                     } else if (w < 1024) {
                         this.visibleCount = 2;
                         this.showButtons = true;

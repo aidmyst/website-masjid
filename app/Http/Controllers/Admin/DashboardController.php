@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Kajian;
 use App\Models\Statistik;
+use App\Models\Jamaah;
 use App\Models\JadwalImam;
 use App\Models\JadwalKhatib;
 use App\Models\Sejarah;
@@ -19,9 +21,24 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $bulanLalu = Carbon::now()->subMonth();
+
+        $jumlahKajianBulanLalu = Kajian::whereYear('hari', $bulanLalu->year)
+            ->whereMonth('hari', $bulanLalu->month)
+            ->count();
+
+        // Hitung Total Jamaah
+        $totalJamaahInput = Jamaah::count();
+
+        $statistik = Statistik::firstOrCreate(['id' => 1]);
+        $statistik->update([
+            'kajian' => $jumlahKajianBulanLalu,
+            'jamaah' => $totalJamaahInput
+        ]);
+
         $totalKajian = Kajian::count();
         $kajian = Kajian::orderBy('hari', 'desc')->get();
-        $statistik = Statistik::firstOrCreate(['id' => 1]);
+        $jamaahs = Jamaah::latest()->get();
         $imam = JadwalImam::first();
         $khatib = JadwalKhatib::first();
         $sejarah = Sejarah::orderBy('tahun', 'desc')->get();
@@ -39,6 +56,7 @@ class DashboardController extends Controller
             'totalKajian',
             'kajian',
             'statistik',
+            'jamaahs',
             'imam',
             'khatib',
             'sejarah',

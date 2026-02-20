@@ -61,6 +61,10 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     // Statistik
     Route::post('/statistik', [StatistikController::class, 'store'])->name('statistik.store');
 
+    // Jamaah
+    Route::post('/jamaah', [\App\Http\Controllers\JamaahController::class, 'store'])->name('jamaah.store');
+    Route::delete('/jamaah/{jamaah}', [\App\Http\Controllers\JamaahController::class, 'destroy'])->name('jamaah.destroy');
+
     // Jadwal Imam
     Route::post('/jadwal-imam', [JadwalImamController::class, 'update'])->name('imam.update');
 
